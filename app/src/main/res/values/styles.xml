@@ -7,4 +7,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="CustomTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">#D50000</item>
+        <item name="tabSelectedTextColor">#D50000</item>
+    </style>
+
 </resources>
