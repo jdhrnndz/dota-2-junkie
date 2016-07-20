@@ -11,13 +11,13 @@ import android.widget.TextView;
  * Created by johndeniellehernandez on 7/20/16.
  */
 public class PageFragment extends Fragment {
-    public static final String ARG_PAGE = "ARG_PAGE";
+    public static final String ARG_LAYOUT = "ARG_LAYOUT";
 
-    private int mPage;
+    private int mLayout;
 
-    public static PageFragment newInstance(int page) {
+    public static PageFragment newInstance(int layout) {
         Bundle args = new Bundle();
-        args.putInt(ARG_PAGE, page);
+        args.putInt(ARG_LAYOUT, layout);
         PageFragment fragment = new PageFragment();
         fragment.setArguments(args);
         return fragment;
@@ -26,14 +26,12 @@ public class PageFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPage = getArguments().getInt(ARG_PAGE);
+        mLayout = getArguments().getInt(ARG_LAYOUT);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_page, container, false);
-        TextView textView = (TextView) view;
-        textView.setText("Fragment #" + mPage);
+        View view = inflater.inflate(mLayout, container, false);
         return view;
     }
 }
