@@ -6,16 +6,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 /**
  * Created by johndeniellehernandez on 7/20/16.
  */
 public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHolder> {
     private String[] mDataset;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         public View mView;
+
         public ViewHolder(View v) {
             super(v);
             mView = v;
