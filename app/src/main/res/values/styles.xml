@@ -1,15 +1,32 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="Dota2Junkie" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
     </style>
 
-    <style name="CustomTabLayout" parent="Widget.Design.TabLayout">
+    <style name="AppNameLogIn" parent="TextAppearance.AppCompat">
+        <item name="android:text">@string/app_name</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">32dp</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <style name="D2JTabLayout" parent="Widget.Design.TabLayout">
         <item name="tabIndicatorColor">#D50000</item>
         <item name="tabSelectedTextColor">#D50000</item>
     </style>
 
+    <style name="D2JTextInputEditText" parent="TextAppearance.AppCompat">
+        <!-- Hint color and label color in FALSE STATE -->
+        <item name="android:textColorHint">#BDBDBD</item>
+        <item name="android:textColorPrimary">#FFFFFF</item>
+
+        <!-- Label color in TRUE state and bar color FALSE and TRUE state -->
+        <item name="colorAccent">#FFFFFF</item>
+        <item name="colorControlNormal">#FFFFFF</item>
+        <item name="colorControlActivated">#FFFFFF</item>
+    </style>
 </resources>
