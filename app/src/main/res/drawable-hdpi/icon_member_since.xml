@@ -9,7 +9,7 @@
                 android:top="9dp" />
             <stroke
                 android:width="3dp"
-                android:color="@color/colorPrimary" />
+                android:color="@color/primary" />
         </shape>
     </item>
     <item>
@@ -18,7 +18,7 @@
             android:width="12dp"
             android:viewportWidth="24"
             android:viewportHeight="24">
-            <path android:fillColor="@color/colorPrimary"
+            <path android:fillColor="@color/primary"
                 android:pathData="M7,10H12V15H7M19,19H5V8H19M19,3H18V1H16V3H8V1H6V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3Z"/>
         </vector>
     </item>
