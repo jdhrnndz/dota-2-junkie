@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_red">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/dota2logo"
+        android:layout_above="@+id/user_sign_up_steam_id"
+        android:scaleType="centerCrop"
+        android:layout_centerHorizontal="true"/>
+    <TextView
+        android:id="@+id/app_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="64dp"
+        style="@style/AppNameLogIn"/>
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/user_sign_up_steam_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:theme="@style/D2JTextInputEditText">
+        <android.support.design.widget.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="@string/hint_steam_id"
+            android:layout_margin="32dp"
+            android:maxLength="17"
+            android:textSize="24dp"/>
+    </android.support.design.widget.TextInputLayout>
+    <android.support.v7.widget.AppCompatImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_log_in"
+        android:layout_below="@id/user_sign_up_steam_id"
+        android:layout_centerHorizontal="true"
+        android:background="?attr/selectableItemBackgroundBorderless" />
+</RelativeLayout>
