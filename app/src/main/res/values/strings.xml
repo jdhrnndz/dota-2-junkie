@@ -4,4 +4,6 @@
     <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
     <string name="log_in_dialog_title">Log In</string>
     <string name="log_in_dialog_message">Retrieving user information...</string>
+
+    <string name="api_key" translatable="false">22247A2A498D945AA1F4A20FF96F1911</string>
 </resources>
