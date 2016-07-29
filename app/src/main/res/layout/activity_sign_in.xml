@@ -45,4 +45,8 @@
         android:textSize="24dp"
         android:textColor="@color/md_white_1000"
         android:background="@drawable/icon_ring_border" />
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </RelativeLayout>
