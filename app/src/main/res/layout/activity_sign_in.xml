@@ -2,11 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/gradient_red">
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/dota2logo"
+        app:srcCompat="@drawable/dota2logo"
         android:layout_above="@+id/user_sign_up_steam_id"
         android:scaleType="centerCrop"
         android:layout_centerHorizontal="true"/>
@@ -34,12 +35,14 @@
             android:maxLength="17"
             android:textSize="24dp"/>
     </android.support.design.widget.TextInputLayout>
-    <android.support.v7.widget.AppCompatImageButton
+    <android.support.v7.widget.AppCompatButton
         android:id="@+id/button_log_in"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/icon_log_in"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:layout_below="@id/user_sign_up_steam_id"
         android:layout_centerHorizontal="true"
-        android:background="?attr/selectableItemBackgroundBorderless" />
+        android:text="@string/check"
+        android:textSize="24dp"
+        android:textColor="@color/md_white_1000"
+        android:background="@drawable/icon_ring_border" />
 </RelativeLayout>
