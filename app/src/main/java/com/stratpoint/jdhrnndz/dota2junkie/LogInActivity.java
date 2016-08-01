@@ -1,13 +1,14 @@
 package com.stratpoint.jdhrnndz.dota2junkie;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.view.View;
-import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -20,9 +21,13 @@ import com.android.volley.toolbox.Volley;
  * Created by johndeniellehernandez on 7/27/16.
  */
 public class LogInActivity extends AppCompatActivity{
+    public final static String EXTRA_USER_INFO = "com.stratpoint.jdhrnndz.EXTRA_USER_INFO";
+
     private AppCompatButton mLogInButton;
     private ProgressDialog mLogInDialog;
     private TextInputLayout mLogInInputLayout;
+    private Snackbar mErrorMessage;
+    private Intent mLogInIntent;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -37,12 +42,13 @@ public class LogInActivity extends AppCompatActivity{
         mLogInDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         mLogInDialog.setCancelable(false);
 
-        final TextView mTextView = (TextView) findViewById(R.id.text);
-
         mLogInButton = (AppCompatButton) findViewById(R.id.button_log_in);
 
         Typeface fontAwesome = Typeface.createFromAsset(getAssets(), "fontAwesome.ttf");
         mLogInButton.setTypeface(fontAwesome);
+
+        mErrorMessage = Snackbar.make(findViewById(R.id.sign_in_layout), R.string.log_in_error_message, Snackbar.LENGTH_LONG);
+        mLogInIntent = new Intent(this, MainActivity.class);
 
         mLogInButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,21 +56,30 @@ public class LogInActivity extends AppCompatActivity{
                 mLogInDialog.show();
 
                 RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-                String url = "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2?key=22247A2A498D945AA1F4A20FF96F1911&steamids=76561198060797038";
 
-                StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                // Builds the url to retrieve user info
+                // TODO: Create a new class for building url
+                StringBuilder url = new StringBuilder();
+                url.append(R.string.get_player_summaries);
+                url.append("?key=");
+                url.append(R.string.api_key);
+                url.append("&steamids=");
+                url.append(((TextInputLayout) findViewById(R.id.user_sign_up_steam_id)).getEditText());
+
+                StringRequest stringRequest = new StringRequest(Request.Method.GET, url.toString(),
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            // Display the first 500 characters of the response string.
-                            mTextView.setText("Response is: "+ response.substring(0,500));
-                            mLogInDialog.dismiss();
+                            mLogInDialog.setMessage(getResources().getString(R.string.log_in_response_message));
+                            // pass response to the main activity
+                            mLogInIntent.putExtra(EXTRA_USER_INFO, response);
+                            startActivity(mLogInIntent);
                         }
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            mTextView.setText("That didn't work!");
                             mLogInDialog.dismiss();
+                            mErrorMessage.show();
                         }
                     }
                 );
