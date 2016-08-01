@@ -1,7 +1,9 @@
 package com.stratpoint.jdhrnndz.dota2junkie;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 public class ProfileFragment extends BaseFragment {
     private final static int LAYOUT = R.layout.fragment_profile;
     private LineChart mMatchesChart;
+    private AppCompatButton mMemberSinceSigil, mSteamIdSigil, mLastLogOffSigil;
 
     public static ProfileFragment newInstance() {
         Bundle args = BaseFragment.initBundle(LAYOUT);
@@ -31,6 +34,15 @@ public class ProfileFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(mLayout, container, false);
+        mMemberSinceSigil = (AppCompatButton) view.findViewById(R.id.sigil_member_since);
+        mSteamIdSigil = (AppCompatButton) view.findViewById(R.id.sigil_steam_id);
+        mLastLogOffSigil = (AppCompatButton) view.findViewById(R.id.sigil_last_log_off);
+
+
+        Typeface fontAwesome = Typeface.createFromAsset(getActivity().getAssets(), "fontAwesome.ttf");
+        mMemberSinceSigil.setTypeface(fontAwesome);
+        mSteamIdSigil.setTypeface(fontAwesome);
+        mLastLogOffSigil.setTypeface(fontAwesome);
 
         mMatchesChart = (LineChart) view.findViewById(R.id.matches_chart);
         setData(20, 20f);
