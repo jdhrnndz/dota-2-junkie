@@ -59,7 +59,7 @@
             android:text="@string/calendar"
             android:textSize="24dp"
             android:textColor="@color/primary"
-            android:background="@drawable/icon_ring_border" />
+            android:background="@drawable/icon_ring_border_red" />
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/sigil_steam_id"
             android:layout_width="56dp"
@@ -71,7 +71,7 @@
             android:text="@string/user"
             android:textSize="24dp"
             android:textColor="@color/primary"
-            android:background="@drawable/icon_ring_border" />
+            android:background="@drawable/icon_ring_border_red" />
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/sigil_last_log_off"
             android:layout_width="56dp"
@@ -83,7 +83,7 @@
             android:text="@string/sign_out"
             android:textSize="24dp"
             android:textColor="@color/primary"
-            android:background="@drawable/icon_ring_border" />
+            android:background="@drawable/icon_ring_border_red" />
 
         <TextView
             android:layout_width="wrap_content"

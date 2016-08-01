@@ -47,5 +47,5 @@
         android:text="@string/check"
         android:textSize="24dp"
         android:textColor="@color/md_white_1000"
-        android:background="@drawable/icon_ring_border" />
+        android:background="@drawable/icon_ring_border_white" />
 </RelativeLayout>
