@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
@@ -25,7 +26,6 @@ public class LogInActivity extends AppCompatActivity{
 
     private AppCompatButton mLogInButton;
     private ProgressDialog mLogInDialog;
-    private TextInputLayout mLogInInputLayout;
     private Snackbar mErrorMessage;
     private Intent mLogInIntent;
 
@@ -33,8 +33,6 @@ public class LogInActivity extends AppCompatActivity{
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
-
-        mLogInInputLayout = (TextInputLayout) findViewById(R.id.user_sign_up_steam_id);
 
         mLogInDialog = new ProgressDialog(this);
         mLogInDialog.setTitle(R.string.log_in_dialog_title);
@@ -60,11 +58,11 @@ public class LogInActivity extends AppCompatActivity{
                 // Builds the url to retrieve user info
                 // TODO: Create a new class for building url
                 StringBuilder url = new StringBuilder();
-                url.append(R.string.get_player_summaries);
+                url.append(getResources().getString(R.string.get_player_summaries));
                 url.append("?key=");
-                url.append(R.string.api_key);
+                url.append(getResources().getString(R.string.api_key));
                 url.append("&steamids=");
-                url.append(((TextInputLayout) findViewById(R.id.user_sign_up_steam_id)).getEditText());
+                url.append(((TextInputEditText) findViewById(R.id.user_sign_up_steam_id)).getText());
 
                 StringRequest stringRequest = new StringRequest(Request.Method.GET, url.toString(),
                     new Response.Listener<String>() {
@@ -87,5 +85,11 @@ public class LogInActivity extends AppCompatActivity{
                 queue.add(stringRequest);
             }
         });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mLogInDialog.dismiss();
     }
 }
