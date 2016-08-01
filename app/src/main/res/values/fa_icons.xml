@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="placeholder">&#x1111;</string>
+
     <string name="check">&#xf00c;</string>
+    <string name="calendar">&#xf073;</string>
+    <string name="user">&#xf007;</string>
+    <string name="sign_out">&#xf08b;</string>
 </resources>
