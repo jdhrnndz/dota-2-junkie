@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/dota2logo"
-        android:layout_above="@+id/user_sign_up_steam_id"
+        android:layout_above="@+id/user_log_in_text_input_layout"
         android:scaleType="centerCrop"
         android:layout_centerHorizontal="true"/>
     <TextView
@@ -21,13 +21,14 @@
         android:layout_marginTop="64dp"
         style="@style/AppNameLogIn"/>
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/user_sign_up_steam_id"
+        android:id="@+id/user_log_in_text_input_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:textColorHint="@color/md_red_300"
         android:theme="@style/D2JTextInputEditText">
         <android.support.design.widget.TextInputEditText
+            android:id="@+id/user_sign_up_steam_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
@@ -41,7 +42,7 @@
         android:id="@+id/button_log_in"
         android:layout_width="56dp"
         android:layout_height="56dp"
-        android:layout_below="@id/user_sign_up_steam_id"
+        android:layout_below="@id/user_log_in_text_input_layout"
         android:layout_centerHorizontal="true"
         android:text="@string/check"
         android:textSize="24dp"
