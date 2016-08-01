@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="get_player_summaries">http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2</string>
+    <string name="get_match_history">https://api.steampowered.com/IDOTA2Match_570/GetMatchHistory/v1</string>
+    <string name="get_match_details">http://api.steampowered.com/IDOTA2Match_570/GetMatchDetails/v1</string>
+    <string name="get_game_items">http://api.steampowered.com/IEconDOTA2_570/GetGameItems/v1</string>
+    <string name="get_item_images">http://cdn.dota2.com/apps/dota2/images/heroes/</string>
+    <string name="get_heroes">http://api.steampowered.com/IEconDOTA2_570/GetHeroes/v1</string>
+    <string name="get_hero_images">http://cdn.dota2.com/apps/dota2/images/heroes/</string>
+</resources>
