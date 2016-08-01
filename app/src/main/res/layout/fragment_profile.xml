@@ -45,33 +45,44 @@
         android:columnCount="3"
         android:rowCount="3"
         android:orientation="horizontal"
-        android:paddingLeft="28dp"
-        android:paddingRight="28dp"
         android:layout_marginTop="32dp">
-        <ImageView
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:background="@drawable/icon_member_since"
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/sigil_member_since"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
             android:layout_gravity="center"
             android:layout_column="0"
             android:layout_row="0"
-            android:layout_marginBottom="8dp" />
-        <ImageView
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:background="@drawable/icon_steam_id"
+            android:layout_marginBottom="8dp"
+            android:text="@string/calendar"
+            android:textSize="24dp"
+            android:textColor="@color/primary"
+            android:background="@drawable/icon_ring_border" />
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/sigil_steam_id"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
             android:layout_gravity="center"
             android:layout_column="1"
             android:layout_row="0"
-            android:layout_marginBottom="8dp"/>
-        <ImageView
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:background="@drawable/icon_last_log_off"
+            android:layout_marginBottom="8dp"
+            android:text="@string/user"
+            android:textSize="24dp"
+            android:textColor="@color/primary"
+            android:background="@drawable/icon_ring_border" />
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/sigil_last_log_off"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
             android:layout_gravity="center"
             android:layout_column="2"
             android:layout_row="0"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="8dp"
+            android:text="@string/sign_out"
+            android:textSize="24dp"
+            android:textColor="@color/primary"
+            android:background="@drawable/icon_ring_border" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
