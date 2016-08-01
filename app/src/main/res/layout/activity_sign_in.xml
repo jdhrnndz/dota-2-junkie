@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/gradient_red">
+    android:background="@drawable/gradient_red"
+    android:id="@+id/sign_in_layout">
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,7 +34,8 @@
             android:hint="@string/hint_steam_id"
             android:layout_margin="32dp"
             android:maxLength="17"
-            android:textSize="24dp"/>
+            android:textSize="24dp"
+            android:text="76561198060797038"/>
     </android.support.design.widget.TextInputLayout>
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/button_log_in"
@@ -45,8 +47,4 @@
         android:textSize="24dp"
         android:textColor="@color/md_white_1000"
         android:background="@drawable/icon_ring_border" />
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 </RelativeLayout>
