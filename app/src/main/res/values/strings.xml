@@ -1,11 +1,18 @@
 <resources>
     <string name="app_name">Dota 2 Junkie</string>
-    <string name="hint_steam_id">Steam ID 64</string>
     <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
+
+    <!-- LogInActivity -->
     <string name="log_in_dialog_title">Log In</string>
+    <string name="hint_steam_id">Steam ID 64</string>
     <string name="log_in_dialog_message">Retrieving user information...</string>
     <string name="log_in_response_message">Loading...</string>
     <string name="log_in_error_message">"There is a problem retrieving user information."</string>
+
+    <!-- ProfileFragment -->
+    <string name="profile_label_member_since">Member Since</string>
+    <string name="profile_label_steam_id">SteamID 32</string>
+    <string name="profile_label_last_log_off">Last Log Off</string>
 
     <string name="api_key" translatable="false">22247A2A498D945AA1F4A20FF96F1911</string>
 </resources>
