@@ -7,14 +7,23 @@ import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by johndeniellehernandez on 7/21/16.
@@ -23,6 +32,12 @@ public class ProfileFragment extends BaseFragment {
     private final static int LAYOUT = R.layout.fragment_profile;
     private LineChart mMatchesChart;
     private AppCompatButton mMemberSinceSigil, mSteamIdSigil, mLastLogOffSigil;
+
+    private NetworkImageView mUserAvatar;
+    private TextView
+            mUserPersonaName, mUserRealName, mUserCountry,
+            mUserMemberSince, mUserSteamId, mUserLastLogOff;
+    private ProgressBar mUserAvatarProgressBar;
 
     public static ProfileFragment newInstance() {
         Bundle args = BaseFragment.initBundle(LAYOUT);
@@ -34,6 +49,13 @@ public class ProfileFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(mLayout, container, false);
+
+        // Map views from content view as the activity's attributes
+        assignViews(view);
+
+        // Assign values to views from the user info passed via the intent
+        populateViews();
+
         mMemberSinceSigil = (AppCompatButton) view.findViewById(R.id.sigil_member_since);
         mSteamIdSigil = (AppCompatButton) view.findViewById(R.id.sigil_steam_id);
         mLastLogOffSigil = (AppCompatButton) view.findViewById(R.id.sigil_last_log_off);
@@ -94,5 +116,55 @@ public class ProfileFragment extends BaseFragment {
             // set data
             mMatchesChart.setData(data);
         }
+    }
+
+    private void assignViews(View view) {
+        mUserAvatar = (NetworkImageView) view.findViewById(R.id.user_avatar);
+        mUserPersonaName = (TextView) view.findViewById(R.id.user_persona_name);
+        mUserRealName = (TextView) view.findViewById(R.id.user_real_name);
+        mUserCountry = (TextView) view.findViewById(R.id.user_country);
+        mUserMemberSince = (TextView) view.findViewById(R.id.user_member_since);
+        mUserSteamId = (TextView) view.findViewById(R.id.user_steam_id);
+        mUserLastLogOff = (TextView) view.findViewById(R.id.user_last_log_off);
+        mUserAvatarProgressBar = (ProgressBar) view.findViewById(R.id.user_avatar_progress_bar);
+    }
+
+    private void populateViews() {
+        Gson gson = new GsonBuilder().create();
+
+        String userInfoString = getActivity().getIntent().getStringExtra(LogInActivity.EXTRA_USER_INFO);
+
+        PlayerSummary playerSummary = gson.fromJson(userInfoString, PlayerSummary.class);
+
+        DotaPlayer currentPlayer = playerSummary.getResponse().getPlayers()[0];
+        ImageLoader imageLoader = VolleySingleton.getInstance(getActivity()).getImageLoader();
+
+        mUserAvatar.setImageUrl(currentPlayer.getAvatarfull(), imageLoader);
+        mUserAvatar.setProgressBar(mUserAvatarProgressBar);
+        mUserPersonaName.setText(currentPlayer.getPersonaname());
+        mUserRealName.setText(currentPlayer.getRealname());
+        mUserCountry.setText(currentPlayer.getLoccountrycode());
+
+        Date dMemberSince = null;
+        try{
+            dMemberSince = new SimpleDateFormat("s").parse(String.valueOf(currentPlayer.getTimecreated()));
+        }
+        catch(ParseException pe) {
+            pe.printStackTrace();
+        }
+        mUserMemberSince.setText(new SimpleDateFormat("MMM dd, ''yy").format(dMemberSince));
+
+        // Casting long to int to obtain the SteamID32 version
+        int steamId32 = (int) Long.parseLong(currentPlayer.getSteamid());
+        mUserSteamId.setText(String.valueOf(steamId32));
+
+        Date dLastLagOff = null;
+        try{
+            dLastLagOff = new SimpleDateFormat("s").parse(String.valueOf(currentPlayer.getLastlogoff()));
+        }
+        catch(ParseException pe) {
+            pe.printStackTrace();
+        }
+        mUserLastLogOff.setText(new SimpleDateFormat("MMM dd, ''yy").format(dLastLagOff));
     }
 }
