@@ -2,6 +2,7 @@ package com.stratpoint.jdhrnndz.dota2junkie;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
@@ -13,6 +14,9 @@ import android.widget.TextView;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -30,14 +34,13 @@ import java.util.Date;
  */
 public class ProfileFragment extends BaseFragment {
     private final static int LAYOUT = R.layout.fragment_profile;
-    private LineChart mMatchesChart;
-    private AppCompatButton mMemberSinceSigil, mSteamIdSigil, mLastLogOffSigil;
-
     private NetworkImageView mUserAvatar;
-    private TextView
-            mUserPersonaName, mUserRealName, mUserCountry,
-            mUserMemberSince, mUserSteamId, mUserLastLogOff;
     private ProgressBar mUserAvatarProgressBar;
+    private AppCompatButton mMemberSinceSigil, mSteamIdSigil, mLastLogOffSigil;
+    private TextView
+        mUserPersonaName, mUserRealName, mUserCountry,
+        mUserMemberSince, mUserSteamId, mUserLastLogOff;
+    private LineChart mMatchesChart;
 
     public static ProfileFragment newInstance() {
         Bundle args = BaseFragment.initBundle(LAYOUT);
@@ -56,77 +59,25 @@ public class ProfileFragment extends BaseFragment {
         // Assign values to views from the user info passed via the intent
         populateViews();
 
-        mMemberSinceSigil = (AppCompatButton) view.findViewById(R.id.sigil_member_since);
-        mSteamIdSigil = (AppCompatButton) view.findViewById(R.id.sigil_steam_id);
-        mLastLogOffSigil = (AppCompatButton) view.findViewById(R.id.sigil_last_log_off);
-
-
-        Typeface fontAwesome = Typeface.createFromAsset(getActivity().getAssets(), "fontAwesome.ttf");
-        mMemberSinceSigil.setTypeface(fontAwesome);
-        mSteamIdSigil.setTypeface(fontAwesome);
-        mLastLogOffSigil.setTypeface(fontAwesome);
-
-        mMatchesChart = (LineChart) view.findViewById(R.id.matches_chart);
-        setData(20, 20f);
-
         return view;
-    }
-
-    private void setData(int count, float range) {
-
-        ArrayList<Entry> values = new ArrayList<Entry>();
-
-        for (int i = 0; i < count; i++) {
-
-            float val = (float) (Math.random() * range) + 3;
-            values.add(new Entry(i, val));
-        }
-
-        LineDataSet set1;
-
-        if (mMatchesChart.getData() != null &&
-                mMatchesChart.getData().getDataSetCount() > 0) {
-            set1 = (LineDataSet)mMatchesChart.getData().getDataSetByIndex(0);
-            set1.setValues(values);
-            mMatchesChart.getData().notifyDataChanged();
-            mMatchesChart.setDrawGridBackground(false);
-            mMatchesChart.setDrawBorders(false);
-            mMatchesChart.setDescription("Recent 20 Matches Results");
-            mMatchesChart.notifyDataSetChanged();
-        } else {
-            // create a dataset and give it a type
-            set1 = new LineDataSet(values, "DataSet 1");
-
-            // set the line to be drawn like this "- - - - - -"
-            set1.setColor(ContextCompat.getColor(getContext(), R.color.primary));
-            set1.setCircleColor(ContextCompat.getColor(getContext(), R.color.primary_dark));
-            set1.setLineWidth(1f);
-            set1.setCircleRadius(3f);
-            set1.setDrawCircleHole(false);
-            set1.setDrawFilled(true);
-            set1.setFillColor(ContextCompat.getColor(getContext(), R.color.primary));
-            set1.setLabel("");
-
-            ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
-            dataSets.add(set1); // add the datasets
-
-            // create a data object with the datasets
-            LineData data = new LineData(dataSets);
-
-            // set data
-            mMatchesChart.setData(data);
-        }
     }
 
     private void assignViews(View view) {
         mUserAvatar = (NetworkImageView) view.findViewById(R.id.user_avatar);
+        mUserAvatarProgressBar = (ProgressBar) view.findViewById(R.id.user_avatar_progress_bar);
+
         mUserPersonaName = (TextView) view.findViewById(R.id.user_persona_name);
         mUserRealName = (TextView) view.findViewById(R.id.user_real_name);
         mUserCountry = (TextView) view.findViewById(R.id.user_country);
+
+        mMemberSinceSigil = (AppCompatButton) view.findViewById(R.id.sigil_member_since);
         mUserMemberSince = (TextView) view.findViewById(R.id.user_member_since);
+        mSteamIdSigil = (AppCompatButton) view.findViewById(R.id.sigil_steam_id);
         mUserSteamId = (TextView) view.findViewById(R.id.user_steam_id);
+        mLastLogOffSigil = (AppCompatButton) view.findViewById(R.id.sigil_last_log_off);
         mUserLastLogOff = (TextView) view.findViewById(R.id.user_last_log_off);
-        mUserAvatarProgressBar = (ProgressBar) view.findViewById(R.id.user_avatar_progress_bar);
+
+        mMatchesChart = (LineChart) view.findViewById(R.id.matches_chart);
     }
 
     private void populateViews() {
@@ -145,6 +96,12 @@ public class ProfileFragment extends BaseFragment {
         mUserRealName.setText(currentPlayer.getRealname());
         mUserCountry.setText(currentPlayer.getLoccountrycode());
 
+        Typeface fontAwesome = Typeface.createFromAsset(getActivity().getAssets(), "fontAwesome.ttf");
+        mMemberSinceSigil.setTypeface(fontAwesome);
+        mSteamIdSigil.setTypeface(fontAwesome);
+        mLastLogOffSigil.setTypeface(fontAwesome);
+
+        String datePattern = getResources().getString(R.string.profile_pattern_date);
         Date dMemberSince = null;
         try{
             dMemberSince = new SimpleDateFormat("s").parse(String.valueOf(currentPlayer.getTimecreated()));
@@ -152,7 +109,7 @@ public class ProfileFragment extends BaseFragment {
         catch(ParseException pe) {
             pe.printStackTrace();
         }
-        mUserMemberSince.setText(new SimpleDateFormat("MMM dd, ''yy").format(dMemberSince));
+        mUserMemberSince.setText(new SimpleDateFormat(datePattern).format(dMemberSince));
 
         // Casting long to int to obtain the SteamID32 version
         int steamId32 = (int) Long.parseLong(currentPlayer.getSteamid());
@@ -165,6 +122,74 @@ public class ProfileFragment extends BaseFragment {
         catch(ParseException pe) {
             pe.printStackTrace();
         }
-        mUserLastLogOff.setText(new SimpleDateFormat("MMM dd, ''yy").format(dLastLagOff));
+        mUserLastLogOff.setText(new SimpleDateFormat(datePattern).format(dLastLagOff));
+
+        setMatchResultGraphData(20, 20f);
+    }
+
+
+    private void setMatchResultGraphData(int count, float range) {
+
+        ArrayList<Entry> values = new ArrayList<Entry>();
+
+        for (int i = 0; i < count; i++) {
+
+            float val = (float) (Math.random() * range) + 3;
+            values.add(new Entry(i, val));
+        }
+
+        LineDataSet set1;
+
+        if (mMatchesChart.getData() != null &&
+                mMatchesChart.getData().getDataSetCount() > 0) {
+            set1 = (LineDataSet)mMatchesChart.getData().getDataSetByIndex(0);
+            set1.setValues(values);
+            mMatchesChart.getData().notifyDataChanged();
+            mMatchesChart.notifyDataSetChanged();
+        } else {
+            // create a dataset and give it a type
+            set1 = new LineDataSet(values, "DataSet 1");
+
+            set1.setColor(ContextCompat.getColor(getContext(), R.color.primary));
+            set1.setCircleColor(ContextCompat.getColor(getContext(), R.color.primary_dark));
+            set1.setLineWidth(1.5f);
+            set1.setCircleRadius(3f);
+            set1.setDrawCircleHole(false);
+            set1.setDrawFilled(true);
+            set1.setFillColor(ContextCompat.getColor(getContext(), R.color.primary));
+
+            // Prevents node values to be displayed
+            set1.setDrawValues(false);
+
+            ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
+            dataSets.add(set1); // add the datasets
+
+            // create a data object with the datasets
+            LineData data = new LineData(dataSets);
+
+            // set data
+            mMatchesChart.setData(data);
+        }
+
+        mMatchesChart.setTouchEnabled(false);
+        mMatchesChart.setDescription(getResources().getString(R.string.profile_description_matches_graph));
+        mMatchesChart.setDescriptionColor(ContextCompat.getColor(getContext(), R.color.primary_dark));
+
+        XAxis xAxis = mMatchesChart.getXAxis();
+        xAxis.setEnabled(false);
+        xAxis.setDrawGridLines(false);
+
+        YAxis leftAxis = mMatchesChart.getAxisLeft();
+
+        YAxis rightAxis = mMatchesChart.getAxisRight();
+        leftAxis.setDrawGridLines(false);
+        rightAxis.setEnabled(false);
+
+        mMatchesChart.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                Snackbar.make(mMatchesChart, "left: " + left + " oldLeft: " + oldLeft, Snackbar.LENGTH_LONG);
+            }
+        });
     }
 }
