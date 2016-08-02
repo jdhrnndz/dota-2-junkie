@@ -6,7 +6,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.view.View;
@@ -16,7 +15,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 
 /**
  * Created by johndeniellehernandez on 7/27/16.
@@ -53,7 +51,7 @@ public class LogInActivity extends AppCompatActivity{
             public void onClick(View view) {
                 mLogInDialog.show();
 
-                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+                RequestQueue queue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
 
                 // Builds the url to retrieve user info
                 // TODO: Create a new class for building url
@@ -64,7 +62,9 @@ public class LogInActivity extends AppCompatActivity{
                 url.append("&steamids=");
                 url.append(((TextInputEditText) findViewById(R.id.user_sign_up_steam_id)).getText());
 
-                StringRequest stringRequest = new StringRequest(Request.Method.GET, url.toString(),
+                // StringRequest is used instead of a GSONRequest like in the docs because the
+                // result will be passed to another activity
+                StringRequest playerSummaryRequest = new StringRequest(Request.Method.GET, url.toString(),
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -81,8 +81,9 @@ public class LogInActivity extends AppCompatActivity{
                         }
                     }
                 );
+
                 // Add the request to the RequestQueue.
-                queue.add(stringRequest);
+                queue.add(playerSummaryRequest);
             }
         });
     }
