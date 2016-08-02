@@ -15,8 +15,6 @@ public class BaseFragment extends Fragment {
     public static Bundle initBundle(int layout) {
         Bundle args = new Bundle();
         args.putInt(ARG_LAYOUT, layout);
-//        args.putIntegerArrayList(ARG_DATAVIEWIDS, dataViewIds);
-//        args.putStringArrayList(ARG_DATAVALUES, dataValues);
         return args;
     }
 
@@ -24,7 +22,5 @@ public class BaseFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mLayout = getArguments().getInt(ARG_LAYOUT);
-//        mDataViewIds = getArguments().getIntegerArrayList(ARG_DATAVIEWIDS);
-//        mDataValues = getArguments().getStringArrayList(ARG_DATAVALUES);
     }
 }
