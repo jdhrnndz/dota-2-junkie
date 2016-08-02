@@ -20,6 +20,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader.ImageContainer;
@@ -48,6 +49,9 @@ public class NetworkImageView extends ImageView {
 
     /** Current ImageContainer. (either in-flight or finished) */
     private ImageContainer mImageContainer;
+
+    /** ProgressBar to be disabled on response */
+    private ProgressBar mProgressBar;
 
     public NetworkImageView(Context context) {
         this(context, null);
@@ -94,6 +98,13 @@ public class NetworkImageView extends ImageView {
      */
     public void setErrorImageResId(int errorImage) {
         mErrorImageId = errorImage;
+    }
+
+    /**
+     * Sets the progress bar to be disabled in the event that the loading completes.
+     */
+    public void setProgressBar(ProgressBar progressBar) {
+        mProgressBar = progressBar;
     }
 
     /**
@@ -176,6 +187,10 @@ public class NetworkImageView extends ImageView {
                             setImageBitmap(response.getBitmap());
                         } else if (mDefaultImageId != 0) {
                             setImageResource(mDefaultImageId);
+                        }
+
+                        if(mProgressBar != null && response.getBitmap() != null) {
+                            mProgressBar.setVisibility(GONE);
                         }
                     }
                 }, maxWidth, maxHeight, scaleType);
