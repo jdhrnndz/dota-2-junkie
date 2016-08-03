@@ -42,6 +42,8 @@ public class ProfileFragment extends BaseFragment {
         mUserMemberSince, mUserSteamId, mUserLastLogOff;
     private LineChart mMatchesChart;
 
+    private DotaPlayer mCurrentPlayer;
+
     public static ProfileFragment newInstance() {
         Bundle args = BaseFragment.initBundle(LAYOUT);
         ProfileFragment fragment = new ProfileFragment();
@@ -81,20 +83,14 @@ public class ProfileFragment extends BaseFragment {
     }
 
     private void populateViews() {
-        Gson gson = new GsonBuilder().create();
 
-        String userInfoString = getActivity().getIntent().getStringExtra(LogInActivity.EXTRA_USER_INFO);
-
-        PlayerSummary playerSummary = gson.fromJson(userInfoString, PlayerSummary.class);
-
-        DotaPlayer currentPlayer = playerSummary.getResponse().getPlayers()[0];
         ImageLoader imageLoader = VolleySingleton.getInstance(getActivity()).getImageLoader();
 
-        mUserAvatar.setImageUrl(currentPlayer.getAvatarfull(), imageLoader);
+        mUserAvatar.setImageUrl(mCurrentPlayer.getAvatarfull(), imageLoader);
         mUserAvatar.setProgressBar(mUserAvatarProgressBar);
-        mUserPersonaName.setText(currentPlayer.getPersonaname());
-        mUserRealName.setText(currentPlayer.getRealname());
-        mUserCountry.setText(currentPlayer.getLoccountrycode());
+        mUserPersonaName.setText(mCurrentPlayer.getPersonaname());
+        mUserRealName.setText(mCurrentPlayer.getRealname());
+        mUserCountry.setText(mCurrentPlayer.getLoccountrycode());
 
         Typeface fontAwesome = Typeface.createFromAsset(getActivity().getAssets(), "fontAwesome.ttf");
         mMemberSinceSigil.setTypeface(fontAwesome);
@@ -104,7 +100,7 @@ public class ProfileFragment extends BaseFragment {
         String datePattern = getResources().getString(R.string.profile_pattern_date);
         Date dMemberSince = null;
         try{
-            dMemberSince = new SimpleDateFormat("s").parse(String.valueOf(currentPlayer.getTimecreated()));
+            dMemberSince = new SimpleDateFormat("s").parse(String.valueOf(mCurrentPlayer.getTimecreated()));
         }
         catch(ParseException pe) {
             pe.printStackTrace();
@@ -112,12 +108,12 @@ public class ProfileFragment extends BaseFragment {
         mUserMemberSince.setText(new SimpleDateFormat(datePattern).format(dMemberSince));
 
         // Casting long to int to obtain the SteamID32 version
-        int steamId32 = (int) Long.parseLong(currentPlayer.getSteamid());
+        int steamId32 = (int) Long.parseLong(mCurrentPlayer.getSteamid());
         mUserSteamId.setText(String.valueOf(steamId32));
 
         Date dLastLagOff = null;
         try{
-            dLastLagOff = new SimpleDateFormat("s").parse(String.valueOf(currentPlayer.getLastlogoff()));
+            dLastLagOff = new SimpleDateFormat("s").parse(String.valueOf(mCurrentPlayer.getLastlogoff()));
         }
         catch(ParseException pe) {
             pe.printStackTrace();
@@ -184,12 +180,9 @@ public class ProfileFragment extends BaseFragment {
         YAxis rightAxis = mMatchesChart.getAxisRight();
         leftAxis.setDrawGridLines(false);
         rightAxis.setEnabled(false);
+    }
 
-        mMatchesChart.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                Snackbar.make(mMatchesChart, "left: " + left + " oldLeft: " + oldLeft, Snackbar.LENGTH_LONG);
-            }
-        });
+    public void setCurrentPlayer(DotaPlayer player) {
+        this.mCurrentPlayer = player;
     }
 }

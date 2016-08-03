@@ -6,9 +6,14 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 public class MainActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
+
+    private DotaPlayer mCurrentPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +34,11 @@ public class MainActivity extends AppCompatActivity {
 
         mTabLayout = (TabLayout) findViewById(R.id.tabs);
         mTabLayout.setupWithViewPager(mViewPager);
+
+        parseUserInfoFromIntent();
+        ((ProfileFragment) TabFragment.PROFILE.getFragment()).setCurrentPlayer(mCurrentPlayer);
+
+
     }
 
     @Override
@@ -39,5 +49,15 @@ public class MainActivity extends AppCompatActivity {
         } else {
           mViewPager.setCurrentItem(currentItem - 1);
         }
+    }
+
+    private void parseUserInfoFromIntent() {
+        Gson gson = new GsonBuilder().create();
+
+        String userInfoString = getIntent().getStringExtra(LogInActivity.EXTRA_USER_INFO);
+
+        PlayerSummary playerSummary = gson.fromJson(userInfoString, PlayerSummary.class);
+
+        mCurrentPlayer = playerSummary.getResponse().getPlayers()[0];
     }
 }
