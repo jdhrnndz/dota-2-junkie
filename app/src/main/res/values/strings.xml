@@ -7,7 +7,7 @@
     <string name="hint_steam_id">Steam ID 64</string>
     <string name="log_in_dialog_message">Retrieving user information...</string>
     <string name="log_in_response_message">Loading...</string>
-    <string name="log_in_error_message">"There is a problem retrieving user information."</string>
+    <string name="log_in_error_message">There is a problem retrieving user information.</string>
 
     <!-- ProfileFragment -->
     <string name="profile_label_member_since">Member Since</string>
@@ -15,6 +15,9 @@
     <string name="profile_label_last_log_off">Last Log Off</string>
     <string name="profile_pattern_date">MMM dd, \'\'yy</string>
     <string name="profile_description_matches_graph">Match Results</string>
+
+    <!-- MatchesFragment -->
+    <string name="match_history_error_message">There is a problem retrieving the match history.</string>
 
     <string name="api_key" translatable="false">22247A2A498D945AA1F4A20FF96F1911</string>
 </resources>
