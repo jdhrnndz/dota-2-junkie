@@ -8,4 +8,6 @@
     <stroke
         android:width="2dp"
         android:color="@color/md_white_1000" />
+    <solid
+        android:color="@color/transparent"/>
 </shape>

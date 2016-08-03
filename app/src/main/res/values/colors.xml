@@ -5,4 +5,5 @@
     <color name="accent">@color/md_grey_500</color>
     <color name="accent_dark">@color/md_grey_700</color>
     <color name="recycler_view_divider">@color/md_grey_600</color>
+    <color name="transparent">#00000000</color>
 </resources>
