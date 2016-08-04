@@ -6,11 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 /**
  * Created by johndeniellehernandez on 7/20/16.
  */
 public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHolder> {
-    private String[] mDataset;
+    private ArrayList<Long> mDataset;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public View mView;
@@ -21,7 +23,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
         }
     }
 
-    public MatchesAdapter(String[] matches) {
+    public MatchesAdapter(ArrayList matches) {
         mDataset = matches;
     }
 
@@ -34,11 +36,12 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        ((TextView) holder.mView.findViewById(R.id.match_id)).setText(mDataset[position]);
+        ((TextView) holder.mView.findViewById(R.id.match_id)).setText(String.valueOf(mDataset.get(position)));
     }
 
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        if (mDataset == null) return 0;
+        return mDataset.size();
     }
 }
