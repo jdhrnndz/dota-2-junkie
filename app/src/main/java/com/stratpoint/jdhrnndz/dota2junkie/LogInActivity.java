@@ -10,17 +10,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.view.View;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.stratpoint.jdhrnndz.dota2junkie.network.VolleySingleton;
+import com.stratpoint.jdhrnndz.dota2junkie.network.ApiManager;
+import com.stratpoint.jdhrnndz.dota2junkie.network.DotaApiResponseListener;
 
 /**
  * Created by johndeniellehernandez on 7/27/16.
  */
-public class LogInActivity extends AppCompatActivity{
+public class LogInActivity extends AppCompatActivity implements DotaApiResponseListener{
     public final static String EXTRA_USER_INFO = "com.stratpoint.jdhrnndz.EXTRA_USER_INFO";
 
     private AppCompatButton mLogInButton;
@@ -52,8 +49,6 @@ public class LogInActivity extends AppCompatActivity{
             public void onClick(View view) {
                 mLogInDialog.show();
 
-                RequestQueue queue = VolleySingleton.getInstance(getApplicationContext()).getRequestQueue();
-
                 // Builds the url to retrieve user info
                 // TODO: Create a new class for building url
                 StringBuilder url = new StringBuilder();
@@ -63,28 +58,7 @@ public class LogInActivity extends AppCompatActivity{
                 url.append("&steamids=");
                 url.append(((TextInputEditText) findViewById(R.id.user_sign_up_steam_id)).getText());
 
-                // StringRequest is used instead of a GSONRequest like in the docs because the
-                // result will be passed to another activity
-                StringRequest playerSummaryRequest = new StringRequest(Request.Method.GET, url.toString(),
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            mLogInDialog.setMessage(getResources().getString(R.string.log_in_response_message));
-                            // pass response to the main activity
-                            mLogInIntent.putExtra(EXTRA_USER_INFO, response);
-                            startActivity(mLogInIntent);
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            mLogInDialog.dismiss();
-                            mErrorMessage.show();
-                        }
-                    }
-                );
-
-                // Add the request to the RequestQueue.
-                queue.add(playerSummaryRequest);
+                ApiManager.fetchUserInfo(url.toString(), LogInActivity.this, getApplicationContext());
             }
         });
     }
@@ -93,5 +67,17 @@ public class LogInActivity extends AppCompatActivity{
     protected void onPause() {
         super.onPause();
         mLogInDialog.dismiss();
+    }
+
+    public void onReceiveResponse(int statusCode, String responseString, String action, String cookie) {
+        mLogInDialog.setMessage(getResources().getString(R.string.log_in_response_message));
+        // Pass response to the main activity
+        mLogInIntent.putExtra(EXTRA_USER_INFO, responseString);
+        startActivity(mLogInIntent);
+    }
+
+    public void onReceiveErrorResponse(int statusCode, VolleyError error) {
+        mLogInDialog.dismiss();
+        mErrorMessage.show();
     }
 }
