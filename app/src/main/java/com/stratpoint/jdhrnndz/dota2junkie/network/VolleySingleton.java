@@ -1,4 +1,4 @@
-package com.stratpoint.jdhrnndz.dota2junkie;
+package com.stratpoint.jdhrnndz.dota2junkie.network;
 
 import android.content.Context;
 import android.graphics.Bitmap;

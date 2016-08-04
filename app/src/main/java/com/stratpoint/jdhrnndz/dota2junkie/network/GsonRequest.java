@@ -1,4 +1,4 @@
-package com.stratpoint.jdhrnndz.dota2junkie;
+package com.stratpoint.jdhrnndz.dota2junkie.network;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
