@@ -1,9 +1,12 @@
 package com.stratpoint.jdhrnndz.dota2junkie;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by johndeniellehernandez on 8/3/16.
  */
 public class MatchHistory {
+    @SerializedName("result")
     private Result result;
 
     public Result getResult() {
@@ -11,26 +14,35 @@ public class MatchHistory {
     }
 
     public static class Result {
+        @SerializedName("status")
         private int status;
-        private int num_results;
-        private int total_results;
-        private int results_remaining;
+
+        @SerializedName("num_results")
+        private int retrievedMatchCount;
+
+        @SerializedName("total_results")
+        private int totalMatchCount;
+
+        @SerializedName("results_remaining")
+        private int remainingMatchCount;
+
+        @SerializedName("matches")
         private Match[] matches;
 
         public int getStatus() {
             return status;
         }
 
-        public int getNum_results() {
-            return num_results;
+        public int getRetrievedMatchCount() {
+            return retrievedMatchCount;
         }
 
-        public int getTotal_results() {
-            return total_results;
+        public int getTotalMatchCount() {
+            return totalMatchCount;
         }
 
-        public int getResults_remaining() {
-            return results_remaining;
+        public int getRemainingMatchCount() {
+            return remainingMatchCount;
         }
 
         public Match[] getMatches() {
@@ -39,36 +51,49 @@ public class MatchHistory {
     }
 
     public static class Match {
-        private long match_id;
-        private long match_seq_num;
-        private long start_time;
-        private int lobby_type;
-        private long radiant_team_id;
-        private long dire_team_id;
+        @SerializedName("match_id")
+        private long id;
+
+        @SerializedName("match_seq_num")
+        private long sequenceNumber;
+
+        @SerializedName("start_time")
+        private long startTime;
+
+        @SerializedName("lobby_type")
+        private int lobbyType;
+
+        @SerializedName("radiant_team_id")
+        private long radiantTeamId;
+
+        @SerializedName("dire_team_id")
+        private long direTeamId;
+
+        @SerializedName("players")
         private MatchPlayer[] players;
 
-        public long getMatch_id() {
-            return match_id;
+        public long getId() {
+            return id;
         }
 
-        public long getMatch_seq_num() {
-            return match_seq_num;
+        public long getSequenceNumber() {
+            return sequenceNumber;
         }
 
-        public long getStart_time() {
-            return start_time;
+        public long getStartTime() {
+            return startTime;
         }
 
-        public int getLobby_type() {
-            return lobby_type;
+        public int getLobbyType() {
+            return lobbyType;
         }
 
-        public long getRadiant_team_id() {
-            return radiant_team_id;
+        public long getRadiantTeamId() {
+            return radiantTeamId;
         }
 
-        public long getDire_team_id() {
-            return dire_team_id;
+        public long getDireTeamId() {
+            return direTeamId;
         }
 
         public MatchPlayer[] getPlayers() {
@@ -77,20 +102,25 @@ public class MatchHistory {
     }
 
     public static class MatchPlayer {
-        private long account_id;
-        private short player_slot;
-        private int hero_id;
+        @SerializedName("account_id")
+        private long accountId;
 
-        public long getAccount_id() {
-            return account_id;
+        @SerializedName("player_slot")
+        private short playerSlot;
+
+        @SerializedName("hero_id")
+        private int heroId;
+
+        public long getAccountId() {
+            return accountId;
         }
 
-        public short getPlayer_slot() {
-            return player_slot;
+        public short getPlayerSlot() {
+            return playerSlot;
         }
 
-        public int getHero_id() {
-            return hero_id;
+        public int getHeroId() {
+            return heroId;
         }
     }
 }

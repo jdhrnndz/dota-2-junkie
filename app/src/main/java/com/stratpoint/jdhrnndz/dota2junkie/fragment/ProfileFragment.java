@@ -85,11 +85,11 @@ public class ProfileFragment extends BaseFragment {
 
         ImageLoader imageLoader = VolleySingleton.getInstance(getActivity()).getImageLoader();
 
-        mUserAvatar.setImageUrl(mCurrentPlayer.getAvatarfull(), imageLoader);
+        mUserAvatar.setImageUrl(mCurrentPlayer.getAvatarFull(), imageLoader);
         mUserAvatar.setProgressBar(mUserAvatarProgressBar);
-        mUserPersonaName.setText(mCurrentPlayer.getPersonaname());
-        mUserRealName.setText(mCurrentPlayer.getRealname());
-        mUserCountry.setText(mCurrentPlayer.getLoccountrycode());
+        mUserPersonaName.setText(mCurrentPlayer.getPersonaName());
+        mUserRealName.setText(mCurrentPlayer.getRealName());
+        mUserCountry.setText(mCurrentPlayer.getCountryCode());
 
         Typeface fontAwesome = Typeface.createFromAsset(getActivity().getAssets(), "fontAwesome.ttf");
         mMemberSinceSigil.setTypeface(fontAwesome);
@@ -99,7 +99,7 @@ public class ProfileFragment extends BaseFragment {
         String datePattern = getResources().getString(R.string.profile_pattern_date);
         Date dMemberSince = null;
         try{
-            dMemberSince = new SimpleDateFormat("s").parse(String.valueOf(mCurrentPlayer.getTimecreated()));
+            dMemberSince = new SimpleDateFormat("s").parse(String.valueOf(mCurrentPlayer.getTimeCreated()));
         }
         catch(ParseException pe) {
             pe.printStackTrace();
@@ -107,12 +107,12 @@ public class ProfileFragment extends BaseFragment {
         mUserMemberSince.setText(new SimpleDateFormat(datePattern).format(dMemberSince));
 
         // Casting long to int to obtain the SteamID32 version
-        int steamId32 = (int) Long.parseLong(mCurrentPlayer.getSteamid());
+        int steamId32 = (int) Long.parseLong(mCurrentPlayer.getSteamId());
         mUserSteamId.setText(String.valueOf(steamId32));
 
         Date dLastLagOff = null;
         try{
-            dLastLagOff = new SimpleDateFormat("s").parse(String.valueOf(mCurrentPlayer.getLastlogoff()));
+            dLastLagOff = new SimpleDateFormat("s").parse(String.valueOf(mCurrentPlayer.getLastLogOff()));
         }
         catch(ParseException pe) {
             pe.printStackTrace();

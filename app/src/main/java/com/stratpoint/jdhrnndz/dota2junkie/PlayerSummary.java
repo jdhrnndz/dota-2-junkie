@@ -1,9 +1,12 @@
 package com.stratpoint.jdhrnndz.dota2junkie;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by johndeniellehernandez on 8/2/16.
  */
 public class PlayerSummary {
+    @SerializedName("response")
     private DotaResponse response;
 
     public DotaResponse getResponse() {
@@ -11,6 +14,7 @@ public class PlayerSummary {
     }
 
     public static class DotaResponse {
+        @SerializedName("players")
         private DotaPlayer[] players;
 
         public DotaPlayer[] getPlayers() {
@@ -19,90 +23,123 @@ public class PlayerSummary {
     }
 
     public static class DotaPlayer {
-        private String steamid;
-        private short communityvisibilitystate;
-        private short profilestate;
-        private String personaname;
-        private long lastlogoff;
-        private String profileurl;
+        @SerializedName("steamid")
+        private String steamId;
+
+        @SerializedName("communityvisibilitystate")
+        private short communityVisibilityState;
+
+        @SerializedName("profilestate")
+        private short profileState;
+
+        @SerializedName("personaname")
+        private String personaName;
+
+        @SerializedName("lastlogoff")
+        private long lastLogOff;
+
+        @SerializedName("profileurl")
+        private String profileUrl;
+
+        @SerializedName("avatar")
         private String avatar;
-        private String avatarmedium;
-        private String avatarfull;
-        private short personastate;
-        private String realname;
-        private String primaryclanid;
-        private long timecreated;
-        private short personastateflags;
-        private String loccountrycode;
-        private String locstatecode;
-        private long loccityid;
 
-        public String getSteamid() {
-            return steamid;
+        @SerializedName("avatarmedium")
+        private String avatarMedium;
+
+        @SerializedName("avatarfull")
+        private String avatarFull;
+
+        @SerializedName("personastate")
+        private short personaState;
+
+        @SerializedName("realname")
+        private String realName;
+
+        @SerializedName("primaryclanid")
+        private String primaryClanId;
+
+        @SerializedName("timecreated")
+        private long timeCreated;
+
+        @SerializedName("personastateflags")
+        private short personaStateFlags;
+
+        @SerializedName("loccountrycode")
+        private String countryCode;
+
+        @SerializedName("locstatecode")
+        private String stateCode;
+
+        @SerializedName("loccityid")
+        private long cityId;
+
+        public String getSteamId() {
+            return steamId;
         }
 
-        public short getCommunityvisibilitystate() {
-            return communityvisibilitystate;
+        public short getCommunityVisibilityState() {
+            return communityVisibilityState;
         }
 
-        public short getProfilestate() {
-            return profilestate;
+        public short getProfileState() {
+            return profileState;
         }
 
-        public String getPersonaname() {
-            return personaname;
+        public String getPersonaName() {
+            return personaName;
         }
 
-        public long getLastlogoff() {
-            return lastlogoff;
+        public long getLastLogOff() {
+            return lastLogOff;
         }
 
-        public String getProfileurl() {
-            return profileurl;
+        public String getProfileUrl() {
+            return profileUrl;
         }
 
         public String getAvatar() {
             return avatar;
         }
 
-        public String getAvatarmedium() {
-            return avatarmedium;
+        public String getAvatarMedium() {
+            return avatarMedium;
         }
 
-        public String getAvatarfull() {
-            return avatarfull;
+        public String getAvatarFull() {
+            return avatarFull;
         }
 
-        public short getPersonastate() {
-            return personastate;
+        public short getPersonaState() {
+            return personaState;
         }
 
-        public String getRealname() {
-            return realname;
+        public String getRealName() {
+            return realName;
         }
 
-        public String getPrimaryclanid() {
-            return primaryclanid;
+        public String getPrimaryClanId() {
+            return primaryClanId;
         }
 
-        public long getTimecreated() {
-            return timecreated;
+        public long getTimeCreated() {
+            return timeCreated;
         }
 
-        public short getPersonastateflags() {
-            return personastateflags;
+        public short getPersonaStateFlags() {
+            return personaStateFlags;
         }
 
-        public String getLoccountrycode() {
-            return loccountrycode;
+        public String getCountryCode() {
+            return countryCode;
         }
 
-        public String getLocstatecode() {
-            return locstatecode;
+        public String getStateCode() {
+            return stateCode;
         }
 
-        public long getLoccityid() {
-            return loccityid;
+        public long getCityId() {
+            return cityId;
         }
     }
 }

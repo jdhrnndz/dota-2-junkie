@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         url.append("?key=");
         url.append(getString(R.string.api_key));
         url.append("&account_id=");
-        url.append(mCurrentPlayer.getSteamid());
+        url.append(mCurrentPlayer.getSteamId());
 
         GsonRequest matchHistoryRequest = new GsonRequest<MatchHistory>(url.toString(), MatchHistory.class, null,
                 new Response.Listener<MatchHistory>() {
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
                         MatchHistory.Match[] matches = response.getResult().getMatches();
 
                         for(int i=0; i<len; i++) {
-                            matchIds.add(matches[i].getMatch_id());
+                            matchIds.add(matches[i].getId());
                         }
 
                         ((MatchesFragment)TabFragment.MATCHES.getFragment()).setMatchIds(matchIds);
