@@ -1,19 +1,27 @@
 package com.stratpoint.jdhrnndz.dota2junkie;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
 
+    RequestQueue mRequestQueue = VolleySingleton.getInstance(this).getRequestQueue();
     private DotaPlayer mCurrentPlayer;
+    private MatchHistory mMatchHistory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         parseUserInfoFromIntent();
         ((ProfileFragment) TabFragment.PROFILE.getFragment()).setCurrentPlayer(mCurrentPlayer);
 
-
+        fetchMatchHistoryFromNetwork();
     }
 
     @Override
@@ -59,5 +67,43 @@ public class MainActivity extends AppCompatActivity {
         PlayerSummary playerSummary = gson.fromJson(userInfoString, PlayerSummary.class);
 
         mCurrentPlayer = playerSummary.getResponse().getPlayers()[0];
+    }
+
+    private void fetchMatchHistoryFromNetwork() {
+        // Builds the url to retrieve match details
+        final StringBuilder url = new StringBuilder();
+        url.append(getString(R.string.get_match_history));
+        url.append("?key=");
+        url.append(getString(R.string.api_key));
+        url.append("&account_id=");
+        url.append(mCurrentPlayer.getSteamid());
+
+        GsonRequest matchHistoryRequest = new GsonRequest<MatchHistory>(url.toString(), MatchHistory.class, null,
+                new Response.Listener<MatchHistory>() {
+                    @Override
+                    public void onResponse(MatchHistory response) {
+                        mMatchHistory = response;
+
+                        ArrayList<Long> matchIds = new ArrayList<Long>();
+                        int len = response.getResult().getMatches().length;
+                        Match[] matches = response.getResult().getMatches();
+
+                        for(int i=0; i<len; i++) {
+                            matchIds.add(matches[i].getMatch_id());
+                        }
+
+                        ((MatchesFragment)TabFragment.MATCHES.getFragment()).setMatchIds(matchIds);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Snackbar mErrorMessage = Snackbar.make(findViewById(R.id.recycler_view_matches), R.string.match_history_error_message, Snackbar.LENGTH_LONG);
+                        mErrorMessage.show();
+                    }
+                }
+        );
+
+        mRequestQueue.add(matchHistoryRequest);
     }
 }

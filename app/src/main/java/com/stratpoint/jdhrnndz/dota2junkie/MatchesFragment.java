@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -20,6 +21,8 @@ public class MatchesFragment extends BaseFragment {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
+    private ArrayList<Long> mMatchIds = new ArrayList<Long>();
+
     public static MatchesFragment newInstance() {
         Bundle args = BaseFragment.initBundle(LAYOUT);
         MatchesFragment fragment = new MatchesFragment();
@@ -31,16 +34,19 @@ public class MatchesFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(mLayout, container, false);
 
-        String[] matchesDataset = new String[] {"1928367", "4958603", "3847596", "1928733", "3847594", "3847593", "3485743", "3423456"};
-
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_matches);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(container.getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new MatchesAdapter(matchesDataset);
+        mAdapter = new MatchesAdapter(mMatchIds);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(ContextCompat.getDrawable(container.getContext(), R.drawable.line_divider)));
 
         return view;
+    }
+
+    public void setMatchIds(ArrayList<Long> matchIds) {
+        mMatchIds.addAll(matchIds);
+        mAdapter.notifyDataSetChanged();
     }
 }
