@@ -1,4 +1,4 @@
-package com.stratpoint.jdhrnndz.dota2junkie;
+package com.stratpoint.jdhrnndz.dota2junkie.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

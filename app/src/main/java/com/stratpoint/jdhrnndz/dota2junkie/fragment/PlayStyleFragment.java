@@ -1,4 +1,4 @@
-package com.stratpoint.jdhrnndz.dota2junkie;
+package com.stratpoint.jdhrnndz.dota2junkie.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -7,15 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.RadarChart;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.data.RadarEntry;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
+import com.stratpoint.jdhrnndz.dota2junkie.R;
 
 import java.util.ArrayList;
 
@@ -28,7 +24,7 @@ public class PlayStyleFragment extends BaseFragment {
     private RadarChart mPlayStyleChart;
 
     public static PlayStyleFragment newInstance() {
-        Bundle args = BaseFragment.initBundle(LAYOUT);
+        Bundle args = initBundle(LAYOUT);
         PlayStyleFragment fragment = new PlayStyleFragment();
         fragment.setArguments(args);
         return fragment;

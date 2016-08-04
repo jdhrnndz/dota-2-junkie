@@ -1,6 +1,10 @@
-package com.stratpoint.jdhrnndz.dota2junkie;
+package com.stratpoint.jdhrnndz.dota2junkie.fragment;
 
 import android.support.v4.app.Fragment;
+
+import com.stratpoint.jdhrnndz.dota2junkie.fragment.MatchesFragment;
+import com.stratpoint.jdhrnndz.dota2junkie.fragment.PlayStyleFragment;
+import com.stratpoint.jdhrnndz.dota2junkie.fragment.ProfileFragment;
 
 /**
  * Created by johndeniellehernandez on 8/3/16.

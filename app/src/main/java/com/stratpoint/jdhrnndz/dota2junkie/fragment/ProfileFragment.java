@@ -1,8 +1,7 @@
-package com.stratpoint.jdhrnndz.dota2junkie;
+package com.stratpoint.jdhrnndz.dota2junkie.fragment;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
@@ -14,15 +13,15 @@ import android.widget.TextView;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.stratpoint.jdhrnndz.dota2junkie.PlayerSummary;
+import com.stratpoint.jdhrnndz.dota2junkie.R;
+import com.stratpoint.jdhrnndz.dota2junkie.network.VolleySingleton;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -42,10 +41,10 @@ public class ProfileFragment extends BaseFragment {
         mUserMemberSince, mUserSteamId, mUserLastLogOff;
     private LineChart mMatchesChart;
 
-    private DotaPlayer mCurrentPlayer;
+    private PlayerSummary.DotaPlayer mCurrentPlayer;
 
     public static ProfileFragment newInstance() {
-        Bundle args = BaseFragment.initBundle(LAYOUT);
+        Bundle args = initBundle(LAYOUT);
         ProfileFragment fragment = new ProfileFragment();
         fragment.setArguments(args);
         return fragment;
@@ -182,7 +181,7 @@ public class ProfileFragment extends BaseFragment {
         rightAxis.setEnabled(false);
     }
 
-    public void setCurrentPlayer(DotaPlayer player) {
+    public void setCurrentPlayer(PlayerSummary.DotaPlayer player) {
         this.mCurrentPlayer = player;
     }
 }
