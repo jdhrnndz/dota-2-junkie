@@ -12,6 +12,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.stratpoint.jdhrnndz.dota2junkie.network.GsonRequest;
+import com.stratpoint.jdhrnndz.dota2junkie.fragment.TabFragment;
+import com.stratpoint.jdhrnndz.dota2junkie.network.VolleySingleton;
+import com.stratpoint.jdhrnndz.dota2junkie.fragment.MatchesFragment;
+import com.stratpoint.jdhrnndz.dota2junkie.fragment.ProfileFragment;
 
 import java.util.ArrayList;
 
@@ -20,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout mTabLayout;
 
     RequestQueue mRequestQueue = VolleySingleton.getInstance(this).getRequestQueue();
-    private DotaPlayer mCurrentPlayer;
+    private PlayerSummary.DotaPlayer mCurrentPlayer;
     private MatchHistory mMatchHistory;
 
     @Override
@@ -43,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
         mTabLayout = (TabLayout) findViewById(R.id.tabs);
         mTabLayout.setupWithViewPager(mViewPager);
 
+        // TODO: Used serialized name in GSON objects (ex. @SerializedName("name") private String name;)
+        // TODO: Move all network requests to ApiManager class
         parseUserInfoFromIntent();
         ((ProfileFragment) TabFragment.PROFILE.getFragment()).setCurrentPlayer(mCurrentPlayer);
 
@@ -86,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
                         ArrayList<Long> matchIds = new ArrayList<Long>();
                         int len = response.getResult().getMatches().length;
-                        Match[] matches = response.getResult().getMatches();
+                        MatchHistory.Match[] matches = response.getResult().getMatches();
 
                         for(int i=0; i<len; i++) {
                             matchIds.add(matches[i].getMatch_id());

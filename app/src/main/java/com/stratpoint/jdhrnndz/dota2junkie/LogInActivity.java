@@ -15,6 +15,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.stratpoint.jdhrnndz.dota2junkie.network.VolleySingleton;
 
 /**
  * Created by johndeniellehernandez on 7/27/16.

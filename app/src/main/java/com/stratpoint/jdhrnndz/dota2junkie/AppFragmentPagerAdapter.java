@@ -5,6 +5,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.stratpoint.jdhrnndz.dota2junkie.fragment.TabFragment;
+
 /**
  * Created by johndeniellehernandez on 7/20/16.
  */
