@@ -13,6 +13,9 @@ import android.view.View;
 import com.android.volley.VolleyError;
 import com.stratpoint.jdhrnndz.dota2junkie.network.ApiManager;
 import com.stratpoint.jdhrnndz.dota2junkie.network.DotaApiResponseListener;
+import com.stratpoint.jdhrnndz.dota2junkie.network.UrlBuilder;
+
+import java.util.HashMap;
 
 /**
  * Created by johndeniellehernandez on 7/27/16.
@@ -49,16 +52,16 @@ public class LogInActivity extends AppCompatActivity implements DotaApiResponseL
             public void onClick(View view) {
                 mLogInDialog.show();
 
-                // Builds the url to retrieve user info
-                // TODO: Create a new class for building url
-                StringBuilder url = new StringBuilder();
-                url.append(getResources().getString(R.string.get_player_summaries));
-                url.append("?key=");
-                url.append(getResources().getString(R.string.api_key));
-                url.append("&steamids=");
-                url.append(((TextInputEditText) findViewById(R.id.user_sign_up_steam_id)).getText());
+                // Build the url's query section
+                HashMap<String, String> args = new HashMap<>();
 
-                ApiManager.fetchUserInfo(url.toString(), LogInActivity.this, getApplicationContext());
+                String steamId = ((TextInputEditText) findViewById(R.id.user_sign_up_steam_id)).getText().toString();
+                args.put("steamids", steamId);
+
+                // Build the url to retrieve user info
+                String url = UrlBuilder.buildUrl(LogInActivity.this, R.string.get_player_summaries, args);
+
+                ApiManager.fetchUserInfo(url, LogInActivity.this, getApplicationContext());
             }
         });
     }
