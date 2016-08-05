@@ -2,7 +2,6 @@ package com.stratpoint.jdhrnndz.dota2junkie.network;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.support.design.widget.TextInputEditText;
 
 import com.stratpoint.jdhrnndz.dota2junkie.R;
 
@@ -23,7 +22,9 @@ public class UrlBuilder {
         url.append(resources.getString(R.string.api_key));
         // Parse args
         for (String key: args.keySet()) {
-            url.append("&" + key + "=");
+            url.append('&');
+            url.append(key);
+            url.append('=');
             url.append(args.get(key));
         }
 
