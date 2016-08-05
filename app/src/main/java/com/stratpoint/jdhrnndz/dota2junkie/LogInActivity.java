@@ -23,7 +23,6 @@ import java.util.HashMap;
 public class LogInActivity extends AppCompatActivity implements DotaApiResponseListener{
     public final static String EXTRA_USER_INFO = "com.stratpoint.jdhrnndz.EXTRA_USER_INFO";
 
-    private AppCompatButton mLogInButton;
     private ProgressDialog mLogInDialog;
     private Snackbar mErrorMessage;
     private Intent mLogInIntent;
@@ -39,7 +38,7 @@ public class LogInActivity extends AppCompatActivity implements DotaApiResponseL
         mLogInDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         mLogInDialog.setCancelable(false);
 
-        mLogInButton = (AppCompatButton) findViewById(R.id.button_log_in);
+        AppCompatButton mLogInButton = (AppCompatButton) findViewById(R.id.button_log_in);
 
         Typeface fontAwesome = Typeface.createFromAsset(getAssets(), "fontAwesome.ttf");
         mLogInButton.setTypeface(fontAwesome);
@@ -72,12 +71,14 @@ public class LogInActivity extends AppCompatActivity implements DotaApiResponseL
         mLogInDialog.dismiss();
     }
 
-    public void onReceiveResponse(int statusCode, String responseString, String action, String cookie) {
+    public void onReceiveStringResponse(int statusCode, String responseString) {
         mLogInDialog.setMessage(getResources().getString(R.string.log_in_response_message));
         // Pass response to the main activity
         mLogInIntent.putExtra(EXTRA_USER_INFO, responseString);
         startActivity(mLogInIntent);
     }
+
+    public void onReceiveMatchHistoryResponse(int statusCode, MatchHistory response) {}
 
     public void onReceiveErrorResponse(int statusCode, VolleyError error) {
         mLogInDialog.dismiss();
