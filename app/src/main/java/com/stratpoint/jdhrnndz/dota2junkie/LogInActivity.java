@@ -61,7 +61,7 @@ public class LogInActivity extends AppCompatActivity implements DotaApiResponseL
                 // Build the url to retrieve user info
                 String url = UrlBuilder.buildUrl(LogInActivity.this, R.string.get_player_summaries, args);
 
-                ApiManager.fetchUserInfo(url, LogInActivity.this, getApplicationContext());
+                ApiManager.fetchUserInfo(getApplicationContext(), url, LogInActivity.this);
             }
         });
     }

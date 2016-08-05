@@ -14,7 +14,7 @@ import com.stratpoint.jdhrnndz.dota2junkie.R;
  * Created by johndeniellehernandez on 8/4/16.
  */
 public class ApiManager {
-    public static void fetchUserInfo(String url, final DotaApiResponseListener responseListener, Context context) {
+    public static void fetchUserInfo(Context context, String url, final DotaApiResponseListener responseListener) {
         RequestQueue queue = VolleySingleton.getInstance(context).getRequestQueue();
 
         // StringRequest is used instead of a GSONRequest like in the docs because the
