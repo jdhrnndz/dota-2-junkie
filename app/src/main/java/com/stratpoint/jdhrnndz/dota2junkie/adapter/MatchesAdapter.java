@@ -1,4 +1,4 @@
-package com.stratpoint.jdhrnndz.dota2junkie;
+package com.stratpoint.jdhrnndz.dota2junkie.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -6,13 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import com.stratpoint.jdhrnndz.dota2junkie.MatchHistory;
+import com.stratpoint.jdhrnndz.dota2junkie.R;
 
 /**
  * Created by johndeniellehernandez on 7/20/16.
  */
 public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHolder> {
-    private ArrayList<Long> mDataset;
+    private MatchHistory.Match[] mDataset;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public View mView;
@@ -23,7 +24,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
         }
     }
 
-    public MatchesAdapter(ArrayList matches) {
+    public MatchesAdapter(MatchHistory.Match[] matches) {
         mDataset = matches;
     }
 
@@ -36,12 +37,14 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        ((TextView) holder.mView.findViewById(R.id.match_id)).setText(String.valueOf(mDataset.get(position)));
+        MatchHistory.Match item = mDataset[position];
+        ((TextView) holder.mView.findViewById(R.id.match_id)).setText(String.valueOf(item.getId()));
+        ((TextView) holder.mView.findViewById(R.id.game_mode)).setText(item.getGameMode());
     }
 
     @Override
     public int getItemCount() {
         if (mDataset == null) return 0;
-        return mDataset.size();
+        return mDataset.length;
     }
 }

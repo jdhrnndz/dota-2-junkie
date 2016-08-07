@@ -1,4 +1,4 @@
-package com.stratpoint.jdhrnndz.dota2junkie;
+package com.stratpoint.jdhrnndz.dota2junkie.adapter;
 
 import android.content.Context;
 import android.graphics.Canvas;

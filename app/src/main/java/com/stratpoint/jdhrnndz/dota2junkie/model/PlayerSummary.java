@@ -1,4 +1,4 @@
-package com.stratpoint.jdhrnndz.dota2junkie;
+package com.stratpoint.jdhrnndz.dota2junkie.model;
 
 import com.google.gson.annotations.SerializedName;
 

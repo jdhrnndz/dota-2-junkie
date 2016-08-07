@@ -1,9 +1,8 @@
-package com.stratpoint.jdhrnndz.dota2junkie;
+package com.stratpoint.jdhrnndz.dota2junkie.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
-import android.support.design.widget.TextInputEditText;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -11,6 +10,11 @@ import android.support.v7.widget.Toolbar;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.stratpoint.jdhrnndz.dota2junkie.AppFragmentPagerAdapter;
+import com.stratpoint.jdhrnndz.dota2junkie.MatchHistory;
+import com.stratpoint.jdhrnndz.dota2junkie.PlayerSummary;
+import com.stratpoint.jdhrnndz.dota2junkie.R;
+import com.stratpoint.jdhrnndz.dota2junkie.fragment.MatchesFragment;
 import com.stratpoint.jdhrnndz.dota2junkie.fragment.ProfileFragment;
 import com.stratpoint.jdhrnndz.dota2junkie.fragment.TabFragment;
 import com.stratpoint.jdhrnndz.dota2junkie.network.ApiManager;
@@ -74,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
         HashMap<String, String> args = new HashMap<>();
 
         args.put("account_id", mCurrentPlayer.getSteamId());
+        args.put("matches_requested", "1");
 
         // Build the url to retrieve match details
         String url = UrlBuilder.buildUrl(MainActivity.this, R.string.get_match_history, args);
@@ -81,10 +86,27 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
         ApiManager.fetchMatchHistory(getApplicationContext(), url, this);
     }
 
-    public void onReceiveStringResponse(int statusCode, String response) {}
+    public void onReceiveResponse(int statusCode, Object response, int type) {
+        switch (type) {
+            case ApiManager.MATCH_HISTORY_RESPONSE_TYPE:
+                mMatchHistory = (MatchHistory) response;
+                MatchHistory.Match[] matches = mMatchHistory.getResult().getMatches();
+                int len = matches.length;
 
-    public void onReceiveMatchHistoryResponse(int statusCode, MatchHistory response) {
-        mMatchHistory = response;
+                // Build the url's query section
+                HashMap<String, String> args = new HashMap<>();
+
+                for(int i=0; i<len; i++) {
+                    args.put("match_id", String.valueOf(matches[i].getId()));
+                    String url = UrlBuilder.buildUrl(getApplicationContext(), R.string.get_match_details, args);
+
+                    ApiManager.fetchMatchDetails(getApplicationContext(), url, MainActivity.this);
+                }
+                break;
+            case ApiManager.MATCH_DETAILS_RESPONSE_TYPE:
+                ((MatchesFragment) TabFragment.MATCHES.getFragment()).setMatches(((MatchHistory)response).getResult().getMatches());
+                break;
+        }
     }
 
     public void onReceiveErrorResponse(int statusCode, VolleyError error) {

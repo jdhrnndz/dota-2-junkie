@@ -1,4 +1,4 @@
-package com.stratpoint.jdhrnndz.dota2junkie;
+package com.stratpoint.jdhrnndz.dota2junkie.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -11,6 +11,7 @@ import android.support.v7.widget.AppCompatButton;
 import android.view.View;
 
 import com.android.volley.VolleyError;
+import com.stratpoint.jdhrnndz.dota2junkie.R;
 import com.stratpoint.jdhrnndz.dota2junkie.network.ApiManager;
 import com.stratpoint.jdhrnndz.dota2junkie.network.DotaApiResponseListener;
 import com.stratpoint.jdhrnndz.dota2junkie.network.UrlBuilder;
@@ -71,14 +72,12 @@ public class LogInActivity extends AppCompatActivity implements DotaApiResponseL
         mLogInDialog.dismiss();
     }
 
-    public void onReceiveStringResponse(int statusCode, String responseString) {
+    public void onReceiveResponse(int statusCode, Object responseString, int type) {
         mLogInDialog.setMessage(getResources().getString(R.string.log_in_response_message));
         // Pass response to the main activity
-        mLogInIntent.putExtra(EXTRA_USER_INFO, responseString);
+        mLogInIntent.putExtra(EXTRA_USER_INFO, (String) responseString);
         startActivity(mLogInIntent);
     }
-
-    public void onReceiveMatchHistoryResponse(int statusCode, MatchHistory response) {}
 
     public void onReceiveErrorResponse(int statusCode, VolleyError error) {
         mLogInDialog.dismiss();
