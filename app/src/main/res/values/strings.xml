@@ -5,8 +5,8 @@
     <!-- LogInActivity -->
     <string name="log_in_dialog_title">Log In</string>
     <string name="hint_steam_id">Steam ID 64</string>
-    <string name="log_in_dialog_message">Retrieving user information$#8230;</string>
-    <string name="log_in_response_message">Loading$#8230;</string>
+    <string name="log_in_dialog_message">Retrieving user information&#8230;</string>
+    <string name="log_in_response_message">Loading&#8230;</string>
     <string name="log_in_error_message">There is a problem retrieving user information.</string>
     <string name="dota_logo_description">Dota 2 Vector Logo</string>
     <string name="test_steam_id_64">76561198060797038</string>
