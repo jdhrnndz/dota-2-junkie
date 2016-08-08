@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="game_modes">
+        <item>None</item>
+        <item>All Pick</item>
+        <item>Captain\'s Mode</item>
+        <item>Random Draft</item>
+        <item>Single Draft</item>
+        <item>All Random</item>
+        <item>Intro</item>
+        <item>Diretide</item>
+        <item>Reverse Captain\'s Mode</item>
+        <item>The Greeviling</item>
+        <item>Tutorial</item>
+        <item>Mid Only</item>
+        <item>Least Played</item>
+        <item>New Player Pool</item>
+        <item>Compendium Matchmaking</item>
+        <item>Co-op vs Bots</item>
+        <item>Captain\'s Draft</item>
+        <item>&#8259;</item>
+        <item>Ability Draft</item>
+        <item>&#8259;</item>
+        <item>All Random Deathmatch</item>
+        <item>1v1 Mid Only</item>
+        <item>Ranked Matchmaking</item>
+    </string-array>
+</resources>
