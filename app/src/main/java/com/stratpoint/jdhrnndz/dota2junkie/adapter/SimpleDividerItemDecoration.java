@@ -1,14 +1,14 @@
 package com.stratpoint.jdhrnndz.dota2junkie.adapter;
 
-import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 /**
- * Created by johndeniellehernandez on 7/21/16.
+ * Author: John Denielle F. Hernandez
+ * Date: 7/21/16.
+ * Description:
  */
 public class SimpleDividerItemDecoration extends RecyclerView.ItemDecoration {
     private Drawable mDivider;
