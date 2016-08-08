@@ -10,7 +10,10 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
 /**
- * Created by johndeniellehernandez on 8/1/16.
+ * Author: John Denielle F. Hernandez
+ * Date: 8/1/16
+ * Description: Singleton class that will provide access to volley's instance, request queue, and
+ * image loader anywhere in the code. Copied from the google webpage for volley.
  */
 public class VolleySingleton {
     private static VolleySingleton mInstance;

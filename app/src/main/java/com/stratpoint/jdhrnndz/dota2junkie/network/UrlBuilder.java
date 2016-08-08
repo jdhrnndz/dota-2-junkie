@@ -8,7 +8,9 @@ import com.stratpoint.jdhrnndz.dota2junkie.R;
 import java.util.HashMap;
 
 /**
- * Created by johndeniellehernandez on 8/5/16.
+ * Author: John Denielle F. Hernandez
+ * Date: 8/5/16
+ * Description: Utility class for building request urls
  */
 public class UrlBuilder {
     public static String buildUrl(Context context, int endpoint, HashMap<String, String> args) {
