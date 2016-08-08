@@ -21,8 +21,6 @@ public class ApiManager {
     public static final int MATCH_DETAILS_RESPONSE_TYPE = 3;
 
     public static void fetchUserInfo(Context context, String url, final DotaApiResponseListener responseListener) {
-        RequestQueue queue = VolleySingleton.getInstance(context).getRequestQueue();
-
         // StringRequest is used instead of a GSONRequest like in the docs because the
         // result will be passed to another activity
         StringRequest playerSummaryRequest = new StringRequest(Request.Method.GET, url,
@@ -40,12 +38,10 @@ public class ApiManager {
         );
 
         // Add the request to the RequestQueue.
-        queue.add(playerSummaryRequest);
+        VolleySingleton.getInstance(context).addToRequestQueue(playerSummaryRequest);
     }
 
     public static void fetchMatchHistory(Context context, String url, final DotaApiResponseListener responseListener) {
-        RequestQueue queue = VolleySingleton.getInstance(context).getRequestQueue();
-
         GsonRequest<MatchHistory> matchHistoryRequest = new GsonRequest<>(url, MatchHistory.class, null,
                 new Response.Listener<MatchHistory>() {
                     @Override
@@ -61,12 +57,10 @@ public class ApiManager {
                 }
         );
 
-        queue.add(matchHistoryRequest);
+        VolleySingleton.getInstance(context).addToRequestQueue(matchHistoryRequest);
     }
 
     public static void fetchMatchDetails(Context context, String url, final DotaApiResponseListener responseListener) {
-        RequestQueue queue = VolleySingleton.getInstance(context).getRequestQueue();
-
         GsonRequest matchDetailsRequest = new GsonRequest<>(url, MatchDetails.class, null,
                 new Response.Listener<MatchDetails>() {
                     @Override
@@ -82,6 +76,6 @@ public class ApiManager {
                 }
         );
 
-        queue.add(matchDetailsRequest);
+        VolleySingleton.getInstance(context).addToRequestQueue(matchDetailsRequest);
     }
 }
