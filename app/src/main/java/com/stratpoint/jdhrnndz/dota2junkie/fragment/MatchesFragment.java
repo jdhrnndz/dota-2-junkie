@@ -16,7 +16,10 @@ import com.stratpoint.jdhrnndz.dota2junkie.model.MatchHistory;
 import java.util.ArrayList;
 
 /**
- * Created by johndeniellehernandez on 7/21/16.
+ * Author: John Denielle F. Hernandez
+ * Date: 7/21/16
+ * Description: A recycler view whose adapter is updated in the main activity whenever a match
+ * detail response arrives. Applies a custom divider.
  */
 public class MatchesFragment extends BaseFragment {
     private final static int LAYOUT = R.layout.fragment_matches;
@@ -38,18 +41,33 @@ public class MatchesFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(mLayout, container, false);
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_matches);
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(container.getContext());
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new MatchesAdapter(container.getContext(), mMatches);
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(ContextCompat.getDrawable(container.getContext(), R.drawable.line_divider)));
+        // Map views from content view as the activity's attributes
+        assignViews(view);
+        // Assign values to views
+        populateViews();
 
         return view;
     }
 
+    private void assignViews(View view) {
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_matches);
+        mLayoutManager = new LinearLayoutManager(view.getContext());
+        mAdapter = new MatchesAdapter(view.getContext(), mMatches);
+        mRecyclerView.addItemDecoration(
+                new SimpleDividerItemDecoration(
+                        ContextCompat.getDrawable(view.getContext(), R.drawable.line_divider)
+                )
+        );
+    }
+
+    private void populateViews() {
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
     public void updateMatches(MatchHistory.Match match) {
+        // Called by the main activity every time a match detail response arrives
         mMatches.add(match);
         mAdapter.notifyDataSetChanged();
     }
