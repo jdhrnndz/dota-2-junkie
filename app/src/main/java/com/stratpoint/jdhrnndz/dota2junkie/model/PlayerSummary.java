@@ -3,7 +3,9 @@ package com.stratpoint.jdhrnndz.dota2junkie.model;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by johndeniellehernandez on 8/2/16.
+ * Author: John Denielle F. Hernandez
+ * Date: 8/2/16.
+ * Description: The class used in MainActivity to convert user data from intent into a Java Object.
  */
 public class PlayerSummary {
     @SerializedName("response")
