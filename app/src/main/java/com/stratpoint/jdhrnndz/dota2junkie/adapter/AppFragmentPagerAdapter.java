@@ -1,6 +1,5 @@
 package com.stratpoint.jdhrnndz.dota2junkie.adapter;
 
-import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -8,12 +7,14 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.stratpoint.jdhrnndz.dota2junkie.fragment.TabFragment;
 
 /**
- * Created by johndeniellehernandez on 7/20/16.
+ * Author: John Denielle F. Hernandez
+ * Date: 7/20/16.
+ * Description: Adapter for the tablayout view pager. Utilizes TabFragment enum to access fragments.
  */
 public class AppFragmentPagerAdapter extends FragmentPagerAdapter {
     final int PAGE_COUNT = 3;
 
-    public AppFragmentPagerAdapter(FragmentManager fm, Context context) {
+    public AppFragmentPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 

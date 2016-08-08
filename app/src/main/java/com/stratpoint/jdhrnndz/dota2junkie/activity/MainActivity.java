@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
 
     private void populateViews() {
         setSupportActionBar(mToolbar);
-        mViewPager.setAdapter(new AppFragmentPagerAdapter(getSupportFragmentManager(), MainActivity.this));
+        mViewPager.setAdapter(new AppFragmentPagerAdapter(getSupportFragmentManager()));
         mTabLayout.setupWithViewPager(mViewPager);
     }
 
