@@ -2,10 +2,11 @@ package com.stratpoint.jdhrnndz.dota2junkie.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import java.util.ArrayList;
 
 /**
- * Created by johndeniellehernandez on 7/20/16.
+ * Author: John Denielle F. Hernandez
+ * Date: 7/20/16.
+ * Description: Base fragment for the fragments in the tablayout view pager
  */
 public class BaseFragment extends Fragment {
     public static final String ARG_LAYOUT = "ARG_LAYOUT";
