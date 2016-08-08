@@ -19,7 +19,10 @@ import com.stratpoint.jdhrnndz.dota2junkie.network.UrlBuilder;
 import java.util.HashMap;
 
 /**
- * Created by johndeniellehernandez on 7/27/16.
+ * Author: John Denielle F. Hernandez
+ * Date: 7/21/16
+ * Description: This class uses the activity_sign_in layout to create the view for the sign activity
+ * Inside the class is where the data are linked to the respective views.
  */
 public class LogInActivity extends AppCompatActivity implements DotaApiResponseListener{
     public final static String EXTRA_USER_INFO = "com.stratpoint.jdhrnndz.EXTRA_USER_INFO";
@@ -27,43 +30,17 @@ public class LogInActivity extends AppCompatActivity implements DotaApiResponseL
     private ProgressDialog mLogInDialog;
     private Snackbar mErrorMessage;
     private Intent mLogInIntent;
+    private AppCompatButton mLogInButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
-        mLogInDialog = new ProgressDialog(this);
-        mLogInDialog.setTitle(R.string.log_in_dialog_title);
-        mLogInDialog.setMessage(getString(R.string.log_in_dialog_message));
-        mLogInDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        mLogInDialog.setCancelable(false);
-
-        AppCompatButton mLogInButton = (AppCompatButton) findViewById(R.id.button_log_in);
-
-        Typeface fontAwesome = Typeface.createFromAsset(getAssets(), "fontAwesome.ttf");
-        mLogInButton.setTypeface(fontAwesome);
-
-        mErrorMessage = Snackbar.make(findViewById(R.id.sign_in_layout), R.string.log_in_error_message, Snackbar.LENGTH_LONG);
-        mLogInIntent = new Intent(this, MainActivity.class);
-
-        mLogInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mLogInDialog.show();
-
-                // Build the url's query section
-                HashMap<String, String> args = new HashMap<>();
-
-                String steamId = ((TextInputEditText) findViewById(R.id.user_sign_up_steam_id)).getText().toString();
-                args.put("steamids", steamId);
-
-                // Build the url to retrieve user info
-                String url = UrlBuilder.buildUrl(LogInActivity.this, R.string.get_player_summaries, args);
-
-                ApiManager.fetchUserInfo(getApplicationContext(), url, LogInActivity.this);
-            }
-        });
+        // Map views from content view as the activity's attributes
+        assignViews();
+        // Assign values to views
+        populateViews();
     }
 
     @Override
@@ -82,5 +59,44 @@ public class LogInActivity extends AppCompatActivity implements DotaApiResponseL
     public void onReceiveErrorResponse(int statusCode, VolleyError error) {
         mLogInDialog.dismiss();
         mErrorMessage.show();
+    }
+
+    private void assignViews() {
+        mLogInDialog = new ProgressDialog(this);
+        mLogInButton = (AppCompatButton) findViewById(R.id.button_log_in);
+
+        mErrorMessage =
+                Snackbar.make(findViewById(R.id.sign_in_layout),
+                        R.string.log_in_error_message,
+                        Snackbar.LENGTH_LONG);
+        mLogInIntent = new Intent(this, MainActivity.class);
+    }
+
+    private void populateViews() {
+        mLogInDialog.setTitle(R.string.log_in_dialog_title);
+        mLogInDialog.setMessage(getString(R.string.log_in_dialog_message));
+        mLogInDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mLogInDialog.setCancelable(false);
+
+        Typeface fontAwesome = Typeface.createFromAsset(getAssets(), "fontAwesome.ttf");
+        mLogInButton.setTypeface(fontAwesome);
+
+        mLogInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mLogInDialog.show();
+
+                // Build the url's query section
+                HashMap<String, String> args = new HashMap<>();
+
+                String steamId = ((TextInputEditText) findViewById(R.id.user_sign_up_steam_id)).getText().toString();
+                args.put("steamids", steamId);
+
+                // Build the url to retrieve user info
+                String url = UrlBuilder.buildUrl(LogInActivity.this, R.string.get_player_summaries, args);
+
+                ApiManager.fetchUserInfo(getApplicationContext(), url, LogInActivity.this);
+            }
+        });
     }
 }
