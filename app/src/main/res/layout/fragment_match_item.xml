@@ -29,7 +29,7 @@
         android:layout_toRightOf="@id/player_deaths"
         android:layout_marginTop="8dp"
         android:textSize="24sp"/>
-    <ImageView
+    <com.android.volley.toolbox.NetworkImageView
         android:id="@+id/item_slot_0"
         android:layout_width="21dp"
         android:layout_height="16dp"
@@ -38,7 +38,7 @@
         android:layout_toLeftOf="@+id/item_slot_1"
         android:layout_alignBottom="@+id/hero_image"
         android:layout_marginRight="8dp"/>
-    <ImageView
+    <com.android.volley.toolbox.NetworkImageView
         android:id="@+id/item_slot_1"
         android:layout_width="21dp"
         android:layout_height="16dp"
@@ -47,7 +47,7 @@
         android:layout_toLeftOf="@+id/item_slot_2"
         android:layout_alignBottom="@+id/hero_image"
         android:layout_marginRight="8dp"/>
-    <ImageView
+    <com.android.volley.toolbox.NetworkImageView
         android:id="@+id/item_slot_2"
         android:layout_width="21dp"
         android:layout_height="16dp"
@@ -56,7 +56,7 @@
         android:layout_toLeftOf="@+id/item_slot_3"
         android:layout_alignBottom="@+id/hero_image"
         android:layout_marginRight="8dp"/>
-    <ImageView
+    <com.android.volley.toolbox.NetworkImageView
         android:id="@+id/item_slot_3"
         android:layout_width="21dp"
         android:layout_height="16dp"
@@ -64,7 +64,7 @@
         android:layout_above="@+id/match_id"
         android:layout_toLeftOf="@+id/item_slot_4"
         android:layout_alignBottom="@+id/hero_image" android:layout_marginRight="8dp"/>
-    <ImageView
+    <com.android.volley.toolbox.NetworkImageView
         android:id="@+id/item_slot_4"
         android:layout_width="21dp"
         android:layout_height="16dp"
@@ -72,7 +72,7 @@
         android:layout_above="@+id/match_id"
         android:layout_toLeftOf="@+id/item_slot_5"
         android:layout_alignBottom="@+id/hero_image" android:layout_marginRight="8dp"/>
-    <ImageView
+    <com.android.volley.toolbox.NetworkImageView
         android:id="@+id/item_slot_5"
         android:layout_width="21dp"
         android:layout_height="16dp"
@@ -80,7 +80,7 @@
         android:layout_above="@+id/match_id"
         android:layout_toLeftOf="@+id/hero_image"
         android:layout_alignBottom="@+id/hero_image" android:layout_marginRight="8dp"/>
-    <ImageView
+    <com.android.volley.toolbox.NetworkImageView
         android:id="@+id/hero_image"
         android:layout_width="150dip"
         android:layout_height="80dip"
