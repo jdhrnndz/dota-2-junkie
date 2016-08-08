@@ -10,9 +10,10 @@ import android.support.v7.widget.Toolbar;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.stratpoint.jdhrnndz.dota2junkie.AppFragmentPagerAdapter;
-import com.stratpoint.jdhrnndz.dota2junkie.MatchHistory;
-import com.stratpoint.jdhrnndz.dota2junkie.PlayerSummary;
+import com.stratpoint.jdhrnndz.dota2junkie.adapter.AppFragmentPagerAdapter;
+import com.stratpoint.jdhrnndz.dota2junkie.model.MatchDetails;
+import com.stratpoint.jdhrnndz.dota2junkie.model.MatchHistory;
+import com.stratpoint.jdhrnndz.dota2junkie.model.PlayerSummary;
 import com.stratpoint.jdhrnndz.dota2junkie.R;
 import com.stratpoint.jdhrnndz.dota2junkie.fragment.MatchesFragment;
 import com.stratpoint.jdhrnndz.dota2junkie.fragment.ProfileFragment;
@@ -78,7 +79,6 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
         HashMap<String, String> args = new HashMap<>();
 
         args.put("account_id", mCurrentPlayer.getSteamId());
-        args.put("matches_requested", "1");
 
         // Build the url to retrieve match details
         String url = UrlBuilder.buildUrl(MainActivity.this, R.string.get_match_history, args);
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
                 }
                 break;
             case ApiManager.MATCH_DETAILS_RESPONSE_TYPE:
-                ((MatchesFragment) TabFragment.MATCHES.getFragment()).setMatches(((MatchHistory)response).getResult().getMatches());
+                ((MatchesFragment) TabFragment.MATCHES.getFragment()).updateMatches(((MatchHistory.Match) response));
                 break;
         }
     }
