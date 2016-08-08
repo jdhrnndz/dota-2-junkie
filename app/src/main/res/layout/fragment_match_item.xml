@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:text="10 / "
+        android:layout_alignParentStart="true"
         android:layout_marginTop="8dp"
         android:textSize="24sp"/>
     <TextView
@@ -17,16 +17,16 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@id/player_kills"
-        android:text="2 / "
+        android:layout_toEndOf="@id/player_kills"
         android:layout_marginTop="8dp"
         android:textSize="24sp"/>
     <TextView
         android:id="@+id/player_assists"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="5"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@id/player_deaths"
+        android:layout_toEndOf="@id/player_deaths"
         android:layout_marginTop="8dp"
         android:textSize="24sp"/>
     <com.android.volley.toolbox.NetworkImageView
@@ -36,8 +36,10 @@
         android:background="@color/primary_dark"
         android:layout_above="@+id/match_id"
         android:layout_toLeftOf="@+id/item_slot_1"
+        android:layout_toStartOf="@+id/item_slot_1"
         android:layout_alignBottom="@+id/hero_image"
-        android:layout_marginRight="8dp"/>
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"/>
     <com.android.volley.toolbox.NetworkImageView
         android:id="@+id/item_slot_1"
         android:layout_width="21dp"
@@ -45,8 +47,10 @@
         android:background="@color/primary_dark"
         android:layout_above="@+id/match_id"
         android:layout_toLeftOf="@+id/item_slot_2"
+        android:layout_toStartOf="@+id/item_slot_2"
         android:layout_alignBottom="@+id/hero_image"
-        android:layout_marginRight="8dp"/>
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"/>
     <com.android.volley.toolbox.NetworkImageView
         android:id="@+id/item_slot_2"
         android:layout_width="21dp"
@@ -54,8 +58,10 @@
         android:background="@color/primary_dark"
         android:layout_above="@+id/match_id"
         android:layout_toLeftOf="@+id/item_slot_3"
+        android:layout_toStartOf="@+id/item_slot_3"
         android:layout_alignBottom="@+id/hero_image"
-        android:layout_marginRight="8dp"/>
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"/>
     <com.android.volley.toolbox.NetworkImageView
         android:id="@+id/item_slot_3"
         android:layout_width="21dp"
@@ -63,7 +69,10 @@
         android:background="@color/primary_dark"
         android:layout_above="@+id/match_id"
         android:layout_toLeftOf="@+id/item_slot_4"
-        android:layout_alignBottom="@+id/hero_image" android:layout_marginRight="8dp"/>
+        android:layout_toStartOf="@+id/item_slot_4"
+        android:layout_alignBottom="@+id/hero_image"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"/>
     <com.android.volley.toolbox.NetworkImageView
         android:id="@+id/item_slot_4"
         android:layout_width="21dp"
@@ -71,7 +80,10 @@
         android:background="@color/primary_dark"
         android:layout_above="@+id/match_id"
         android:layout_toLeftOf="@+id/item_slot_5"
-        android:layout_alignBottom="@+id/hero_image" android:layout_marginRight="8dp"/>
+        android:layout_toStartOf="@+id/item_slot_5"
+        android:layout_alignBottom="@+id/hero_image"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"/>
     <com.android.volley.toolbox.NetworkImageView
         android:id="@+id/item_slot_5"
         android:layout_width="21dp"
@@ -79,7 +91,10 @@
         android:background="@color/primary_dark"
         android:layout_above="@+id/match_id"
         android:layout_toLeftOf="@+id/hero_image"
-        android:layout_alignBottom="@+id/hero_image" android:layout_marginRight="8dp"/>
+        android:layout_toStartOf="@+id/hero_image"
+        android:layout_alignBottom="@+id/hero_image"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"/>
     <com.android.volley.toolbox.NetworkImageView
         android:id="@+id/hero_image"
         android:layout_width="150dip"
@@ -87,20 +102,20 @@
         android:background="@color/accent_dark"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_marginBottom="8dip"/>
     <TextView
         android:id="@+id/match_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="192837475"
         android:layout_below="@id/hero_image"
+        android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:textSize="14sp"/>
     <TextView
         android:id="@+id/game_mode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ALL PICK"
         android:layout_below="@id/hero_image"
         android:layout_centerHorizontal="true"
         android:textSize="14sp" />
@@ -108,8 +123,8 @@
         android:id="@+id/game_duration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="45:02"
         android:layout_below="@id/hero_image"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:textSize="14sp" />
 </RelativeLayout>
