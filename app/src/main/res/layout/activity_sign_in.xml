@@ -11,7 +11,8 @@
         app:srcCompat="@drawable/dota2logo"
         android:layout_above="@+id/user_log_in_text_input_layout"
         android:scaleType="centerCrop"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:contentDescription="@string/dota_logo_description"/>
     <TextView
         android:id="@+id/app_title"
         android:layout_width="wrap_content"
@@ -35,8 +36,8 @@
             android:hint="@string/hint_steam_id"
             android:layout_margin="32dp"
             android:maxLength="17"
-            android:textSize="24dp"
-            android:text="76561198060797038"/>
+            android:textSize="24sp"
+            android:text="@string/test_steam_id_64"/>
     </android.support.design.widget.TextInputLayout>
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/button_log_in"
@@ -45,7 +46,7 @@
         android:layout_below="@id/user_log_in_text_input_layout"
         android:layout_centerHorizontal="true"
         android:text="@string/check"
-        android:textSize="24dp"
+        android:textSize="24sp"
         android:textColor="@color/md_white_1000"
         android:background="@drawable/icon_ring_border_white" />
 </RelativeLayout>
