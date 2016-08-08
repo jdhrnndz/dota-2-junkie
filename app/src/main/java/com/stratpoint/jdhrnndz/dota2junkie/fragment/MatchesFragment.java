@@ -8,9 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.stratpoint.jdhrnndz.dota2junkie.MatchesAdapter;
 import com.stratpoint.jdhrnndz.dota2junkie.R;
-import com.stratpoint.jdhrnndz.dota2junkie.SimpleDividerItemDecoration;
+import com.stratpoint.jdhrnndz.dota2junkie.adapter.MatchesAdapter;
+import com.stratpoint.jdhrnndz.dota2junkie.adapter.SimpleDividerItemDecoration;
+import com.stratpoint.jdhrnndz.dota2junkie.model.MatchHistory;
 
 import java.util.ArrayList;
 
@@ -24,7 +25,7 @@ public class MatchesFragment extends BaseFragment {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    private ArrayList<Long> mMatchIds = new ArrayList<Long>();
+    private ArrayList<MatchHistory.Match> mMatches = new ArrayList<>();
 
     public static MatchesFragment newInstance() {
         Bundle args = BaseFragment.initBundle(LAYOUT);
@@ -41,15 +42,15 @@ public class MatchesFragment extends BaseFragment {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(container.getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new MatchesAdapter(mMatchIds);
+        mAdapter = new MatchesAdapter(container.getContext(), mMatches);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(ContextCompat.getDrawable(container.getContext(), R.drawable.line_divider)));
 
         return view;
     }
 
-    public void setMatchIds(ArrayList<Long> matchIds) {
-        mMatchIds.addAll(matchIds);
+    public void updateMatches(MatchHistory.Match match) {
+        mMatches.add(match);
         mAdapter.notifyDataSetChanged();
     }
 }
