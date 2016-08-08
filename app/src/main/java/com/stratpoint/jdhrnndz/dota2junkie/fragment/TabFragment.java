@@ -2,12 +2,10 @@ package com.stratpoint.jdhrnndz.dota2junkie.fragment;
 
 import android.support.v4.app.Fragment;
 
-import com.stratpoint.jdhrnndz.dota2junkie.fragment.MatchesFragment;
-import com.stratpoint.jdhrnndz.dota2junkie.fragment.PlayStyleFragment;
-import com.stratpoint.jdhrnndz.dota2junkie.fragment.ProfileFragment;
-
 /**
- * Created by johndeniellehernandez on 8/3/16.
+ * Author: John Denielle F. Hernandez
+ * Date: 8/3/16.
+ * Description: Enums used to store and provide access to fragments.
  */
 public enum TabFragment {
     PROFILE ("Profile", ProfileFragment.newInstance()),
