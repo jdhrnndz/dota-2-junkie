@@ -11,7 +11,9 @@ import com.stratpoint.jdhrnndz.dota2junkie.model.MatchDetails;
 import com.stratpoint.jdhrnndz.dota2junkie.model.MatchHistory;
 
 /**
- * Created by johndeniellehernandez on 8/4/16.
+ * Author: John Denielle F. Hernandez
+ * Date: 8/4/16
+ * Description:
  */
 public class ApiManager {
     public static final int STRING_RESPONSE_TYPE = 9;
@@ -75,7 +77,7 @@ public class ApiManager {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // TODO: implement onErrorResponse
+                        responseListener.onReceiveErrorResponse(400, error);
                     }
                 }
         );
