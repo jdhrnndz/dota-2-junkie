@@ -24,33 +24,36 @@ import com.stratpoint.jdhrnndz.dota2junkie.network.UrlBuilder;
 
 import java.util.HashMap;
 
+/**
+ * Author: John Denielle F. Hernandez
+ * Date: 8/8/16
+ * Description: This class uses the activity_main layout to create the view for the main activity.
+ * Inside the class is where the data are linked to the respective views.
+ * It also implements DotaApiResponseListener to handle the processing of the requests to the dota
+ * api and distribute the proper data among its fragments.
+ */
 public class MainActivity extends AppCompatActivity implements DotaApiResponseListener{
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
+    private Toolbar mToolbar;
 
     private PlayerSummary.DotaPlayer mCurrentPlayer;
     private MatchHistory mMatchHistory;
+    private Snackbar mErrorMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // TODO: Set "Steam ID" label as the center of the user info grid layout
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        // TODO: Fix action bar scroll behavior to be ignored by user profile and play style tabs
-
-        mViewPager = (ViewPager) findViewById(R.id.viewpager);
-        mViewPager.setAdapter(new AppFragmentPagerAdapter(getSupportFragmentManager(), MainActivity.this));
-
-        mTabLayout = (TabLayout) findViewById(R.id.tabs);
-        mTabLayout.setupWithViewPager(mViewPager);
-
+        // Map views from content view as the activity's attributes
+        assignViews();
+        // Assign values to views
+        populateViews();
+        // Process data from sign in activity passed via intent
         parseUserInfoFromIntent();
         ((ProfileFragment) TabFragment.PROFILE.getFragment()).setCurrentPlayer(mCurrentPlayer);
-
+        // Gets the list of matches with only the basic match info, requests for details afterwards
         fetchMatchHistoryFromNetwork();
     }
 
@@ -62,6 +65,22 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
         } else {
           mViewPager.setCurrentItem(currentItem - 1);
         }
+    }
+
+    private void assignViews() {
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mViewPager = (ViewPager) findViewById(R.id.viewpager);
+        mTabLayout = (TabLayout) findViewById(R.id.tabs);
+        mErrorMessage =
+                Snackbar.make(findViewById(R.id.recycler_view_matches),
+                        R.string.match_history_error_message,
+                        Snackbar.LENGTH_LONG);
+    }
+
+    private void populateViews() {
+        setSupportActionBar(mToolbar);
+        mViewPager.setAdapter(new AppFragmentPagerAdapter(getSupportFragmentManager(), MainActivity.this));
+        mTabLayout.setupWithViewPager(mViewPager);
     }
 
     private void parseUserInfoFromIntent() {
@@ -87,30 +106,33 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
     }
 
     public void onReceiveResponse(int statusCode, Object response, int type) {
+        // Generic receive response method, identifies the type of response by the argument from
+        // the ApiManager class
         switch (type) {
             case ApiManager.MATCH_HISTORY_RESPONSE_TYPE:
                 mMatchHistory = (MatchHistory) response;
                 MatchHistory.Match[] matches = mMatchHistory.getResult().getMatches();
-                int len = matches.length;
 
                 // Build the url's query section
                 HashMap<String, String> args = new HashMap<>();
 
-                for(int i=0; i<len; i++) {
-                    args.put("match_id", String.valueOf(matches[i].getId()));
+                // Queues all the request for match details using fetched match IDs
+                for (MatchHistory.Match match : matches) {
+                    args.put("match_id", String.valueOf(match.getId()));
                     String url = UrlBuilder.buildUrl(getApplicationContext(), R.string.get_match_details, args);
 
                     ApiManager.fetchMatchDetails(getApplicationContext(), url, MainActivity.this);
                 }
                 break;
             case ApiManager.MATCH_DETAILS_RESPONSE_TYPE:
+                // Updates the matches in the match fragment everytime a response for match details
+                // arrives
                 ((MatchesFragment) TabFragment.MATCHES.getFragment()).updateMatches(((MatchHistory.Match) response));
                 break;
         }
     }
 
     public void onReceiveErrorResponse(int statusCode, VolleyError error) {
-        Snackbar mErrorMessage = Snackbar.make(findViewById(R.id.recycler_view_matches), R.string.match_history_error_message, Snackbar.LENGTH_LONG);
         mErrorMessage.show();
     }
 }
