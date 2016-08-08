@@ -71,10 +71,6 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         mTabLayout = (TabLayout) findViewById(R.id.tabs);
-        mErrorMessage =
-                Snackbar.make(findViewById(R.id.recycler_view_matches),
-                        R.string.match_history_error_message,
-                        Snackbar.LENGTH_LONG);
     }
 
     private void populateViews() {
@@ -133,6 +129,10 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
     }
 
     public void onReceiveErrorResponse(int statusCode, VolleyError error) {
+        mErrorMessage =
+                Snackbar.make(findViewById(R.id.recycler_view_matches),
+                        R.string.match_history_error_message,
+                        Snackbar.LENGTH_LONG);
         mErrorMessage.show();
     }
 }
