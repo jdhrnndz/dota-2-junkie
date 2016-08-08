@@ -7,16 +7,17 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.stratpoint.jdhrnndz.dota2junkie.MatchHistory;
-import com.stratpoint.jdhrnndz.dota2junkie.fragment.MatchesFragment;
-import com.stratpoint.jdhrnndz.dota2junkie.fragment.TabFragment;
-
-import java.util.ArrayList;
+import com.stratpoint.jdhrnndz.dota2junkie.model.MatchDetails;
+import com.stratpoint.jdhrnndz.dota2junkie.model.MatchHistory;
 
 /**
  * Created by johndeniellehernandez on 8/4/16.
  */
 public class ApiManager {
+    public static final int STRING_RESPONSE_TYPE = 9;
+    public static final int MATCH_HISTORY_RESPONSE_TYPE = 6;
+    public static final int MATCH_DETAILS_RESPONSE_TYPE = 3;
+
     public static void fetchUserInfo(Context context, String url, final DotaApiResponseListener responseListener) {
         RequestQueue queue = VolleySingleton.getInstance(context).getRequestQueue();
 
@@ -26,7 +27,7 @@ public class ApiManager {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        responseListener.onReceiveStringResponse(200, response);
+                        responseListener.onReceiveResponse(200, response, ApiManager.STRING_RESPONSE_TYPE);
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -47,17 +48,7 @@ public class ApiManager {
                 new Response.Listener<MatchHistory>() {
                     @Override
                     public void onResponse(MatchHistory response) {
-                        ArrayList<Long> matchIds = new ArrayList<>();
-                        int len = response.getResult().getMatches().length;
-                        MatchHistory.Match[] matches = response.getResult().getMatches();
-
-                        for(int i=0; i<len; i++) {
-                            matchIds.add(matches[i].getId());
-                        }
-
-                        ((MatchesFragment) TabFragment.MATCHES.getFragment()).setMatchIds(matchIds);
-
-                        responseListener.onReceiveMatchHistoryResponse(200, response);
+                        responseListener.onReceiveResponse(200, response, ApiManager.MATCH_HISTORY_RESPONSE_TYPE);
                     }
                 },
                 new Response.ErrorListener() {
@@ -69,5 +60,26 @@ public class ApiManager {
         );
 
         queue.add(matchHistoryRequest);
+    }
+
+    public static void fetchMatchDetails(Context context, String url, final DotaApiResponseListener responseListener) {
+        RequestQueue queue = VolleySingleton.getInstance(context).getRequestQueue();
+
+        GsonRequest matchDetailsRequest = new GsonRequest<>(url, MatchDetails.class, null,
+                new Response.Listener<MatchDetails>() {
+                    @Override
+                    public void onResponse(MatchDetails response) {
+                        responseListener.onReceiveResponse(200, response.getResult(), ApiManager.MATCH_DETAILS_RESPONSE_TYPE);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: implement onErrorResponse
+                    }
+                }
+        );
+
+        queue.add(matchDetailsRequest);
     }
 }
