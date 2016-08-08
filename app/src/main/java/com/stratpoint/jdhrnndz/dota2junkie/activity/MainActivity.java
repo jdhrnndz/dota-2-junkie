@@ -11,7 +11,6 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.stratpoint.jdhrnndz.dota2junkie.adapter.AppFragmentPagerAdapter;
-import com.stratpoint.jdhrnndz.dota2junkie.model.MatchDetails;
 import com.stratpoint.jdhrnndz.dota2junkie.model.MatchHistory;
 import com.stratpoint.jdhrnndz.dota2junkie.model.PlayerSummary;
 import com.stratpoint.jdhrnndz.dota2junkie.R;
@@ -38,8 +37,6 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
     private Toolbar mToolbar;
 
     private PlayerSummary.DotaPlayer mCurrentPlayer;
-    private MatchHistory mMatchHistory;
-    private Snackbar mErrorMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
         // the ApiManager class
         switch (type) {
             case ApiManager.MATCH_HISTORY_RESPONSE_TYPE:
-                mMatchHistory = (MatchHistory) response;
+                MatchHistory mMatchHistory = (MatchHistory) response;
                 MatchHistory.Match[] matches = mMatchHistory.getResult().getMatches();
 
                 // Build the url's query section
@@ -129,10 +126,9 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
     }
 
     public void onReceiveErrorResponse(int statusCode, VolleyError error) {
-        mErrorMessage =
-                Snackbar.make(findViewById(R.id.recycler_view_matches),
-                        R.string.match_history_error_message,
-                        Snackbar.LENGTH_LONG);
+        Snackbar mErrorMessage = Snackbar.make(findViewById(R.id.recycler_view_matches),
+                R.string.match_history_error_message,
+                Snackbar.LENGTH_LONG);
         mErrorMessage.show();
     }
 }
