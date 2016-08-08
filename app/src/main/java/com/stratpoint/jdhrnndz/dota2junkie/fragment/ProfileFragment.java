@@ -27,9 +27,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 /**
- * Created by johndeniellehernandez on 7/21/16.
+ * Author: John Denielle F. Hernandez
+ * Date: 7/21/16
+ * Description: This class uses the fragment_profile layout to create the view for the Profile Tab.
+ * Inside the class is where the data are linked to the respective views.
  */
 public class ProfileFragment extends BaseFragment {
     private final static int LAYOUT = R.layout.fragment_profile;
@@ -56,7 +60,6 @@ public class ProfileFragment extends BaseFragment {
 
         // Map views from content view as the activity's attributes
         assignViews(view);
-
         // Assign values to views from the user info passed via the intent
         populateViews();
 
@@ -96,36 +99,47 @@ public class ProfileFragment extends BaseFragment {
         mSteamIdSigil.setTypeface(fontAwesome);
         mLastLogOffSigil.setTypeface(fontAwesome);
 
+        // Converts seconds representation of the time created into the pattern below using the
+        // SimpleDateFormat class
         String datePattern = getResources().getString(R.string.profile_pattern_date);
         Date dMemberSince = null;
         try{
-            dMemberSince = new SimpleDateFormat("s").parse(String.valueOf(mCurrentPlayer.getTimeCreated()));
+            dMemberSince = new SimpleDateFormat("s", Locale.ENGLISH)
+                    .parse(String.valueOf(mCurrentPlayer.getTimeCreated()));
         }
         catch(ParseException pe) {
             pe.printStackTrace();
         }
-        mUserMemberSince.setText(new SimpleDateFormat(datePattern).format(dMemberSince));
+        mUserMemberSince
+                .setText(new SimpleDateFormat(datePattern, Locale.ENGLISH)
+                .format(dMemberSince));
 
         // Casting long to int to obtain the SteamID32 version
         int steamId32 = (int) Long.parseLong(mCurrentPlayer.getSteamId());
         mUserSteamId.setText(String.valueOf(steamId32));
 
+        // Converts seconds representation of the time created into the same pattern with member
+        // since value using the SimpleDateFormat class
         Date dLastLagOff = null;
         try{
-            dLastLagOff = new SimpleDateFormat("s").parse(String.valueOf(mCurrentPlayer.getLastLogOff()));
+            dLastLagOff = new SimpleDateFormat("s", Locale.ENGLISH)
+                    .parse(String.valueOf(mCurrentPlayer.getLastLogOff()));
         }
         catch(ParseException pe) {
             pe.printStackTrace();
         }
-        mUserLastLogOff.setText(new SimpleDateFormat(datePattern).format(dLastLagOff));
+        mUserLastLogOff
+                .setText(new SimpleDateFormat(datePattern, Locale.ENGLISH)
+                .format(dLastLagOff));
 
+        // Populates the Match Results Graph
         setMatchResultGraphData(20, 20f);
     }
 
 
     private void setMatchResultGraphData(int count, float range) {
 
-        ArrayList<Entry> values = new ArrayList<Entry>();
+        ArrayList<Entry> values = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
 
@@ -156,7 +170,7 @@ public class ProfileFragment extends BaseFragment {
             // Prevents node values to be displayed
             set1.setDrawValues(false);
 
-            ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
+            ArrayList<ILineDataSet> dataSets = new ArrayList<>();
             dataSets.add(set1); // add the datasets
 
             // create a data object with the datasets
@@ -166,9 +180,12 @@ public class ProfileFragment extends BaseFragment {
             mMatchesChart.setData(data);
         }
 
-        mMatchesChart.setTouchEnabled(false);
-        mMatchesChart.setDescription(getResources().getString(R.string.profile_description_matches_graph));
-        mMatchesChart.setDescriptionColor(ContextCompat.getColor(getContext(), R.color.primary_dark));
+        mMatchesChart
+                .setTouchEnabled(false);
+        mMatchesChart.setDescription(getResources()
+                .getString(R.string.profile_description_matches_graph));
+        mMatchesChart
+                .setDescriptionColor(ContextCompat.getColor(getContext(), R.color.primary_dark));
 
         XAxis xAxis = mMatchesChart.getXAxis();
         xAxis.setEnabled(false);
