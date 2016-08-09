@@ -18,6 +18,7 @@ import com.stratpoint.jdhrnndz.dota2junkie.network.VolleySingleton;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -109,19 +110,19 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
 
         long hours = TimeUnit.SECONDS.toHours(duration);
         if (hours > 0) {
-            matchDuration.append(hours);
+            matchDuration.append(String.format(Locale.ENGLISH, "%02d", hours));
             matchDuration.append(':');
             duration -= TimeUnit.HOURS.toSeconds(hours);
         }
 
         long minutes = TimeUnit.SECONDS.toMinutes(duration);
         if (minutes > 0) {
-            matchDuration.append(minutes);
+            matchDuration.append(String.format(Locale.ENGLISH, "%02d", minutes));
             matchDuration.append(':');
             duration -= TimeUnit.MINUTES.toSeconds(minutes);
         }
 
-        matchDuration.append(duration);
+        matchDuration.append(String.format(Locale.ENGLISH, "%02d", duration));
 
         ((TextView) holder.mView.findViewById(R.id.game_duration)).setText(matchDuration.toString());
         // Match ID
