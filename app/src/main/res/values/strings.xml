@@ -20,6 +20,7 @@
 
     <!-- MatchesFragment -->
     <string name="match_history_error_message">There is a problem retrieving the match history.</string>
+    <string name="kda_divider_symbol">\u00A0/\u00A0</string>
 
     <string name="api_key" translatable="false">22247A2A498D945AA1F4A20FF96F1911</string>
 </resources>
