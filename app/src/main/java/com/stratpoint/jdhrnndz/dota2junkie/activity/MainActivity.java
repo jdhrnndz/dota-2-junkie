@@ -1,6 +1,8 @@
 package com.stratpoint.jdhrnndz.dota2junkie.activity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -11,6 +13,8 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.stratpoint.jdhrnndz.dota2junkie.adapter.AppFragmentPagerAdapter;
+import com.stratpoint.jdhrnndz.dota2junkie.model.HeroReference;
+import com.stratpoint.jdhrnndz.dota2junkie.model.ItemReference;
 import com.stratpoint.jdhrnndz.dota2junkie.model.MatchHistory;
 import com.stratpoint.jdhrnndz.dota2junkie.model.PlayerSummary;
 import com.stratpoint.jdhrnndz.dota2junkie.R;
@@ -37,6 +41,8 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
     private Toolbar mToolbar;
 
     private PlayerSummary.DotaPlayer mCurrentPlayer;
+    public static HeroReference heroRef;
+    public static ItemReference itemRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +58,13 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
         ((ProfileFragment) TabFragment.PROFILE.getFragment()).setCurrentPlayer(mCurrentPlayer);
         // Gets the list of matches with only the basic match info, requests for details afterwards
         fetchMatchHistoryFromNetwork();
+
+        SharedPreferences defaultSP = PreferenceManager.getDefaultSharedPreferences(this);
+        String heroJson = defaultSP.getString("heroJson", "");
+        String itemJson = defaultSP.getString("itemJson", "");
+        Gson gson = new Gson();
+        heroRef = gson.fromJson(heroJson, HeroReference.class);
+        itemRef = gson.fromJson(itemJson, ItemReference.class);
     }
 
     @Override
@@ -84,6 +97,8 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
         PlayerSummary playerSummary = gson.fromJson(userInfoString, PlayerSummary.class);
 
         mCurrentPlayer = playerSummary.getResponse().getPlayers()[0];
+
+        ((MatchesFragment) TabFragment.MATCHES.getFragment()).setCurrentPlayer(mCurrentPlayer);
     }
 
     private void fetchMatchHistoryFromNetwork() {
