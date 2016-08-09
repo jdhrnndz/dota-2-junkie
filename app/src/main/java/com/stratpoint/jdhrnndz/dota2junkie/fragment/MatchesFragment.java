@@ -12,6 +12,7 @@ import com.stratpoint.jdhrnndz.dota2junkie.R;
 import com.stratpoint.jdhrnndz.dota2junkie.adapter.MatchesAdapter;
 import com.stratpoint.jdhrnndz.dota2junkie.adapter.SimpleDividerItemDecoration;
 import com.stratpoint.jdhrnndz.dota2junkie.model.MatchHistory;
+import com.stratpoint.jdhrnndz.dota2junkie.model.PlayerSummary;
 
 import java.util.ArrayList;
 
@@ -29,6 +30,7 @@ public class MatchesFragment extends BaseFragment {
     private RecyclerView.LayoutManager mLayoutManager;
 
     private ArrayList<MatchHistory.Match> mMatches = new ArrayList<>();
+    private PlayerSummary.DotaPlayer mCurrentPlayer;
 
     public static MatchesFragment newInstance() {
         Bundle args = BaseFragment.initBundle(LAYOUT);
@@ -52,7 +54,7 @@ public class MatchesFragment extends BaseFragment {
     private void assignViews(View view) {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_matches);
         mLayoutManager = new LinearLayoutManager(view.getContext());
-        mAdapter = new MatchesAdapter(view.getContext(), mMatches);
+        mAdapter = new MatchesAdapter(view.getContext(), mMatches, mCurrentPlayer);
         mRecyclerView.addItemDecoration(
                 new SimpleDividerItemDecoration(
                         ContextCompat.getDrawable(view.getContext(), R.drawable.line_divider)
@@ -70,5 +72,9 @@ public class MatchesFragment extends BaseFragment {
         // Called by the main activity every time a match detail response arrives
         mMatches.add(match);
         mAdapter.notifyDataSetChanged();
+    }
+
+    public void setCurrentPlayer(PlayerSummary.DotaPlayer player) {
+        mCurrentPlayer = player;
     }
 }
