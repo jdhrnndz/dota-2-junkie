@@ -17,7 +17,7 @@ import com.stratpoint.jdhrnndz.dota2junkie.R;
 import com.stratpoint.jdhrnndz.dota2junkie.network.ApiManager;
 import com.stratpoint.jdhrnndz.dota2junkie.network.DotaApiResponseListener;
 import com.stratpoint.jdhrnndz.dota2junkie.network.UrlBuilder;
-import com.stratpoint.jdhrnndz.dota2junkie.util.StringFileReader;
+import com.stratpoint.jdhrnndz.dota2junkie.util.StringAssetReader;
 
 import java.util.HashMap;
 
@@ -47,24 +47,30 @@ public class LogInActivity extends AppCompatActivity implements DotaApiResponseL
 
         // Store some values in the shared preferences
         SharedPreferences defaultSP =  PreferenceManager.getDefaultSharedPreferences(this);
+
+        // TODO: for testing purposes: defaultSP.edit().clear().apply();
         String heroJson = defaultSP.getString("heroJson", "");
         String itemJson = defaultSP.getString("itemJson", "");
 
+        String heroesJsonString = "";
+        String itemsJsonString = "";
         try {
-            if ("".equals(heroJson)) {
-                defaultSP.edit()
-                        .putString("heroJson", StringFileReader.getStringFromFile("/assets/heroes.json"))
-                        .apply();
-            }
-            if ("".equals(itemJson)) {
-                defaultSP.edit()
-                        .putString("itemJson", StringFileReader.getStringFromFile("/assets/items.json"))
-                        .apply();
-            }
+            heroesJsonString = StringAssetReader.getStringFromAsset(this, "heroes.json");
+            itemsJsonString = StringAssetReader.getStringFromAsset(this, "items.json");
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        if ("".equals(heroJson)) {
+            defaultSP.edit()
+                    .putString("heroJson", heroesJsonString)
+                    .apply();
+        }
+        if ("".equals(itemJson)) {
+        defaultSP.edit()
+                .putString("itemJson", itemsJsonString)
+                .apply();
+        }
     }
 
     @Override
