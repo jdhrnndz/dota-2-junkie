@@ -70,7 +70,18 @@ public class MatchesFragment extends BaseFragment {
 
     public void updateMatches(MatchHistory.Match match) {
         // Called by the main activity every time a match detail response arrives
-        mMatches.add(match);
+        int size = mMatches.size();
+        if (size > 0) {
+            for (int i = 0; i < size; i++) {
+                if (mMatches.get(i).getSequenceNumber() < match.getSequenceNumber()) {
+                    mMatches.add(i, match);
+                    break;
+                } else {
+                    mMatches.add(match);
+                    break;
+                }
+            }
+        } else mMatches.add(match);
         mAdapter.notifyDataSetChanged();
     }
 
