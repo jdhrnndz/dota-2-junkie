@@ -1,6 +1,7 @@
 package com.stratpoint.jdhrnndz.dota2junkie.adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,6 @@ import com.stratpoint.jdhrnndz.dota2junkie.activity.MainActivity;
 import com.stratpoint.jdhrnndz.dota2junkie.model.MatchHistory;
 import com.stratpoint.jdhrnndz.dota2junkie.R;
 import com.stratpoint.jdhrnndz.dota2junkie.model.PlayerSummary;
-import com.stratpoint.jdhrnndz.dota2junkie.network.UrlBuilder;
 import com.stratpoint.jdhrnndz.dota2junkie.network.VolleySingleton;
 
 import java.util.ArrayList;
@@ -65,6 +65,31 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
                 mCurrentMatchPlayer = player;
         }
 
+        int indicatorId;
+        // Match Item Result Indicator
+        if (item.didRadiantWin()) {
+            if (mCurrentMatchPlayer.getPlayerSlot() >> 7 == 0) {
+                indicatorId = R.drawable.victory_indicator;
+            }
+            else {
+                indicatorId = R.drawable.defeat_indicator;
+            }
+        }
+        else {
+            if (mCurrentMatchPlayer.getPlayerSlot() >> 7 == 0) {
+                indicatorId = R.drawable.defeat_indicator;
+            }
+            else {
+                indicatorId = R.drawable.victory_indicator;
+            }
+        }
+
+        final int sdk = android.os.Build.VERSION.SDK_INT;
+        if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+            holder.mView.findViewById(R.id.result_indicator).setBackgroundDrawable(ContextCompat.getDrawable(mContext, indicatorId));
+        } else {
+            holder.mView.findViewById(R.id.result_indicator).setBackground(ContextCompat.getDrawable(mContext, indicatorId));
+        }
         // Kills
         ((TextView) holder.mView.findViewById(R.id.player_kills)).setText(String.valueOf(mCurrentMatchPlayer.getKills()));
 
