@@ -15,6 +15,7 @@ import com.stratpoint.jdhrnndz.dota2junkie.model.MatchHistory;
 import com.stratpoint.jdhrnndz.dota2junkie.model.PlayerSummary;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Author: John Denielle F. Hernandez
@@ -29,7 +30,9 @@ public class MatchesFragment extends BaseFragment {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    private ArrayList<MatchHistory.Match> mMatches = new ArrayList<>();
+    private List<MatchHistory.Match> mMatches = new ArrayList<>();
+    private List<MatchHistory.Match> mMatchBuffer = new ArrayList<>();
+    private boolean isConsumingBuffer = false;
     private PlayerSummary.DotaPlayer mCurrentPlayer;
 
     public static MatchesFragment newInstance() {
@@ -70,19 +73,38 @@ public class MatchesFragment extends BaseFragment {
 
     public void updateMatches(MatchHistory.Match match) {
         // Called by the main activity every time a match detail response arrives
-        int size = mMatches.size();
-        if (size > 0) {
-            for (int i = 0; i < size; i++) {
-                if (mMatches.get(i).getSequenceNumber() < match.getSequenceNumber()) {
-                    mMatches.add(i, match);
-                    break;
-                } else {
-                    mMatches.add(match);
-                    break;
-                }
-            }
-        } else mMatches.add(match);
+        mMatchBuffer.add(mMatchBuffer.size(), match);
+
+        if (!isConsumingBuffer)
+            consumeBuffer();
+    }
+
+    private void consumeBuffer() {
+        int bufferSize;
+
+        isConsumingBuffer = true;
+
+        do {
+            MatchHistory.Match currentMatch = mMatchBuffer.get(0);
+            int insertIndex = findInsertIndexInList(currentMatch, mMatches);
+            mMatches.add(insertIndex, currentMatch);
+            mMatchBuffer.remove(0);
+        } while ((bufferSize = mMatchBuffer.size()) > 0);
+
+        isConsumingBuffer = false;
         mAdapter.notifyDataSetChanged();
+    }
+
+    private int findInsertIndexInList(MatchHistory.Match match, List<MatchHistory.Match> matches) {
+        int size = matches.size();
+
+        for (int i = 0; i < size; i++) {
+            if (matches.get(i).getSequenceNumber() < match.getSequenceNumber()) {
+                return i;
+            }
+        }
+
+        return size;
     }
 
     public void setCurrentPlayer(PlayerSummary.DotaPlayer player) {

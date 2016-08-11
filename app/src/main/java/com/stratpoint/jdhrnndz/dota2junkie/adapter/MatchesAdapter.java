@@ -18,6 +18,7 @@ import com.stratpoint.jdhrnndz.dota2junkie.network.VolleySingleton;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -25,7 +26,7 @@ import java.util.concurrent.TimeUnit;
  * Created by johndeniellehernandez on 7/20/16.
  */
 public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHolder> {
-    private ArrayList<MatchHistory.Match> mDataset;
+    private List<MatchHistory.Match> mDataset;
     private Context mContext;
     private PlayerSummary.DotaPlayer mCurrentPlayer;
     private MatchHistory.MatchPlayer mCurrentMatchPlayer;
@@ -39,7 +40,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
         }
     }
 
-    public MatchesAdapter(Context context, ArrayList<MatchHistory.Match> matches, PlayerSummary.DotaPlayer player) {
+    public MatchesAdapter(Context context, List<MatchHistory.Match> matches, PlayerSummary.DotaPlayer player) {
         mDataset = matches;
         mContext = context;
         mCurrentPlayer = player;
