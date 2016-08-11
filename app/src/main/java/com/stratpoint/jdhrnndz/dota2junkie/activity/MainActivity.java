@@ -3,6 +3,7 @@ package com.stratpoint.jdhrnndz.dota2junkie.activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
     private Toolbar mToolbar;
+    private AppBarLayout mAppBarLayout;
 
     private PlayerSummary.DotaPlayer mCurrentPlayer;
     public static HeroReference heroRef;
@@ -53,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
         assignViews();
         // Assign values to views
         populateViews();
+
         // Process data from sign in activity passed via intent
         parseUserInfoFromIntent();
         ((ProfileFragment) TabFragment.PROFILE.getFragment()).setCurrentPlayer(mCurrentPlayer);
@@ -81,12 +84,31 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         mTabLayout = (TabLayout) findViewById(R.id.tabs);
+        mAppBarLayout = (AppBarLayout) findViewById(R.id.appbar);
     }
 
     private void populateViews() {
         setSupportActionBar(mToolbar);
         mViewPager.setAdapter(new AppFragmentPagerAdapter(getSupportFragmentManager()));
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == TabFragment.PLAY_STYLE.getPosition() || position == TabFragment.PROFILE.getPosition())
+                    mAppBarLayout.setExpanded(false, false);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         mTabLayout.setupWithViewPager(mViewPager);
+        mAppBarLayout.setExpanded(false, false);
     }
 
     private void parseUserInfoFromIntent() {
