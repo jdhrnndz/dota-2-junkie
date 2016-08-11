@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.stratpoint.jdhrnndz.dota2junkie.activity.MainActivity;
+import com.stratpoint.jdhrnndz.dota2junkie.customview.KdaBar;
 import com.stratpoint.jdhrnndz.dota2junkie.model.MatchHistory;
 import com.stratpoint.jdhrnndz.dota2junkie.R;
 import com.stratpoint.jdhrnndz.dota2junkie.model.PlayerSummary;
@@ -23,7 +24,9 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by johndeniellehernandez on 7/20/16.
+ * Author: John Denielle F. Hernandez
+ * Date: 7/20/16.
+ * Description: Provides values for matches recycler view
  */
 public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHolder> {
     private List<MatchHistory.Match> mDataset;
@@ -91,6 +94,9 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
         } else {
             holder.mView.findViewById(R.id.result_indicator).setBackground(ContextCompat.getDrawable(mContext, indicatorId));
         }
+
+        ((KdaBar) holder.mView.findViewById(R.id.kda_bar)).setValues(mCurrentMatchPlayer.getKills(), mCurrentMatchPlayer.getDeaths(), mCurrentMatchPlayer.getAssists());
+
         // Kills
         ((TextView) holder.mView.findViewById(R.id.player_kills)).setText(String.valueOf(mCurrentMatchPlayer.getKills()));
 

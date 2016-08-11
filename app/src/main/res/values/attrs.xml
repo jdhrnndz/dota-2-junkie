@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="KdaBar">
+        <attr name="killCount" format="integer" />
+        <attr name="deathCount" format="integer" />
+        <attr name="assistCount" format="integer" />
+
+        <attr name="killBarColor" format="color" />
+        <attr name="deathBarColor" format="color" />
+        <attr name="assistBarColor" format="color" />
+    </declare-styleable>
+</resources>

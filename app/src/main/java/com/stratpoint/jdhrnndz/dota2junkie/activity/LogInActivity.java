@@ -71,6 +71,8 @@ public class LogInActivity extends AppCompatActivity implements DotaApiResponseL
                 .putString("itemJson", itemsJsonString)
                 .apply();
         }
+
+        mLogInButton.performClick();
     }
 
     @Override
