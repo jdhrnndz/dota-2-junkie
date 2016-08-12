@@ -17,7 +17,6 @@ import com.stratpoint.jdhrnndz.dota2junkie.R;
 import com.stratpoint.jdhrnndz.dota2junkie.model.PlayerSummary;
 import com.stratpoint.jdhrnndz.dota2junkie.network.VolleySingleton;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -35,11 +34,30 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
     private MatchHistory.MatchPlayer mCurrentMatchPlayer;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public View mView;
+        TextView mKillCount, mDeathCount, mAssistCount, mGameDuration, mMatchId, mGameMode;
+        KdaBar mKdaBar;
+        View mResultIndicator;
+        NetworkImageView mHeroImage, mItemSlot0, mItemSlot1, mItemSlot2, mItemSlot3, mItemSlot4, mItemSlot5;
 
         public ViewHolder(View v) {
             super(v);
-            mView = v;
+            mResultIndicator = v.findViewById(R.id.result_indicator);
+            mKillCount = (TextView) v.findViewById(R.id.player_kills);
+            mDeathCount = (TextView) v.findViewById(R.id.player_deaths);
+            mAssistCount = (TextView) v.findViewById(R.id.player_assists);
+            mKdaBar = (KdaBar) v.findViewById(R.id.kda_bar);
+
+            mHeroImage = (NetworkImageView) v.findViewById(R.id.hero_image);
+            mItemSlot0 = (NetworkImageView) v.findViewById(R.id.item_slot_0);
+            mItemSlot1 = (NetworkImageView) v.findViewById(R.id.item_slot_1);
+            mItemSlot2 = (NetworkImageView) v.findViewById(R.id.item_slot_2);
+            mItemSlot3 = (NetworkImageView) v.findViewById(R.id.item_slot_3);
+            mItemSlot4 = (NetworkImageView) v.findViewById(R.id.item_slot_4);
+            mItemSlot5 = (NetworkImageView) v.findViewById(R.id.item_slot_5);
+
+            mGameDuration = (TextView) v.findViewById(R.id.game_duration);
+            mMatchId = (TextView) v.findViewById(R.id.match_id);
+            mGameMode = (TextView) v.findViewById(R.id.game_mode);
         }
     }
 
@@ -65,8 +83,9 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
 
         for(MatchHistory.MatchPlayer player: players) {
             int steamId32 = (int) Long.parseLong(mCurrentPlayer.getSteamId());
-            if(Long.valueOf(steamId32) == player.getAccountId())
+            if (steamId32 == player.getAccountId()) {
                 mCurrentMatchPlayer = player;
+            }
         }
 
         int indicatorId;
@@ -90,21 +109,21 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
 
         final int sdk = android.os.Build.VERSION.SDK_INT;
         if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-            holder.mView.findViewById(R.id.result_indicator).setBackgroundDrawable(ContextCompat.getDrawable(mContext, indicatorId));
+            holder.mResultIndicator.setBackgroundDrawable(ContextCompat.getDrawable(mContext, indicatorId));
         } else {
-            holder.mView.findViewById(R.id.result_indicator).setBackground(ContextCompat.getDrawable(mContext, indicatorId));
+            holder.mResultIndicator.setBackground(ContextCompat.getDrawable(mContext, indicatorId));
         }
 
-        ((KdaBar) holder.mView.findViewById(R.id.kda_bar)).setValues(mCurrentMatchPlayer.getKills(), mCurrentMatchPlayer.getDeaths(), mCurrentMatchPlayer.getAssists());
+        holder.mKdaBar.setValues(mCurrentMatchPlayer.getKills(), mCurrentMatchPlayer.getDeaths(), mCurrentMatchPlayer.getAssists());
 
         // Kills
-        ((TextView) holder.mView.findViewById(R.id.player_kills)).setText(String.valueOf(mCurrentMatchPlayer.getKills()));
+        holder.mKillCount.setText(String.valueOf(mCurrentMatchPlayer.getKills()));
 
         // Deaths
-        ((TextView) holder.mView.findViewById(R.id.player_deaths)).setText(String.valueOf(mCurrentMatchPlayer.getDeaths()));
+        holder.mDeathCount.setText(String.valueOf(mCurrentMatchPlayer.getDeaths()));
 
         // Assists
-        ((TextView) holder.mView.findViewById(R.id.player_assists)).setText(String.valueOf(mCurrentMatchPlayer.getAssists()));
+        holder.mAssistCount.setText(String.valueOf(mCurrentMatchPlayer.getAssists()));
 
         HashMap<String, String> args = new HashMap<>();
 
@@ -113,7 +132,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
         heroUrl.append(mContext.getString(R.string.get_hero_images));
         heroUrl.append(MainActivity.heroRef.getHero(mCurrentMatchPlayer.getHeroId()).getName().substring(14));
         heroUrl.append(mContext.getString(R.string.hero_image_suffix));
-        ((NetworkImageView) holder.mView.findViewById(R.id.hero_image)).setImageUrl(heroUrl.toString(), imageLoader);
+        holder.mHeroImage.setImageUrl(heroUrl.toString(), imageLoader);
 
         // Item Images
         StringBuilder itemUrlBuilder = new StringBuilder();
@@ -123,18 +142,18 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
 
         String itemUrl = itemUrlBuilder.toString();
 
-        if (mCurrentMatchPlayer.getItem0() > 0) ((NetworkImageView) holder.mView.findViewById(R.id.item_slot_0))
-                .setImageUrl(String.format(itemUrl, MainActivity.itemRef.getItem(mCurrentMatchPlayer.getItem0()).getName().substring(5)), imageLoader);
-        if (mCurrentMatchPlayer.getItem1() > 0) ((NetworkImageView) holder.mView.findViewById(R.id.item_slot_1))
-                .setImageUrl(String.format(itemUrl, MainActivity.itemRef.getItem(mCurrentMatchPlayer.getItem1()).getName().substring(5)), imageLoader);
-        if (mCurrentMatchPlayer.getItem2() > 0) ((NetworkImageView) holder.mView.findViewById(R.id.item_slot_2))
-                .setImageUrl(String.format(itemUrl, MainActivity.itemRef.getItem(mCurrentMatchPlayer.getItem2()).getName().substring(5)), imageLoader);
-        if (mCurrentMatchPlayer.getItem3() > 0) ((NetworkImageView) holder.mView.findViewById(R.id.item_slot_3))
-                .setImageUrl(String.format(itemUrl, MainActivity.itemRef.getItem(mCurrentMatchPlayer.getItem3()).getName().substring(5)), imageLoader);
-        if (mCurrentMatchPlayer.getItem4() > 0) ((NetworkImageView) holder.mView.findViewById(R.id.item_slot_4))
-                .setImageUrl(String.format(itemUrl, MainActivity.itemRef.getItem(mCurrentMatchPlayer.getItem4()).getName().substring(5)), imageLoader);
-        if (mCurrentMatchPlayer.getItem5() > 0) ((NetworkImageView) holder.mView.findViewById(R.id.item_slot_5))
-                .setImageUrl(String.format(itemUrl, MainActivity.itemRef.getItem(mCurrentMatchPlayer.getItem5()).getName().substring(5)), imageLoader);
+        if (mCurrentMatchPlayer.getItem0() > 0)
+            holder.mItemSlot0.setImageUrl(String.format(itemUrl, MainActivity.itemRef.getItem(mCurrentMatchPlayer.getItem0()).getName().substring(5)), imageLoader);
+        if (mCurrentMatchPlayer.getItem1() > 0)
+            holder.mItemSlot1.setImageUrl(String.format(itemUrl, MainActivity.itemRef.getItem(mCurrentMatchPlayer.getItem1()).getName().substring(5)), imageLoader);
+        if (mCurrentMatchPlayer.getItem2() > 0)
+            holder.mItemSlot2.setImageUrl(String.format(itemUrl, MainActivity.itemRef.getItem(mCurrentMatchPlayer.getItem2()).getName().substring(5)), imageLoader);
+        if (mCurrentMatchPlayer.getItem3() > 0)
+            holder.mItemSlot3.setImageUrl(String.format(itemUrl, MainActivity.itemRef.getItem(mCurrentMatchPlayer.getItem3()).getName().substring(5)), imageLoader);
+        if (mCurrentMatchPlayer.getItem4() > 0)
+            holder.mItemSlot4.setImageUrl(String.format(itemUrl, MainActivity.itemRef.getItem(mCurrentMatchPlayer.getItem4()).getName().substring(5)), imageLoader);
+        if (mCurrentMatchPlayer.getItem5() > 0)
+            holder.mItemSlot5.setImageUrl(String.format(itemUrl, MainActivity.itemRef.getItem(mCurrentMatchPlayer.getItem5()).getName().substring(5)), imageLoader);
 
         // Match Duration
         StringBuilder matchDuration = new StringBuilder();
@@ -156,11 +175,11 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
 
         matchDuration.append(String.format(Locale.ENGLISH, "%02d", duration));
 
-        ((TextView) holder.mView.findViewById(R.id.game_duration)).setText(matchDuration.toString());
+        holder.mGameDuration.setText(matchDuration.toString());
         // Match ID
-        ((TextView) holder.mView.findViewById(R.id.match_id)).setText(String.valueOf(item.getId()));
+        holder.mMatchId.setText(String.valueOf(item.getId()));
         // Match Mode
-        ((TextView) holder.mView.findViewById(R.id.game_mode)).setText(mContext.getResources().getStringArray(R.array.game_modes)[item.getGameMode()]);
+        holder.mGameMode.setText(mContext.getResources().getStringArray(R.array.game_modes)[item.getGameMode()]);
     }
 
     @Override
