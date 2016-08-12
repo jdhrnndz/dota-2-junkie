@@ -43,4 +43,5 @@ dependencies {
     compile "com.android.support:recyclerview-v7:${supportLibVersion}"
     compile "com.github.PhilJay:MPAndroidChart:v3.0.0-beta1"
     compile 'com.google.code.gson:gson:1.7.2'
+    compile 'com.github.nisrulz:stackedhorizontalprogressbar:1.0.2'
 }
