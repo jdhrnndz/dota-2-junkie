@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center">
+    android:gravity="center"
+    xmlns:custom="http://schemas.android.com/apk/res-auto">
     <com.android.volley.toolbox.NetworkImageView
         android:id="@+id/user_avatar"
         android:layout_width="100dip"
@@ -13,6 +14,30 @@
         android:layout_marginBottom="16dip"
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true" />
+    <com.stratpoint.jdhrnndz.dota2junkie.customview.KdaBar
+        android:layout_marginTop="10dp"
+        android:layout_width="50dp"
+        android:layout_height="4dp"
+        android:layout_centerHorizontal="true"
+        custom:killCount="5"
+        custom:deathCount="5"
+        custom:assistCount="5"/>
+    <com.stratpoint.jdhrnndz.dota2junkie.customview.KdaBar
+        android:layout_marginTop="14dp"
+        android:layout_width="50dp"
+        android:layout_height="4dp"
+        android:layout_centerHorizontal="true"
+        custom:killCount="0"
+        custom:deathCount="17"
+        custom:assistCount="9"/>
+    <com.stratpoint.jdhrnndz.dota2junkie.customview.KdaBar
+        android:layout_marginTop="18dp"
+        android:layout_width="50dp"
+        android:layout_height="4dp"
+        android:layout_centerHorizontal="true"
+        custom:killCount="1"
+        custom:deathCount="11"
+        custom:assistCount="23"/>
     <ProgressBar
         android:id="@+id/user_avatar_progress_bar"
         android:layout_width="100dip"
