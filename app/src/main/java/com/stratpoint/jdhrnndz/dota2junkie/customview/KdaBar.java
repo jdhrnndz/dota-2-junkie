@@ -21,7 +21,6 @@ public class KdaBar extends View {
     private int mViewWidth, mViewHeight;
     private Paint mKillBarPaint, mDeathBarPaint, mAssistBarPaint, mBgPaint;
     private float mKillPart, mDeathPart, mAssistPart;
-    private final float density = getResources().getDisplayMetrics().density;
 
     public KdaBar(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -47,6 +46,7 @@ public class KdaBar extends View {
     }
 
     public void setValues(int killCount, int deathCount, int assistCount) {
+
         mKillCount = killCount;
         mDeathCount = deathCount;
         mAssistCount = assistCount;
@@ -59,9 +59,9 @@ public class KdaBar extends View {
         super.onDraw(canvas);
 
         canvas.drawRect(0f, 0f, mViewWidth, mViewHeight, mBgPaint);
+        canvas.drawRect(mKillPart+mDeathPart, 0f, mKillPart+mDeathPart+mAssistPart, mViewHeight, mAssistBarPaint);
+        canvas.drawRect(mKillPart, 0f, mKillPart+mDeathPart, mViewHeight, mDeathBarPaint);
         canvas.drawRect(0f, 0f, mKillPart, mViewHeight, mKillBarPaint);
-        canvas.drawRect(mKillPart, mViewHeight/3.0f, mDeathPart, mViewHeight, mDeathBarPaint);
-        canvas.drawRect(mDeathPart, (mViewHeight/3.0f)*2, mAssistPart, mViewHeight, mAssistBarPaint);
     }
 
     @Override
