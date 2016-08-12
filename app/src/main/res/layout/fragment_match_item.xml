@@ -77,9 +77,9 @@
         <com.stratpoint.jdhrnndz.dota2junkie.customview.KdaBar
             android:id="@+id/kda_bar"
             android:layout_width="40dp"
-            android:layout_height="30dp"
+            android:layout_height="5dp"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"/>
+            android:layout_centerHorizontal="true" />
 
         <TextView
             android:id="@+id/player_deaths"
