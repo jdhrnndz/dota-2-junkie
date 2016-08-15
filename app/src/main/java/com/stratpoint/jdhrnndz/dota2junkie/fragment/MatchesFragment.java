@@ -75,6 +75,10 @@ public class MatchesFragment extends BaseFragment {
         mRecyclerView.setAdapter(mAdapter);
     }
 
+    public List<MatchHistory.Match> getMatches() {
+        return this.mMatches;
+    }
+
     public void updateMatches(MatchHistory.Match match) {
         if(mProgressBar.getVisibility() == View.VISIBLE && mAdapter.getItemCount() > 0)
             mProgressBar.setVisibility(View.GONE);
