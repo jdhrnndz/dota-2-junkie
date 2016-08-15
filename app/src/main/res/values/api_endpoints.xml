@@ -8,6 +8,6 @@
     <string name="get_heroes">http://api.steampowered.com/IEconDOTA2_570/GetHeroes/v1</string>
     <string name="get_hero_images">http://cdn.dota2.com/apps/dota2/images/heroes/</string>
 
-    <string name="hero_image_suffix">_sb.png</string>
-    <string name="item_image_suffix">_lg.png</string>
+    <string name="hero_image_suffix">&#95;sb.png</string>
+    <string name="item_image_suffix">&#95;lg.png</string>
 </resources>
