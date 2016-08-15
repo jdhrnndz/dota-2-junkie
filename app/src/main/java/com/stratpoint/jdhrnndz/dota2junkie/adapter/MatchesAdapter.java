@@ -70,8 +70,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
     @Override
     public MatchesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_match_item, parent, false);
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
     }
 
     @Override
@@ -124,8 +123,6 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
 
         // Assists
         holder.mAssistCount.setText(String.valueOf(mCurrentMatchPlayer.getAssists()));
-
-        HashMap<String, String> args = new HashMap<>();
 
         // Hero Image
         StringBuilder heroUrl = new StringBuilder();
