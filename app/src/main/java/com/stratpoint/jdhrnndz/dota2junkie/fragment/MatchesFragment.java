@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.stratpoint.jdhrnndz.dota2junkie.R;
 import com.stratpoint.jdhrnndz.dota2junkie.adapter.MatchesAdapter;
@@ -34,6 +35,8 @@ public class MatchesFragment extends BaseFragment {
     private List<MatchHistory.Match> mMatchBuffer = new ArrayList<>();
     private boolean isConsumingBuffer = false;
     private PlayerSummary.DotaPlayer mCurrentPlayer;
+
+    private ProgressBar mProgressBar;
 
     public static MatchesFragment newInstance() {
         Bundle args = BaseFragment.initBundle(LAYOUT);
@@ -63,6 +66,7 @@ public class MatchesFragment extends BaseFragment {
                         ContextCompat.getDrawable(view.getContext(), R.drawable.line_divider)
                 )
         );
+        mProgressBar = (ProgressBar) view.findViewById(R.id.matches_progress_bar);
     }
 
     private void populateViews() {
@@ -72,6 +76,9 @@ public class MatchesFragment extends BaseFragment {
     }
 
     public void updateMatches(MatchHistory.Match match) {
+        if(mProgressBar.getVisibility() == View.VISIBLE && mAdapter.getItemCount() > 0)
+            mProgressBar.setVisibility(View.GONE);
+
         // Called by the main activity every time a match detail response arrives
         mMatchBuffer.add(mMatchBuffer.size(), match);
 
