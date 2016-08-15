@@ -27,6 +27,7 @@ import com.stratpoint.jdhrnndz.dota2junkie.network.DotaApiResponseListener;
 import com.stratpoint.jdhrnndz.dota2junkie.network.UrlBuilder;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Author: John Denielle F. Hernandez
@@ -42,9 +43,13 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
     private Toolbar mToolbar;
     private AppBarLayout mAppBarLayout;
 
+    private boolean profileHasMatchData = false;
+
     private PlayerSummary.DotaPlayer mCurrentPlayer;
     public static HeroReference heroRef;
     public static ItemReference itemRef;
+
+    private int mMatchCountForGraph = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,7 +162,14 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
             case ApiManager.MATCH_DETAILS_RESPONSE_TYPE:
                 // Updates the matches in the match fragment everytime a response for match details
                 // arrives
-                ((MatchesFragment) TabFragment.MATCHES.getFragment()).updateMatches(((MatchHistory.Match) response));
+                MatchesFragment matchesFragment = (MatchesFragment) TabFragment.MATCHES.getFragment();
+                ProfileFragment profileFragment = (ProfileFragment) TabFragment.PROFILE.getFragment();
+
+                matchesFragment.updateMatches(((MatchHistory.Match) response));
+                if (!profileHasMatchData && matchesFragment.getMatches().size() >= mMatchCountForGraph) {
+                    profileFragment.populateMatchResultsGraph(matchesFragment.getMatches(), mMatchCountForGraph);
+                    profileHasMatchData = true;
+                };
                 break;
         }
     }
