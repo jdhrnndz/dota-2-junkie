@@ -46,12 +46,14 @@ public class KdaBar extends View {
     }
 
     public void setValues(int killCount, int deathCount, int assistCount) {
-
         mKillCount = killCount;
         mDeathCount = deathCount;
         mAssistCount = assistCount;
 
-        invalidate();
+        float total = mKillCount + mDeathCount + mAssistCount;
+        mKillPart = (mKillCount/total) * mViewWidth;
+        mDeathPart = (mDeathCount/total) * mViewWidth;
+        mAssistPart = (mAssistCount/total) * mViewWidth;
     }
 
     @Override
@@ -70,11 +72,6 @@ public class KdaBar extends View {
 
         mViewWidth = xNew;
         mViewHeight = yNew;
-
-        float total = mKillCount + mDeathCount + mAssistCount;
-        mKillPart = (mKillCount/total) * mViewWidth;
-        mDeathPart = (mDeathCount/total) * mViewWidth;
-        mAssistPart = (mAssistCount/total) * mViewWidth;
     }
 
     private void init() {
