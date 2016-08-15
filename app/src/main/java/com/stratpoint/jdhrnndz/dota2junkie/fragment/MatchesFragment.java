@@ -80,19 +80,17 @@ public class MatchesFragment extends BaseFragment {
     }
 
     private void consumeBuffer() {
-        int bufferSize;
-
         isConsumingBuffer = true;
 
         do {
             MatchHistory.Match currentMatch = mMatchBuffer.get(0);
             int insertIndex = findInsertIndexInList(currentMatch, mMatches);
             mMatches.add(insertIndex, currentMatch);
+            mAdapter.notifyItemInserted(insertIndex);
             mMatchBuffer.remove(0);
-        } while ((bufferSize = mMatchBuffer.size()) > 0);
+        } while (mMatchBuffer.size() > 0);
 
         isConsumingBuffer = false;
-        mAdapter.notifyDataSetChanged();
     }
 
     private int findInsertIndexInList(MatchHistory.Match match, List<MatchHistory.Match> matches) {
