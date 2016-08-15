@@ -19,7 +19,7 @@ public class KdaBar extends View {
     private int mKillCount, mDeathCount, mAssistCount;
     private int mKillColor, mDeathColor, mAssistColor;
     private int mViewWidth, mViewHeight;
-    private Paint mKillBarPaint, mDeathBarPaint, mAssistBarPaint, mBgPaint;
+    private Paint mKillBarPaint, mDeathBarPaint, mAssistBarPaint;
     private float mKillPart, mDeathPart, mAssistPart;
 
     public KdaBar(Context context, AttributeSet attrs) {
@@ -86,8 +86,5 @@ public class KdaBar extends View {
 
         mAssistBarPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mAssistBarPaint.setColor(mAssistColor);
-
-        mBgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mBgPaint.setColor(ContextCompat.getColor(getContext(), R.color.transparent));
     }
 }
