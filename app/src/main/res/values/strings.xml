@@ -16,7 +16,7 @@
     <string name="profile_label_steam_id">SteamID 32</string>
     <string name="profile_label_last_log_off">Last Log Off</string>
     <string name="profile_pattern_date">MMM dd, \'\'yy</string>
-    <string name="profile_description_matches_graph">Match Results</string>
+    <string name="profile_description_matches_graph">Match Results Trend</string>
 
     <!-- MatchesFragment -->
     <string name="match_history_error_message">There is a problem retrieving the match history.</string>
