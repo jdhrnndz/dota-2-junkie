@@ -17,7 +17,6 @@ import com.stratpoint.jdhrnndz.dota2junkie.R;
 import com.stratpoint.jdhrnndz.dota2junkie.model.PlayerSummary;
 import com.stratpoint.jdhrnndz.dota2junkie.network.VolleySingleton;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -139,18 +138,24 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
 
         String itemUrl = itemUrlBuilder.toString();
 
-        if (mCurrentMatchPlayer.getItem0() > 0)
-            holder.mItemSlot0.setImageUrl(String.format(itemUrl, MainActivity.itemRef.getItem(mCurrentMatchPlayer.getItem0()).getName().substring(5)), imageLoader);
-        if (mCurrentMatchPlayer.getItem1() > 0)
-            holder.mItemSlot1.setImageUrl(String.format(itemUrl, MainActivity.itemRef.getItem(mCurrentMatchPlayer.getItem1()).getName().substring(5)), imageLoader);
-        if (mCurrentMatchPlayer.getItem2() > 0)
-            holder.mItemSlot2.setImageUrl(String.format(itemUrl, MainActivity.itemRef.getItem(mCurrentMatchPlayer.getItem2()).getName().substring(5)), imageLoader);
-        if (mCurrentMatchPlayer.getItem3() > 0)
-            holder.mItemSlot3.setImageUrl(String.format(itemUrl, MainActivity.itemRef.getItem(mCurrentMatchPlayer.getItem3()).getName().substring(5)), imageLoader);
-        if (mCurrentMatchPlayer.getItem4() > 0)
-            holder.mItemSlot4.setImageUrl(String.format(itemUrl, MainActivity.itemRef.getItem(mCurrentMatchPlayer.getItem4()).getName().substring(5)), imageLoader);
-        if (mCurrentMatchPlayer.getItem5() > 0)
-            holder.mItemSlot5.setImageUrl(String.format(itemUrl, MainActivity.itemRef.getItem(mCurrentMatchPlayer.getItem5()).getName().substring(5)), imageLoader);
+        int[] items = {
+                mCurrentMatchPlayer.getItem0(),
+                mCurrentMatchPlayer.getItem1(),
+                mCurrentMatchPlayer.getItem2(),
+                mCurrentMatchPlayer.getItem3(),
+                mCurrentMatchPlayer.getItem4(),
+                mCurrentMatchPlayer.getItem5()
+        };
+
+        NetworkImageView[] slots = {
+                holder.mItemSlot0,
+                holder.mItemSlot1,
+                holder.mItemSlot2,
+                holder.mItemSlot3,
+                holder.mItemSlot4,
+                holder.mItemSlot5
+        };
+        assignItemsToSlots(items, slots, itemUrl, imageLoader);
 
         // Match Duration
         StringBuilder matchDuration = new StringBuilder();
@@ -177,6 +182,14 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
         holder.mMatchId.setText(String.valueOf(item.getId()));
         // Match Mode
         holder.mGameMode.setText(mContext.getResources().getStringArray(R.array.game_modes)[item.getGameMode()]);
+    }
+
+    private void assignItemsToSlots(int[] items, NetworkImageView[] slots, String itemUrl, ImageLoader imageLoader) {
+        int len = items.length;
+        for (int i=0; i<len; i++) {
+            if (items[i] > 0)
+                slots[i].setImageUrl(String.format(itemUrl, MainActivity.itemRef.getItem(items[i]).getName().substring(5)), imageLoader);
+        }
     }
 
     @Override
