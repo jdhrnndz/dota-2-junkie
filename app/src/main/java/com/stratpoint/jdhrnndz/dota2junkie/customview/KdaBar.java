@@ -49,7 +49,9 @@ public class KdaBar extends View {
         mKillCount = killCount;
         mDeathCount = deathCount;
         mAssistCount = assistCount;
+    }
 
+    private void calculatePartitions() {
         float total = mKillCount + mDeathCount + mAssistCount;
         mKillPart = (mKillCount/total) * mViewWidth;
         mDeathPart = (mDeathCount/total) * mViewWidth;
@@ -60,7 +62,8 @@ public class KdaBar extends View {
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        canvas.drawRect(0f, 0f, mViewWidth, mViewHeight, mBgPaint);
+        calculatePartitions();
+
         canvas.drawRect(mKillPart+mDeathPart, 0f, mKillPart+mDeathPart+mAssistPart, mViewHeight, mAssistBarPaint);
         canvas.drawRect(mKillPart, 0f, mKillPart+mDeathPart, mViewHeight, mDeathBarPaint);
         canvas.drawRect(0f, 0f, mKillPart, mViewHeight, mKillBarPaint);
