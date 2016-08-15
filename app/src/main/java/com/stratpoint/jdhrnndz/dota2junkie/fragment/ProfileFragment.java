@@ -19,6 +19,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.stratpoint.jdhrnndz.dota2junkie.model.MatchHistory;
 import com.stratpoint.jdhrnndz.dota2junkie.model.PlayerSummary;
 import com.stratpoint.jdhrnndz.dota2junkie.R;
 import com.stratpoint.jdhrnndz.dota2junkie.network.VolleySingleton;
@@ -27,6 +28,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -131,33 +133,83 @@ public class ProfileFragment extends BaseFragment {
         mUserLastLogOff
                 .setText(new SimpleDateFormat(datePattern, Locale.ENGLISH)
                 .format(dLastLagOff));
-
-        // Populates the Match Results Graph
-        setMatchResultGraphData(20, 20f);
     }
 
+    public void setCurrentPlayer(PlayerSummary.DotaPlayer player) {
+        this.mCurrentPlayer = player;
+    }
 
-    private void setMatchResultGraphData(int count, float range) {
+    public void populateMatchResultsGraph(List<MatchHistory.Match> matches, int matchCountForGraph) {
+        List<Boolean> matchResults = parseMatchResultsOfPlayer(matches, matchCountForGraph);
+        ArrayList<Entry> graphValues = generateDataSet(matchResults, matchCountForGraph);
+        buildMatchResultsGraph(graphValues);
+    }
 
-        ArrayList<Entry> values = new ArrayList<>();
+    private List<Boolean> parseMatchResultsOfPlayer(List<MatchHistory.Match> matches, int matchCountForGraph) {
+        List<Boolean> matchResults = new ArrayList<>();
 
-        for (int i = 0; i < count; i++) {
+        for (int i=0; i<matchCountForGraph; i++) {
+            MatchHistory.Match currentMatch = matches.get(i);
+            MatchHistory.MatchPlayer[] players = currentMatch.getPlayers();
+            MatchHistory.MatchPlayer currentPlayer = null;
 
-            float val = (float) (Math.random() * range) + 3;
-            values.add(new Entry(i, val));
+            // Gets the player in the match context, used for finding the player's slot
+            for(MatchHistory.MatchPlayer player: players) {
+                int steamId32 = (int) Long.parseLong(mCurrentPlayer.getSteamId());
+                if (steamId32 == player.getAccountId()) {
+                    currentPlayer = player;
+                }
+            }
+
+            boolean didPlayerWin = false;
+            // Identifies if the player won or not
+            if (currentMatch.didRadiantWin()) {
+                if (currentPlayer.getPlayerSlot() >> 7 == 0) {
+                    didPlayerWin = true;
+                }
+                else {
+                    didPlayerWin = false;
+                }
+            }
+            else {
+                if (currentPlayer.getPlayerSlot() >> 7 == 0) {
+                    didPlayerWin = false;
+                }
+                else {
+                    didPlayerWin = true;
+                }
+            }
+
+            matchResults.add(didPlayerWin);
         }
 
+        return matchResults;
+    }
+
+    private ArrayList<Entry> generateDataSet(List<Boolean> matchResults, int matchCountForGraph) {
+        ArrayList<Entry> values = new ArrayList<>();
+
+        int cumulativeValue = matchCountForGraph;
+        for (int i = 0; i < matchCountForGraph; i++) {
+            float val = matchResults.get(i)?cumulativeValue--:cumulativeValue++;
+            values.add(0, new Entry(matchCountForGraph-i, val));
+        }
+
+        return values;
+    }
+
+    private void buildMatchResultsGraph(ArrayList<Entry> values) {
         LineDataSet set1;
 
         if (mMatchesChart.getData() != null &&
                 mMatchesChart.getData().getDataSetCount() > 0) {
-            set1 = (LineDataSet)mMatchesChart.getData().getDataSetByIndex(0);
+            set1 = (LineDataSet) mMatchesChart.getData().getDataSetByIndex(0);
             set1.setValues(values);
             mMatchesChart.getData().notifyDataChanged();
             mMatchesChart.notifyDataSetChanged();
         } else {
-            // create a dataset and give it a type
-            set1 = new LineDataSet(values, "DataSet 1");
+            // Create a dataset and give it a type
+            set1 = new LineDataSet(values, "Match Results");
 
             set1.setColor(ContextCompat.getColor(getContext(), R.color.primary));
             set1.setCircleColor(ContextCompat.getColor(getContext(), R.color.primary_dark));
@@ -178,6 +230,7 @@ public class ProfileFragment extends BaseFragment {
 
             // set data
             mMatchesChart.setData(data);
+            mMatchesChart.invalidate();
         }
 
         mMatchesChart
@@ -192,13 +245,11 @@ public class ProfileFragment extends BaseFragment {
         xAxis.setDrawGridLines(false);
 
         YAxis leftAxis = mMatchesChart.getAxisLeft();
+        leftAxis.setDrawLabels(false);
+        leftAxis.setDrawAxisLine(false);
 
         YAxis rightAxis = mMatchesChart.getAxisRight();
         leftAxis.setDrawGridLines(false);
         rightAxis.setEnabled(false);
-    }
-
-    public void setCurrentPlayer(PlayerSummary.DotaPlayer player) {
-        this.mCurrentPlayer = player;
     }
 }
