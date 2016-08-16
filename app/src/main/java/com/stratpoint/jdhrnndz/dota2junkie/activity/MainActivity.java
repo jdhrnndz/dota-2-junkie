@@ -27,7 +27,6 @@ import com.stratpoint.jdhrnndz.dota2junkie.network.DotaApiResponseListener;
 import com.stratpoint.jdhrnndz.dota2junkie.network.UrlBuilder;
 
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Author: John Denielle F. Hernandez
@@ -104,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
             @Override
             public void onPageSelected(int position) {
                 if (position == TabFragment.PLAY_STYLE.getPosition() || position == TabFragment.PROFILE.getPosition())
-                    mAppBarLayout.setExpanded(false, false);
+                    mAppBarLayout.setExpanded(false, true);
             }
 
             @Override
@@ -169,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
                 if (!profileHasMatchData && matchesFragment.getMatches().size() >= mMatchCountForGraph) {
                     profileFragment.populateMatchResultsGraph(matchesFragment.getMatches(), mMatchCountForGraph);
                     profileHasMatchData = true;
-                };
+                }
                 break;
         }
     }
