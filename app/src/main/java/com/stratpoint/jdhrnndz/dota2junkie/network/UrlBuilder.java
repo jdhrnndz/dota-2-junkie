@@ -32,4 +32,16 @@ public class UrlBuilder {
 
         return url.toString();
     }
+
+    public static String buildHeroImageUrl(Context context, String heroName) {
+        return context.getString(R.string.get_hero_images) +
+                heroName +
+                context.getString(R.string.hero_image_suffix);
+    }
+
+    public static String buildItemImageUrlTemplate(Context context) {
+        return context.getString(R.string.get_item_images) +
+                "%s" +
+                context.getString(R.string.item_image_suffix);
+    }
 }
