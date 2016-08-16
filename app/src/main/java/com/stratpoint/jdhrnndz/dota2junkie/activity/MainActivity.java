@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
         args.put("account_id", mCurrentPlayer.getSteamId());
 
         // Build the url to retrieve match details
-        String url = UrlBuilder.buildUrl(MainActivity.this, R.string.get_match_history, args);
+        String url = UrlBuilder.buildGenericUrl(MainActivity.this, R.string.get_match_history, args);
 
         ApiManager.fetchMatchHistory(getApplicationContext(), url, this);
     }
@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
                 // Queues all the request for match details using fetched match IDs
                 for (MatchHistory.Match match : matches) {
                     args.put("match_id", String.valueOf(match.getId()));
-                    String url = UrlBuilder.buildUrl(getApplicationContext(), R.string.get_match_details, args);
+                    String url = UrlBuilder.buildGenericUrl(getApplicationContext(), R.string.get_match_details, args);
 
                     ApiManager.fetchMatchDetails(getApplicationContext(), url, MainActivity.this);
                 }

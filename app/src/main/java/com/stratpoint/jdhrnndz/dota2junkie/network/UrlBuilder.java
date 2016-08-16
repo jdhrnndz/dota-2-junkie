@@ -13,7 +13,7 @@ import java.util.HashMap;
  * Description: Utility class for building request urls
  */
 public class UrlBuilder {
-    public static String buildUrl(Context context, int endpoint, HashMap<String, String> args) {
+    public static String buildGenericUrl(Context context, int endpoint, HashMap<String, String> args) {
         Resources resources = context.getResources();
 
         StringBuilder url = new StringBuilder();

@@ -125,7 +125,7 @@ public class LogInActivity extends AppCompatActivity implements DotaApiResponseL
                 args.put("steamids", steamId);
 
                 // Build the url to retrieve user info
-                String url = UrlBuilder.buildUrl(LogInActivity.this, R.string.get_player_summaries, args);
+                String url = UrlBuilder.buildGenericUrl(LogInActivity.this, R.string.get_player_summaries, args);
 
                 ApiManager.fetchUserInfo(getApplicationContext(), url, LogInActivity.this);
             }
