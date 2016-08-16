@@ -14,6 +14,7 @@ import com.stratpoint.jdhrnndz.dota2junkie.customview.KdaBar;
 import com.stratpoint.jdhrnndz.dota2junkie.model.MatchHistory;
 import com.stratpoint.jdhrnndz.dota2junkie.R;
 import com.stratpoint.jdhrnndz.dota2junkie.model.PlayerSummary;
+import com.stratpoint.jdhrnndz.dota2junkie.network.UrlBuilder;
 import com.stratpoint.jdhrnndz.dota2junkie.network.VolleySingleton;
 
 import java.util.List;
@@ -110,19 +111,11 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
         holder.mAssistCount.setText(String.valueOf(mCurrentMatchPlayer.getAssists()));
 
         // Hero Image
-        StringBuilder heroUrl = new StringBuilder();
-        heroUrl.append(mContext.getString(R.string.get_hero_images));
-        heroUrl.append(MainActivity.heroRef.getHero(mCurrentMatchPlayer.getHeroId()).getName().substring(14));
-        heroUrl.append(mContext.getString(R.string.hero_image_suffix));
-        holder.mHeroImage.setImageUrl(heroUrl.toString(), imageLoader);
+        String heroImageUrl = UrlBuilder.buildHeroImageUrl(mContext, MainActivity.heroRef.getHero(mCurrentMatchPlayer.getHeroId()).getName().substring(14));
+        holder.mHeroImage.setImageUrl(heroImageUrl, imageLoader);
 
         // Item Images
-        StringBuilder itemUrlBuilder = new StringBuilder();
-        itemUrlBuilder.append(mContext.getString(R.string.get_item_images));
-        itemUrlBuilder.append("%s");
-        itemUrlBuilder.append(mContext.getString(R.string.item_image_suffix));
-
-        String itemUrl = itemUrlBuilder.toString();
+        String itemUrlTemplate = UrlBuilder.buildItemImageUrlTemplate(mContext);
 
         int[] items = {
                 mCurrentMatchPlayer.getItem0(),
@@ -141,29 +134,10 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
                 holder.mItemSlot4,
                 holder.mItemSlot5
         };
-        assignItemsToSlots(items, slots, itemUrl, imageLoader);
+        assignItemsToSlots(items, slots, itemUrlTemplate, imageLoader);
 
         // Match Duration
-        StringBuilder matchDuration = new StringBuilder();
-        long duration = item.getDuration();
-
-        long hours = TimeUnit.SECONDS.toHours(duration);
-        if (hours > 0) {
-            matchDuration.append(String.format(Locale.ENGLISH, "%02d", hours));
-            matchDuration.append(':');
-            duration -= TimeUnit.HOURS.toSeconds(hours);
-        }
-
-        long minutes = TimeUnit.SECONDS.toMinutes(duration);
-        if (minutes > 0) {
-            matchDuration.append(String.format(Locale.ENGLISH, "%02d", minutes));
-            matchDuration.append(':');
-            duration -= TimeUnit.MINUTES.toSeconds(minutes);
-        }
-
-        matchDuration.append(String.format(Locale.ENGLISH, "%02d", duration));
-
-        holder.mGameDuration.setText(matchDuration.toString());
+        holder.mGameDuration.setText(parseMatchDuration(item.getDuration()));
         // Match ID
         holder.mMatchId.setText(String.valueOf(item.getId()));
         // Match Mode
@@ -176,6 +150,26 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
             if (items[i] > 0)
                 slots[i].setImageUrl(String.format(itemUrl, MainActivity.itemRef.getItem(items[i]).getName().substring(5)), imageLoader);
         }
+    }
+
+    private String parseMatchDuration(long duration) {
+        StringBuilder matchDuration = new StringBuilder();
+
+        long hours = TimeUnit.SECONDS.toHours(duration);
+        if (hours > 0) {
+            matchDuration.append(String.format(Locale.ENGLISH, "%02d", hours));
+            matchDuration.append(':');
+            duration -= TimeUnit.HOURS.toSeconds(hours);
+        }
+
+        long minutes = TimeUnit.SECONDS.toMinutes(duration);
+        matchDuration.append(String.format(Locale.ENGLISH, "%02d", minutes));
+        matchDuration.append(':');
+        duration -= TimeUnit.MINUTES.toSeconds(minutes);
+
+        matchDuration.append(String.format(Locale.ENGLISH, "%02d", duration));
+
+        return matchDuration.toString();
     }
 
     @Override
