@@ -163,21 +163,11 @@ public class ProfileFragment extends BaseFragment {
 
             boolean didPlayerWin = false;
             // Identifies if the player won or not
-            if (currentMatch.didRadiantWin()) {
-                if (currentPlayer.getPlayerSlot() >> 7 == 0) {
-                    didPlayerWin = true;
-                }
-                else {
-                    didPlayerWin = false;
-                }
-            }
-            else {
-                if (currentPlayer.getPlayerSlot() >> 7 == 0) {
-                    didPlayerWin = false;
-                }
-                else {
-                    didPlayerWin = true;
-                }
+            if (currentPlayer != null) {
+                int playerSlot = currentPlayer.getPlayerSlot();
+                didPlayerWin = (currentMatch.didRadiantWin())?
+                        playerSlot >> 7 == 0:
+                        playerSlot >> 7 != 0;
             }
 
             matchResults.add(didPlayerWin);
