@@ -86,31 +86,18 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
             }
         }
 
-        int indicatorId;
-        // Match Item Result Indicator
-        if (item.didRadiantWin()) {
-            if (mCurrentMatchPlayer.getPlayerSlot() >> 7 == 0) {
-                indicatorId = R.drawable.victory_indicator;
-            }
-            else {
-                indicatorId = R.drawable.defeat_indicator;
-            }
-        }
-        else {
-            if (mCurrentMatchPlayer.getPlayerSlot() >> 7 == 0) {
-                indicatorId = R.drawable.defeat_indicator;
-            }
-            else {
-                indicatorId = R.drawable.victory_indicator;
-            }
+        boolean didPlayerWin = false;
+        // Identifies if the player won or not
+        if (mCurrentMatchPlayer != null) {
+            int playerSlot = mCurrentMatchPlayer.getPlayerSlot();
+            didPlayerWin = (item.didRadiantWin())?
+                    playerSlot >> 7 == 0:
+                    playerSlot >> 7 != 0;
         }
 
-        final int sdk = android.os.Build.VERSION.SDK_INT;
-        if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-            holder.mResultIndicator.setBackgroundDrawable(ContextCompat.getDrawable(mContext, indicatorId));
-        } else {
-            holder.mResultIndicator.setBackground(ContextCompat.getDrawable(mContext, indicatorId));
-        }
+        // Match Item Result Indicator
+        int indicatorId = didPlayerWin ? R.drawable.victory_indicator : R.drawable.defeat_indicator;
+        holder.mResultIndicator.setBackgroundResource(indicatorId);
 
         holder.mKdaBar.setValues(mCurrentMatchPlayer.getKills(), mCurrentMatchPlayer.getDeaths(), mCurrentMatchPlayer.getAssists());
 
