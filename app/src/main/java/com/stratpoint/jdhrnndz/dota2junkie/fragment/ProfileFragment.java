@@ -46,7 +46,8 @@ public class ProfileFragment extends BaseFragment {
         mUserPersonaName, mUserRealName, mUserCountry,
         mUserMemberSince, mUserSteamId, mUserLastLogOff;
     private LineChart mMatchesChart;
-
+    private List<MatchHistory.Match> mMatches;
+    private LineData mProfileGraphData;
     private PlayerSummary.DotaPlayer mCurrentPlayer;
 
     public static ProfileFragment newInstance() {
@@ -66,6 +67,18 @@ public class ProfileFragment extends BaseFragment {
         populateViews();
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (mProfileGraphData != null) {
+            // set data
+            mMatchesChart.setData(mProfileGraphData);
+            mMatchesChart.notifyDataSetChanged();
+            mMatchesChart.invalidate();
+        }
     }
 
     private void assignViews(View view) {
@@ -133,6 +146,25 @@ public class ProfileFragment extends BaseFragment {
         mUserLastLogOff
                 .setText(new SimpleDateFormat(datePattern, Locale.ENGLISH)
                 .format(dLastLagOff));
+
+        mMatchesChart
+                .setTouchEnabled(false);
+        mMatchesChart.setDescription(getResources()
+                .getString(R.string.profile_description_matches_graph));
+        mMatchesChart
+                .setDescriptionColor(ContextCompat.getColor(getContext(), R.color.primary_dark));
+
+        XAxis xAxis = mMatchesChart.getXAxis();
+        xAxis.setEnabled(false);
+        xAxis.setDrawGridLines(false);
+
+        YAxis leftAxis = mMatchesChart.getAxisLeft();
+        leftAxis.setDrawLabels(false);
+        leftAxis.setDrawAxisLine(false);
+
+        YAxis rightAxis = mMatchesChart.getAxisRight();
+        leftAxis.setDrawGridLines(false);
+        rightAxis.setEnabled(false);
     }
 
     public void setCurrentPlayer(PlayerSummary.DotaPlayer player) {
@@ -140,7 +172,8 @@ public class ProfileFragment extends BaseFragment {
     }
 
     public void populateMatchResultsGraph(List<MatchHistory.Match> matches, int matchCountForGraph) {
-        List<Boolean> matchResults = parseMatchResultsOfPlayer(matches, matchCountForGraph);
+        mMatches = matches;
+        List<Boolean> matchResults = parseMatchResultsOfPlayer(mMatches, matchCountForGraph);
         ArrayList<Entry> graphValues = generateDataSet(matchResults, matchCountForGraph);
         buildMatchResultsGraph(graphValues);
     }
@@ -189,57 +222,31 @@ public class ProfileFragment extends BaseFragment {
     }
 
     private void buildMatchResultsGraph(ArrayList<Entry> values) {
-        LineDataSet set1;
+        LineDataSet matchResultDataSet;
 
-        if (mMatchesChart.getData() != null &&
-                mMatchesChart.getData().getDataSetCount() > 0) {
-            set1 = (LineDataSet) mMatchesChart.getData().getDataSetByIndex(0);
-            set1.setValues(values);
-            mMatchesChart.getData().notifyDataChanged();
-            mMatchesChart.notifyDataSetChanged();
-        } else {
-            // Create a dataset and give it a type
-            set1 = new LineDataSet(values, "Match Results");
+        // Create a dataset and give it a type
+        matchResultDataSet = new LineDataSet(values, "Match Results");
 
-            set1.setColor(ContextCompat.getColor(getContext(), R.color.primary));
-            set1.setCircleColor(ContextCompat.getColor(getContext(), R.color.primary_dark));
-            set1.setLineWidth(1.5f);
-            set1.setCircleRadius(3f);
-            set1.setDrawCircleHole(false);
-            set1.setDrawFilled(true);
-            set1.setFillColor(ContextCompat.getColor(getContext(), R.color.primary));
+        matchResultDataSet.setColor(ContextCompat.getColor(getContext(), R.color.primary));
+        matchResultDataSet.setCircleColor(ContextCompat.getColor(getContext(), R.color.primary_dark));
+        matchResultDataSet.setLineWidth(1.5f);
+        matchResultDataSet.setCircleRadius(3f);
+        matchResultDataSet.setDrawCircleHole(false);
+        matchResultDataSet.setDrawFilled(true);
+        matchResultDataSet.setFillColor(ContextCompat.getColor(getContext(), R.color.primary));
 
-            // Prevents node values to be displayed
-            set1.setDrawValues(false);
+        // Prevents node values to be displayed
+        matchResultDataSet.setDrawValues(false);
 
-            ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-            dataSets.add(set1); // add the datasets
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+        dataSets.add(matchResultDataSet); // add the datasets
 
-            // create a data object with the datasets
-            LineData data = new LineData(dataSets);
+        // create a data object with the datasets
+        mProfileGraphData = new LineData(dataSets);
 
-            // set data
-            mMatchesChart.setData(data);
-            mMatchesChart.invalidate();
-        }
-
-        mMatchesChart
-                .setTouchEnabled(false);
-        mMatchesChart.setDescription(getResources()
-                .getString(R.string.profile_description_matches_graph));
-        mMatchesChart
-                .setDescriptionColor(ContextCompat.getColor(getContext(), R.color.primary_dark));
-
-        XAxis xAxis = mMatchesChart.getXAxis();
-        xAxis.setEnabled(false);
-        xAxis.setDrawGridLines(false);
-
-        YAxis leftAxis = mMatchesChart.getAxisLeft();
-        leftAxis.setDrawLabels(false);
-        leftAxis.setDrawAxisLine(false);
-
-        YAxis rightAxis = mMatchesChart.getAxisRight();
-        leftAxis.setDrawGridLines(false);
-        rightAxis.setEnabled(false);
+        // set data
+        mMatchesChart.setData(mProfileGraphData);
+        mMatchesChart.notifyDataSetChanged();
+        mMatchesChart.invalidate();
     }
 }

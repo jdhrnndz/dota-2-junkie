@@ -166,8 +166,8 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
 
                 matchesFragment.updateMatches(((MatchHistory.Match) response));
                 if (!profileHasMatchData && matchesFragment.getMatches().size() >= mMatchCountForGraph) {
-                    profileFragment.populateMatchResultsGraph(matchesFragment.getMatches(), mMatchCountForGraph);
                     profileHasMatchData = true;
+                    profileFragment.populateMatchResultsGraph(matchesFragment.getMatches(), mMatchCountForGraph);
                 }
                 break;
         }
