@@ -10,7 +10,7 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
-import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.android.volley.VolleyError;
 import com.stratpoint.jdhrnndz.dota2junkie.R;
@@ -20,6 +20,11 @@ import com.stratpoint.jdhrnndz.dota2junkie.network.UrlBuilder;
 import com.stratpoint.jdhrnndz.dota2junkie.util.StringAssetReader;
 
 import java.util.HashMap;
+
+import butterknife.BindString;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Author: John Denielle F. Hernandez
@@ -33,46 +38,44 @@ public class LogInActivity extends AppCompatActivity implements DotaApiResponseL
     private ProgressDialog mLogInDialog;
     private Snackbar mErrorMessage;
     private Intent mLogInIntent;
-    private AppCompatButton mLogInButton;
+    @BindView(R.id.sign_in_layout) RelativeLayout mRootView;
+    @BindView(R.id.button_log_in) AppCompatButton mLogInButton;
+    @BindView(R.id.user_sign_up_steam_id) TextInputEditText mLogInInput;
+    @BindString(R.string.sharedpref_herojson_key) String heroJsonKey;
+    @BindString(R.string.sharedpref_itemjson_key) String itemJsonKey;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+        ButterKnife.bind(this);
 
-        // Map views from content view as the activity's attributes
-        assignViews();
+        // Initialize objects that are not needed to be in the xml layout
+        initObjects();
         // Assign values to views
         populateViews();
 
         // Store some values in the shared preferences
         SharedPreferences defaultSP =  PreferenceManager.getDefaultSharedPreferences(this);
 
-        // TODO: for testing purposes: defaultSP.edit().clear().apply();
-        String heroJson = defaultSP.getString("heroJson", "");
-        String itemJson = defaultSP.getString("itemJson", "");
+        String heroJson = defaultSP.getString(heroJsonKey, "");
+        String itemJson = defaultSP.getString(itemJsonKey, "");
 
-        String heroesJsonString = "";
-        String itemsJsonString = "";
         try {
-            heroesJsonString = StringAssetReader.getStringFromAsset(this, "heroes.json");
-            itemsJsonString = StringAssetReader.getStringFromAsset(this, "items.json");
+            String heroesJsonString;
+            String itemsJsonString;
+
+            if ("".equals(heroJson)) {
+                heroesJsonString = StringAssetReader.getStringFromAsset(this, "heroes.json");
+                defaultSP.edit().putString(heroJsonKey, heroesJsonString).apply();
+            }
+            if ("".equals(itemJson)) {
+                itemsJsonString = StringAssetReader.getStringFromAsset(this, "items.json");
+                defaultSP.edit().putString(itemJsonKey, itemsJsonString).apply();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        if ("".equals(heroJson)) {
-            defaultSP.edit()
-                    .putString("heroJson", heroesJsonString)
-                    .apply();
-        }
-        if ("".equals(itemJson)) {
-        defaultSP.edit()
-                .putString("itemJson", itemsJsonString)
-                .apply();
-        }
-
-        mLogInButton.performClick();
     }
 
     @Override
@@ -82,6 +85,7 @@ public class LogInActivity extends AppCompatActivity implements DotaApiResponseL
     }
 
     public void onReceiveResponse(int statusCode, Object responseString, int type) {
+        // Change dialog message when player info has been received
         mLogInDialog.setMessage(getResources().getString(R.string.log_in_response_message));
         // Pass response to the main activity
         mLogInIntent.putExtra(EXTRA_USER_INFO, (String) responseString);
@@ -90,18 +94,18 @@ public class LogInActivity extends AppCompatActivity implements DotaApiResponseL
 
     public void onReceiveErrorResponse(int statusCode, VolleyError error) {
         mLogInDialog.dismiss();
-        mErrorMessage.show();
+        if(!mErrorMessage.isShown()) {
+            mErrorMessage.show();
+        }
     }
 
-    private void assignViews() {
+    private void initObjects() {
+        // Shown while fetching user info
         mLogInDialog = new ProgressDialog(this);
-        mLogInButton = (AppCompatButton) findViewById(R.id.button_log_in);
-
-        mErrorMessage =
-                Snackbar.make(findViewById(R.id.sign_in_layout),
-                        R.string.log_in_error_message,
-                        Snackbar.LENGTH_LONG);
+        // Stores hero and item references
         mLogInIntent = new Intent(this, MainActivity.class);
+        // Shown when fetching player info fails
+        mErrorMessage = Snackbar.make(mRootView, R.string.log_in_error_message, Snackbar.LENGTH_LONG);
     }
 
     private void populateViews() {
@@ -112,23 +116,21 @@ public class LogInActivity extends AppCompatActivity implements DotaApiResponseL
 
         Typeface fontAwesome = Typeface.createFromAsset(getAssets(), "fontAwesome.ttf");
         mLogInButton.setTypeface(fontAwesome);
+    }
 
-        mLogInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mLogInDialog.show();
+    @OnClick(R.id.button_log_in)
+    public void logIn() {
+        mLogInDialog.show();
 
-                // Build the url's query section
-                HashMap<String, String> args = new HashMap<>();
+        // Build the url's query section
+        HashMap<String, String> args = new HashMap<>();
 
-                String steamId = ((TextInputEditText) findViewById(R.id.user_sign_up_steam_id)).getText().toString();
-                args.put("steamids", steamId);
+        String steamId = mLogInInput.getText().toString();
+        args.put("steamids", steamId);
 
-                // Build the url to retrieve user info
-                String url = UrlBuilder.buildGenericUrl(LogInActivity.this, R.string.get_player_summaries, args);
+        // Build the url to retrieve user info
+        String url = UrlBuilder.buildGenericUrl(LogInActivity.this, R.string.get_player_summaries, args);
 
-                ApiManager.fetchUserInfo(getApplicationContext(), url, LogInActivity.this);
-            }
-        });
+        ApiManager.fetchUserInfo(getApplicationContext(), url, LogInActivity.this);
     }
 }
