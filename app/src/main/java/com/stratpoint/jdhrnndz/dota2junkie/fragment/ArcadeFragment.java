@@ -18,14 +18,14 @@ import java.util.ArrayList;
 /**
  * Created by johndeniellehernandez on 7/21/16.
  */
-public class PlayStyleFragment extends BaseFragment {
-    private final static int LAYOUT = R.layout.fragment_play_style;
+public class ArcadeFragment extends BaseFragment {
+    private final static int LAYOUT = R.layout.fragment_arcade;
 
     private RadarChart mPlayStyleChart;
 
-    public static PlayStyleFragment newInstance() {
+    public static ArcadeFragment newInstance() {
         Bundle args = initBundle(LAYOUT);
-        PlayStyleFragment fragment = new PlayStyleFragment();
+        ArcadeFragment fragment = new ArcadeFragment();
         fragment.setArguments(args);
         return fragment;
     }
