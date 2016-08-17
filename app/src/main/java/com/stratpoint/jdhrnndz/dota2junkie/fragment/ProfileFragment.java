@@ -225,7 +225,7 @@ public class ProfileFragment extends BaseFragment {
         LineDataSet matchResultDataSet;
 
         // Create a dataset and give it a type
-        matchResultDataSet = new LineDataSet(values, "Match Results");
+        matchResultDataSet = new LineDataSet(values, null);
 
         matchResultDataSet.setColor(ContextCompat.getColor(getContext(), R.color.primary));
         matchResultDataSet.setCircleColor(ContextCompat.getColor(getContext(), R.color.primary_dark));
