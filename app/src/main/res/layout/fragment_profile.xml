@@ -141,6 +141,18 @@
             android:layout_marginRight="8dp"/>
     </GridLayout>
 
+    <ProgressBar
+        android:id="@+id/matches_chart_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:indeterminate="false"
+        android:theme="@style/D2JProgressBar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/user_info"
+        android:layout_alignParentBottom="true"/>
+
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/matches_chart"
         android:layout_width="match_parent"

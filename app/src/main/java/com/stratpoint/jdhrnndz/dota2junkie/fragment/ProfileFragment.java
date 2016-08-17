@@ -49,6 +49,8 @@ public class ProfileFragment extends BaseFragment {
     private List<MatchHistory.Match> mMatches;
     private LineData mProfileGraphData;
     private PlayerSummary.DotaPlayer mCurrentPlayer;
+    private ProgressBar mMatchesChartProgressBar;
+    private int mMatchesChartProgress = 0;
 
     public static ProfileFragment newInstance() {
         Bundle args = initBundle(LAYOUT);
@@ -77,6 +79,8 @@ public class ProfileFragment extends BaseFragment {
             // set data
             mMatchesChart.setData(mProfileGraphData);
             mMatchesChart.notifyDataSetChanged();
+            mMatchesChartProgressBar.setVisibility(View.GONE);
+            mMatchesChart.setVisibility(View.VISIBLE);
             mMatchesChart.invalidate();
         }
     }
@@ -97,6 +101,7 @@ public class ProfileFragment extends BaseFragment {
         mUserLastLogOff = (TextView) view.findViewById(R.id.user_last_log_off);
 
         mMatchesChart = (LineChart) view.findViewById(R.id.matches_chart);
+        mMatchesChartProgressBar = (ProgressBar) view.findViewById(R.id.matches_chart_progress_bar);
     }
 
     private void populateViews() {
@@ -153,6 +158,7 @@ public class ProfileFragment extends BaseFragment {
                 .getString(R.string.profile_description_matches_graph));
         mMatchesChart
                 .setDescriptionColor(ContextCompat.getColor(getContext(), R.color.primary_dark));
+        mMatchesChart.setVisibility(View.GONE);
 
         XAxis xAxis = mMatchesChart.getXAxis();
         xAxis.setEnabled(false);
@@ -165,10 +171,16 @@ public class ProfileFragment extends BaseFragment {
         YAxis rightAxis = mMatchesChart.getAxisRight();
         leftAxis.setDrawGridLines(false);
         rightAxis.setEnabled(false);
+        mMatchesChartProgressBar.setMax(20);
     }
 
     public void setCurrentPlayer(PlayerSummary.DotaPlayer player) {
         this.mCurrentPlayer = player;
+    }
+
+    public void incrementProgress() {
+        mMatchesChartProgressBar.setProgress(++mMatchesChartProgress);
+        mMatchesChartProgressBar.invalidate();
     }
 
     public void populateMatchResultsGraph(List<MatchHistory.Match> matches, int matchCountForGraph) {
@@ -247,6 +259,8 @@ public class ProfileFragment extends BaseFragment {
         // set data
         mMatchesChart.setData(mProfileGraphData);
         mMatchesChart.notifyDataSetChanged();
+        mMatchesChartProgressBar.setVisibility(View.GONE);
+        mMatchesChart.setVisibility(View.VISIBLE);
         mMatchesChart.invalidate();
     }
 }

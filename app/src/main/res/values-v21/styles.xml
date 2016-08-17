@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="D2JProgressBar" parent="Theme.AppCompat.Light">
+        <item name="colorAccent">@color/primary</item>
+        <item name="android:progressBackgroundTint">@color/md_red_300</item>
+    </style>
+</resources>
