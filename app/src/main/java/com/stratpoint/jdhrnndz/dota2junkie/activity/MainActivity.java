@@ -132,6 +132,7 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
         HashMap<String, String> args = new HashMap<>();
 
         args.put("account_id", mCurrentPlayer.getSteamId());
+        args.put("matches_requested", "20");
 
         // Build the url to retrieve match details
         String url = UrlBuilder.buildGenericUrl(MainActivity.this, R.string.get_match_history, args);
