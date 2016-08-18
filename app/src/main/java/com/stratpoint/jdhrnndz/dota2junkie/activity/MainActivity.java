@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -28,6 +29,10 @@ import com.stratpoint.jdhrnndz.dota2junkie.network.UrlBuilder;
 
 import java.util.HashMap;
 
+import butterknife.BindString;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Author: John Denielle F. Hernandez
  * Date: 8/8/16
@@ -37,26 +42,31 @@ import java.util.HashMap;
  * api and distribute the proper data among its fragments.
  */
 public class MainActivity extends AppCompatActivity implements DotaApiResponseListener{
-    private ViewPager mViewPager;
-    private TabLayout mTabLayout;
-    private Toolbar mToolbar;
-    private AppBarLayout mAppBarLayout;
+    private final int MATCH_COUNT_FOR_GRAPH = 20;
 
-    private boolean profileHasMatchData = false;
+    @BindView(R.id.viewpager) ViewPager mViewPager;
+    @BindView(R.id.tabs) TabLayout mTabLayout;
+    @BindView(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.appbar) AppBarLayout mAppBarLayout;
+    @BindView(R.id.main_layout) CoordinatorLayout mRootView;
 
     private PlayerSummary.DotaPlayer mCurrentPlayer;
+    private boolean profileHasMatchData = false;
+
+    @BindString(R.string.sharedpref_herojson_key) String heroJsonKey;
+    @BindString(R.string.sharedpref_itemjson_key) String itemJsonKey;
+
     public static HeroReference heroRef;
     public static ItemReference itemRef;
 
-    private int mMatchCountForGraph = 20;
+    private Snackbar mErrorMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
-        // Map views from content view as the activity's attributes
-        assignViews();
         // Assign values to views
         populateViews();
 
@@ -66,9 +76,10 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
         // Gets the list of matches with only the basic match info, requests for details afterwards
         fetchMatchHistoryFromNetwork();
 
+        // Retrieve hero and item references from SharedPreferences
         SharedPreferences defaultSP = PreferenceManager.getDefaultSharedPreferences(this);
-        String heroJson = defaultSP.getString("heroJson", "");
-        String itemJson = defaultSP.getString("itemJson", "");
+        String heroJson = defaultSP.getString(heroJsonKey, "");
+        String itemJson = defaultSP.getString(itemJsonKey, "");
         Gson gson = new Gson();
         heroRef = gson.fromJson(heroJson, HeroReference.class);
         itemRef = gson.fromJson(itemJson, ItemReference.class);
@@ -76,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
 
     @Override
     public void onBackPressed() {
+        // Goes back to the previous tab or to the log in screen (if the current tab is the first)
         int currentItem = mViewPager.getCurrentItem();
         if (currentItem == 0) {
             super.onBackPressed();
@@ -84,15 +96,10 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
         }
     }
 
-    private void assignViews() {
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mViewPager = (ViewPager) findViewById(R.id.viewpager);
-        mTabLayout = (TabLayout) findViewById(R.id.tabs);
-        mAppBarLayout = (AppBarLayout) findViewById(R.id.appbar);
-    }
-
     private void populateViews() {
+        // Custom Toolbar
         setSupportActionBar(mToolbar);
+        // Use custom adapter
         mViewPager.setAdapter(new AppFragmentPagerAdapter(getSupportFragmentManager()));
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -102,7 +109,8 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
 
             @Override
             public void onPageSelected(int position) {
-                if (position == TabFragment.PLAY_STYLE.getPosition() || position == TabFragment.PROFILE.getPosition())
+                // Returns the toolbar to the collapsed state when not in scrollable tab
+                if (position == TabFragment.ARCADE.getPosition() || position == TabFragment.PROFILE.getPosition())
                     mAppBarLayout.setExpanded(false, true);
             }
 
@@ -113,17 +121,20 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
         });
         mTabLayout.setupWithViewPager(mViewPager);
         mAppBarLayout.setExpanded(false, false);
+
+        mErrorMessage = Snackbar.make(mRootView, R.string.match_history_error_message, Snackbar.LENGTH_LONG);
     }
 
     private void parseUserInfoFromIntent() {
         Gson gson = new GsonBuilder().create();
 
+        // Retrieves user info from intent (value provided by LogInActivity) as string
         String userInfoString = getIntent().getStringExtra(LogInActivity.EXTRA_USER_INFO);
-
+        // Converts user info string to an object
         PlayerSummary playerSummary = gson.fromJson(userInfoString, PlayerSummary.class);
-
+        // Get the first (and only) player in the result object
         mCurrentPlayer = playerSummary.getResponse().getPlayers()[0];
-
+        // Pass the player object to Match Tab
         ((MatchesFragment) TabFragment.MATCHES.getFragment()).setCurrentPlayer(mCurrentPlayer);
     }
 
@@ -131,13 +142,15 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
         // Build the url's query section
         HashMap<String, String> args = new HashMap<>();
 
+        // Add query attributes
         args.put("account_id", mCurrentPlayer.getSteamId());
         args.put("matches_requested", "20");
 
         // Build the url to retrieve match details
-        String url = UrlBuilder.buildGenericUrl(MainActivity.this, R.string.get_match_history, args);
+        String url = UrlBuilder.buildGenericUrl(this, R.string.get_match_history, args);
 
-        ApiManager.fetchMatchHistory(getApplicationContext(), url, this);
+        // First param as context, third as DotaApiResponseListener
+        ApiManager.fetchMatchHistory(this, url, this);
     }
 
     public void onReceiveResponse(int statusCode, Object response, int type) {
@@ -151,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
                 // Build the url's query section
                 HashMap<String, String> args = new HashMap<>();
 
-                // Queues all the request for match details using fetched match IDs
+                // Queues all the request for match details using the fetched match IDs
                 for (MatchHistory.Match match : matches) {
                     args.put("match_id", String.valueOf(match.getId()));
                     String url = UrlBuilder.buildGenericUrl(getApplicationContext(), R.string.get_match_details, args);
@@ -160,16 +173,16 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
                 }
                 break;
             case ApiManager.MATCH_DETAILS_RESPONSE_TYPE:
-                // Updates the matches in the match fragment everytime a response for match details
-                // arrives
+                // Updates the matches in the match fragment everytime a response for match details arrives
                 MatchesFragment matchesFragment = (MatchesFragment) TabFragment.MATCHES.getFragment();
                 ProfileFragment profileFragment = (ProfileFragment) TabFragment.PROFILE.getFragment();
 
                 matchesFragment.updateMatches(((MatchHistory.Match) response));
+                // Updates progress 'til the number of received matches == MATCH_COUNT_FOR_GRAPH
                 if (!profileHasMatchData) {
-                    if (matchesFragment.getMatches().size() >= mMatchCountForGraph) {
+                    if (matchesFragment.getMatches().size() >= MATCH_COUNT_FOR_GRAPH) {
                         profileHasMatchData = true;
-                        profileFragment.populateMatchResultsGraph(matchesFragment.getMatches(), mMatchCountForGraph);
+                        profileFragment.populateMatchResultsGraph(matchesFragment.getMatches(), MATCH_COUNT_FOR_GRAPH);
                     } else {
                         profileFragment.incrementProgress();
                     }
@@ -179,9 +192,6 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
     }
 
     public void onReceiveErrorResponse(int statusCode, VolleyError error) {
-        Snackbar mErrorMessage = Snackbar.make(findViewById(R.id.recycler_view_matches),
-                R.string.match_history_error_message,
-                Snackbar.LENGTH_LONG);
-        mErrorMessage.show();
+        if(!mErrorMessage.isShown()) mErrorMessage.show(); // Don't spam the error message
     }
 }
