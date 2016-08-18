@@ -2,7 +2,7 @@ package com.stratpoint.jdhrnndz.dota2junkie.fragment;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +31,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import butterknife.BindColor;
+import butterknife.BindString;
+import butterknife.BindView;
+import butterknife.BindViews;
+import butterknife.ButterKnife;
+
 /**
  * Author: John Denielle F. Hernandez
  * Date: 7/21/16
@@ -39,17 +45,29 @@ import java.util.Locale;
  */
 public class ProfileFragment extends BaseFragment {
     private final static int LAYOUT = R.layout.fragment_profile;
-    private NetworkImageView mUserAvatar;
-    private ProgressBar mUserAvatarProgressBar;
-    private AppCompatButton mMemberSinceSigil, mSteamIdSigil, mLastLogOffSigil;
-    private TextView
-        mUserPersonaName, mUserRealName, mUserCountry,
-        mUserMemberSince, mUserSteamId, mUserLastLogOff;
-    private LineChart mMatchesChart;
-    private List<MatchHistory.Match> mMatches;
-    private LineData mProfileGraphData;
-    private PlayerSummary.DotaPlayer mCurrentPlayer;
-    private ProgressBar mMatchesChartProgressBar;
+
+    @BindView(R.id.user_avatar) NetworkImageView mUserAvatar;
+    @BindView(R.id.user_avatar_progress_bar) ProgressBar mUserAvatarProgressBar;
+    @BindViews({ R.id.symbol_member_since, R.id.symbol_steam_id, R.id.symbol_last_log_off })
+    List<AppCompatButton> mSymbols;
+    @BindView(R.id.user_persona_name) TextView mUserPersonaName;
+    @BindView(R.id.user_real_name) TextView mUserRealName;
+    @BindView(R.id.user_country) TextView mUserCountry;
+    @BindView(R.id.user_member_since) TextView mUserMemberSince;
+    @BindView(R.id.user_steam_id) TextView mUserSteamId;
+    @BindView(R.id.user_last_log_off) TextView mUserLastLogOff;
+    @BindView(R.id.matches_chart) LineChart mMatchesChart;
+    @BindView(R.id.matches_chart_progress_bar) ProgressBar mMatchesChartProgressBar;
+
+    @BindString(R.string.profile_pattern_date) String mDatePattern;
+    @BindString(R.string.profile_description_matches_graph) String mMatchesChartDescription;
+
+    @BindColor(R.color.primary) int mPrimaryColor;
+    @BindColor(R.color.primary_dark) int mPrimaryDarkColor;
+
+    List<MatchHistory.Match> mMatches;
+    LineData mProfileGraphData;
+    PlayerSummary.DotaPlayer mCurrentPlayer;
     private int mMatchesChartProgress = 0;
 
     public static ProfileFragment newInstance() {
@@ -62,9 +80,8 @@ public class ProfileFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(mLayout, container, false);
+        ButterKnife.bind(this, view);
 
-        // Map views from content view as the activity's attributes
-        assignViews(view);
         // Assign values to views from the user info passed via the intent
         populateViews();
 
@@ -76,36 +93,18 @@ public class ProfileFragment extends BaseFragment {
         super.onResume();
 
         if (mProfileGraphData != null) {
-            // set data
-            mMatchesChart.setData(mProfileGraphData);
-            mMatchesChart.notifyDataSetChanged();
-            mMatchesChartProgressBar.setVisibility(View.GONE);
-            mMatchesChart.setVisibility(View.VISIBLE);
-            mMatchesChart.invalidate();
+            activateChart();
         }
     }
 
-    private void assignViews(View view) {
-        mUserAvatar = (NetworkImageView) view.findViewById(R.id.user_avatar);
-        mUserAvatarProgressBar = (ProgressBar) view.findViewById(R.id.user_avatar_progress_bar);
-
-        mUserPersonaName = (TextView) view.findViewById(R.id.user_persona_name);
-        mUserRealName = (TextView) view.findViewById(R.id.user_real_name);
-        mUserCountry = (TextView) view.findViewById(R.id.user_country);
-
-        mMemberSinceSigil = (AppCompatButton) view.findViewById(R.id.sigil_member_since);
-        mUserMemberSince = (TextView) view.findViewById(R.id.user_member_since);
-        mSteamIdSigil = (AppCompatButton) view.findViewById(R.id.sigil_steam_id);
-        mUserSteamId = (TextView) view.findViewById(R.id.user_steam_id);
-        mLastLogOffSigil = (AppCompatButton) view.findViewById(R.id.sigil_last_log_off);
-        mUserLastLogOff = (TextView) view.findViewById(R.id.user_last_log_off);
-
-        mMatchesChart = (LineChart) view.findViewById(R.id.matches_chart);
-        mMatchesChartProgressBar = (ProgressBar) view.findViewById(R.id.matches_chart_progress_bar);
-    }
+    // Sets a custom typeface via ButterKnife's apply method
+    static final ButterKnife.Setter<View, Typeface> TYPEFACE = new ButterKnife.Setter<View, Typeface>() {
+        @Override public void set(@NonNull View view, Typeface value, int index) {
+            ((AppCompatButton)view).setTypeface(value);
+        }
+    };
 
     private void populateViews() {
-
         ImageLoader imageLoader = VolleySingleton.getInstance(getActivity()).getImageLoader();
 
         mUserAvatar.setImageUrl(mCurrentPlayer.getAvatarFull(), imageLoader);
@@ -115,24 +114,22 @@ public class ProfileFragment extends BaseFragment {
         mUserCountry.setText(mCurrentPlayer.getCountryCode());
 
         Typeface fontAwesome = Typeface.createFromAsset(getActivity().getAssets(), "fontAwesome.ttf");
-        mMemberSinceSigil.setTypeface(fontAwesome);
-        mSteamIdSigil.setTypeface(fontAwesome);
-        mLastLogOffSigil.setTypeface(fontAwesome);
+        ButterKnife.apply(mSymbols, TYPEFACE, fontAwesome);
 
-        // Converts seconds representation of the time created into the pattern below using the
+        // Initialize Parser and Formatter objects
+        SimpleDateFormat mDateParser = new SimpleDateFormat("s", Locale.ENGLISH);
+        SimpleDateFormat mDateFormatter = new SimpleDateFormat(mDatePattern, Locale.ENGLISH);
+
+        // Parses time created value and formats into the pattern below using the
         // SimpleDateFormat class
-        String datePattern = getResources().getString(R.string.profile_pattern_date);
         Date dMemberSince = null;
         try{
-            dMemberSince = new SimpleDateFormat("s", Locale.ENGLISH)
-                    .parse(String.valueOf(mCurrentPlayer.getTimeCreated()));
+            dMemberSince = mDateParser.parse(String.valueOf(mCurrentPlayer.getTimeCreated()));
         }
         catch(ParseException pe) {
             pe.printStackTrace();
         }
-        mUserMemberSince
-                .setText(new SimpleDateFormat(datePattern, Locale.ENGLISH)
-                .format(dMemberSince));
+        mUserMemberSince.setText(mDateFormatter.format(dMemberSince));
 
         // Casting long to int to obtain the SteamID32 version
         int steamId32 = (int) Long.parseLong(mCurrentPlayer.getSteamId());
@@ -142,22 +139,17 @@ public class ProfileFragment extends BaseFragment {
         // since value using the SimpleDateFormat class
         Date dLastLagOff = null;
         try{
-            dLastLagOff = new SimpleDateFormat("s", Locale.ENGLISH)
-                    .parse(String.valueOf(mCurrentPlayer.getLastLogOff()));
+            dLastLagOff = mDateParser.parse(String.valueOf(mCurrentPlayer.getLastLogOff()));
         }
         catch(ParseException pe) {
             pe.printStackTrace();
         }
-        mUserLastLogOff
-                .setText(new SimpleDateFormat(datePattern, Locale.ENGLISH)
-                .format(dLastLagOff));
+        mUserLastLogOff.setText(mDateFormatter.format(dLastLagOff));
 
-        mMatchesChart
-                .setTouchEnabled(false);
-        mMatchesChart.setDescription(getResources()
-                .getString(R.string.profile_description_matches_graph));
-        mMatchesChart
-                .setDescriptionColor(ContextCompat.getColor(getContext(), R.color.primary_dark));
+        // Configure Matches Chart - Touch Disabled, No Grids and Axes, No Left Axis Labels
+        mMatchesChart.setTouchEnabled(false);
+        mMatchesChart.setDescription(mMatchesChartDescription);
+        mMatchesChart.setDescriptionColor(mPrimaryDarkColor);
         mMatchesChart.setVisibility(View.GONE);
 
         XAxis xAxis = mMatchesChart.getXAxis();
@@ -169,8 +161,9 @@ public class ProfileFragment extends BaseFragment {
         leftAxis.setDrawAxisLine(false);
 
         YAxis rightAxis = mMatchesChart.getAxisRight();
-        leftAxis.setDrawGridLines(false);
         rightAxis.setEnabled(false);
+        leftAxis.setDrawGridLines(false);
+
         mMatchesChartProgressBar.setMax(20);
     }
 
@@ -180,7 +173,6 @@ public class ProfileFragment extends BaseFragment {
 
     public void incrementProgress() {
         mMatchesChartProgressBar.setProgress(++mMatchesChartProgress);
-        mMatchesChartProgressBar.invalidate();
     }
 
     public void populateMatchResultsGraph(List<MatchHistory.Match> matches, int matchCountForGraph) {
@@ -199,15 +191,15 @@ public class ProfileFragment extends BaseFragment {
             MatchHistory.MatchPlayer currentPlayer = null;
 
             // Gets the player in the match context, used for finding the player's slot
+            int steamId32 = (int) Long.parseLong(mCurrentPlayer.getSteamId());
             for(MatchHistory.MatchPlayer player: players) {
-                int steamId32 = (int) Long.parseLong(mCurrentPlayer.getSteamId());
                 if (steamId32 == player.getAccountId()) {
                     currentPlayer = player;
                 }
             }
 
-            boolean didPlayerWin = false;
             // Identifies if the player won or not
+            boolean didPlayerWin = false;
             if (currentPlayer != null) {
                 int playerSlot = currentPlayer.getPlayerSlot();
                 didPlayerWin = (currentMatch.didRadiantWin())?
@@ -239,24 +231,27 @@ public class ProfileFragment extends BaseFragment {
         // Create a dataset and give it a type
         matchResultDataSet = new LineDataSet(values, null);
 
-        matchResultDataSet.setColor(ContextCompat.getColor(getContext(), R.color.primary));
-        matchResultDataSet.setCircleColor(ContextCompat.getColor(getContext(), R.color.primary_dark));
+        matchResultDataSet.setColor(mPrimaryColor);
+        matchResultDataSet.setCircleColor(mPrimaryDarkColor);
         matchResultDataSet.setLineWidth(1.5f);
         matchResultDataSet.setCircleRadius(3f);
         matchResultDataSet.setDrawCircleHole(false);
         matchResultDataSet.setDrawFilled(true);
-        matchResultDataSet.setFillColor(ContextCompat.getColor(getContext(), R.color.primary));
+        matchResultDataSet.setFillColor(mPrimaryColor);
 
         // Prevents node values to be displayed
         matchResultDataSet.setDrawValues(false);
 
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-        dataSets.add(matchResultDataSet); // add the datasets
+        dataSets.add(matchResultDataSet); // Add the dataset
 
-        // create a data object with the datasets
+        // Create a data object with the datasets
         mProfileGraphData = new LineData(dataSets);
 
-        // set data
+        activateChart();
+    }
+
+    private void activateChart() {
         mMatchesChart.setData(mProfileGraphData);
         mMatchesChart.notifyDataSetChanged();
         mMatchesChartProgressBar.setVisibility(View.GONE);
