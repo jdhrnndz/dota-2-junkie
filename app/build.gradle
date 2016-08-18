@@ -30,7 +30,6 @@ android {
     }
 }
 
-
 ext {
     supportLibVersion = '24.2.0'
     butterKnifeVersion = '8.2.1'
@@ -47,8 +46,8 @@ dependencies {
     compile "com.github.PhilJay:MPAndroidChart:v3.0.0-beta1"
     compile 'com.google.code.gson:gson:2.4'
     compile 'com.github.nisrulz:stackedhorizontalprogressbar:1.0.2'
-    compile 'com.jakewharton:butterknife:8.2.1'
-    apt 'com.jakewharton:butterknife-compiler:8.2.1'
+    compile "com.jakewharton:butterknife:${butterKnifeVersion}"
+    apt "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
     apply plugin: 'com.neenbedankt.android-apt'
 }
 
