@@ -2,6 +2,10 @@
     <string name="app_name">Dota 2 Junkie</string>
     <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
 
+    <!-- Global -->
+    <string name="sharedpref_herojson_key" translatable="false">heroJson</string>
+    <string name="sharedpref_itemjson_key" translatable="false">itemJson</string>
+
     <!-- LogInActivity -->
     <string name="log_in_dialog_title">Log In</string>
     <string name="hint_steam_id">Steam ID 64</string>

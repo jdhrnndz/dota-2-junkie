@@ -22,27 +22,4 @@ public class HeroReference {
 
         return null;
     }
-
-    public static class Hero {
-        @SerializedName("name")
-        private String name;
-
-        @SerializedName("id")
-        private int id;
-
-        @SerializedName("localized_name")
-        private String localizedName;
-
-        public String getName() {
-            return name;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public String getLocalizedName() {
-            return localizedName;
-        }
-    }
 }

@@ -10,7 +10,7 @@ import android.support.v4.app.Fragment;
 public enum TabFragment {
     PROFILE ("Profile", ProfileFragment.newInstance(), 0),
     MATCHES ("Matches", MatchesFragment.newInstance(), 1),
-    PLAY_STYLE ("Arcade", ArcadeFragment.newInstance(), 2);
+    ARCADE("Arcade", ArcadeFragment.newInstance(), 2);
 
     private String title;
     private Fragment fragment;

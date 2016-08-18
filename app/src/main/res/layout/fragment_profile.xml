@@ -52,7 +52,7 @@
         android:orientation="horizontal"
         android:layout_marginTop="32dp">
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/sigil_member_since"
+            android:id="@+id/symbol_member_since"
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:layout_gravity="center"
@@ -64,7 +64,7 @@
             android:textColor="@color/primary"
             android:background="@drawable/icon_ring_border_red" />
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/sigil_steam_id"
+            android:id="@+id/symbol_steam_id"
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:layout_gravity="center"
@@ -76,7 +76,7 @@
             android:textColor="@color/primary"
             android:background="@drawable/icon_ring_border_red" />
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/sigil_last_log_off"
+            android:id="@+id/symbol_last_log_off"
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:layout_gravity="center"

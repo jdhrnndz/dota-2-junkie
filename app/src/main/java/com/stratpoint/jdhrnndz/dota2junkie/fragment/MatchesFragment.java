@@ -1,7 +1,7 @@
 package com.stratpoint.jdhrnndz.dota2junkie.fragment;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,11 +12,15 @@ import android.widget.ProgressBar;
 import com.stratpoint.jdhrnndz.dota2junkie.R;
 import com.stratpoint.jdhrnndz.dota2junkie.adapter.MatchesAdapter;
 import com.stratpoint.jdhrnndz.dota2junkie.adapter.SimpleDividerItemDecoration;
-import com.stratpoint.jdhrnndz.dota2junkie.model.MatchHistory;
-import com.stratpoint.jdhrnndz.dota2junkie.model.PlayerSummary;
+import com.stratpoint.jdhrnndz.dota2junkie.model.DotaPlayer;
+import com.stratpoint.jdhrnndz.dota2junkie.model.Match;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindDrawable;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Author: John Denielle F. Hernandez
@@ -27,16 +31,18 @@ import java.util.List;
 public class MatchesFragment extends BaseFragment {
     private final static int LAYOUT = R.layout.fragment_matches;
 
-    private RecyclerView mRecyclerView;
+    @BindView(R.id.recycler_view_matches) RecyclerView mRecyclerView;
+    @BindView(R.id.matches_progress_bar) ProgressBar mProgressBar;
+
+    @BindDrawable(R.drawable.line_divider) Drawable mLineDivider;
+
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-
-    private List<MatchHistory.Match> mMatches = new ArrayList<>();
-    private List<MatchHistory.Match> mMatchBuffer = new ArrayList<>();
+    private List<Match> mMatches = new ArrayList<>();
+    private List<Match> mMatchBuffer = new ArrayList<>();
     private boolean isConsumingBuffer = false;
-    private PlayerSummary.DotaPlayer mCurrentPlayer;
 
-    private ProgressBar mProgressBar;
+    private DotaPlayer mCurrentPlayer;
 
     public static MatchesFragment newInstance() {
         Bundle args = BaseFragment.initBundle(LAYOUT);
@@ -48,53 +54,43 @@ public class MatchesFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(mLayout, container, false);
+        ButterKnife.bind(this, view);
 
-        // Map views from content view as the activity's attributes
-        assignViews(view);
         // Assign values to views
-        populateViews();
+        populateViews(view);
 
         return view;
     }
 
-    private void assignViews(View view) {
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_matches);
+    private void populateViews(View view) {
         mLayoutManager = new LinearLayoutManager(view.getContext());
         mAdapter = new MatchesAdapter(view.getContext(), mMatches, mCurrentPlayer);
-        mRecyclerView.addItemDecoration(
-                new SimpleDividerItemDecoration(
-                        ContextCompat.getDrawable(view.getContext(), R.drawable.line_divider)
-                )
-        );
-        mProgressBar = (ProgressBar) view.findViewById(R.id.matches_progress_bar);
-    }
-
-    private void populateViews() {
+        mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(mLineDivider));
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    public List<MatchHistory.Match> getMatches() {
+    public List<Match> getMatches() {
         return this.mMatches;
     }
 
-    public void updateMatches(MatchHistory.Match match) {
+    public void updateMatches(Match match) {
         if(mProgressBar.getVisibility() == View.VISIBLE && mAdapter.getItemCount() > 0)
             mProgressBar.setVisibility(View.GONE);
 
         // Called by the main activity every time a match detail response arrives
         mMatchBuffer.add(mMatchBuffer.size(), match);
 
-        if (!isConsumingBuffer)
-            consumeBuffer();
+        if (!isConsumingBuffer) consumeBuffer();
     }
 
     private void consumeBuffer() {
         isConsumingBuffer = true;
 
+        // Consume the buffer as a queue
         do {
-            MatchHistory.Match currentMatch = mMatchBuffer.get(0);
+            Match currentMatch = mMatchBuffer.get(0);
             int insertIndex = findInsertIndexInList(currentMatch, mMatches);
             mMatches.add(insertIndex, currentMatch);
             mAdapter.notifyItemInserted(insertIndex);
@@ -104,7 +100,7 @@ public class MatchesFragment extends BaseFragment {
         isConsumingBuffer = false;
     }
 
-    private int findInsertIndexInList(MatchHistory.Match match, List<MatchHistory.Match> matches) {
+    private int findInsertIndexInList(Match match, List<Match> matches) {
         int size = matches.size();
 
         for (int i = 0; i < size; i++) {
@@ -116,7 +112,7 @@ public class MatchesFragment extends BaseFragment {
         return size;
     }
 
-    public void setCurrentPlayer(PlayerSummary.DotaPlayer player) {
+    public void setCurrentPlayer(DotaPlayer player) {
         mCurrentPlayer = player;
     }
 }
