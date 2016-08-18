@@ -12,9 +12,10 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.stratpoint.jdhrnndz.dota2junkie.activity.MainActivity;
 import com.stratpoint.jdhrnndz.dota2junkie.customview.KdaBar;
-import com.stratpoint.jdhrnndz.dota2junkie.model.MatchHistory;
+import com.stratpoint.jdhrnndz.dota2junkie.model.DotaPlayer;
+import com.stratpoint.jdhrnndz.dota2junkie.model.Match;
 import com.stratpoint.jdhrnndz.dota2junkie.R;
-import com.stratpoint.jdhrnndz.dota2junkie.model.PlayerSummary;
+import com.stratpoint.jdhrnndz.dota2junkie.model.MatchPlayer;
 import com.stratpoint.jdhrnndz.dota2junkie.network.UrlBuilder;
 import com.stratpoint.jdhrnndz.dota2junkie.network.VolleySingleton;
 
@@ -34,9 +35,9 @@ import butterknife.ButterKnife;
  */
 public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHolder> {
     private Context mContext;
-    private List<MatchHistory.Match> mDataset;
-    private PlayerSummary.DotaPlayer mCurrentPlayer;
-    private MatchHistory.MatchPlayer mCurrentMatchPlayer;
+    private List<Match> mDataset;
+    private DotaPlayer mCurrentPlayer;
+    private MatchPlayer mCurrentMatchPlayer;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.result_indicator) View mResultIndicator;
@@ -62,7 +63,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
         }
     }
 
-    public MatchesAdapter(Context context, List<MatchHistory.Match> matches, PlayerSummary.DotaPlayer player) {
+    public MatchesAdapter(Context context, List<Match> matches, DotaPlayer player) {
         mDataset = matches;
         mContext = context;
         mCurrentPlayer = player;
@@ -77,12 +78,12 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         ImageLoader imageLoader = VolleySingleton.getInstance(mContext).getImageLoader();
-        MatchHistory.Match item = mDataset.get(position);
-        MatchHistory.MatchPlayer[] players = item.getPlayers();
+        Match item = mDataset.get(position);
+        MatchPlayer[] players = item.getPlayers();
 
         // Converting SteamID64 to SteamID32
         int steamId32 = (int) Long.parseLong(mCurrentPlayer.getSteamId());
-        for(MatchHistory.MatchPlayer player: players) {
+        for(MatchPlayer player: players) {
             if (steamId32 == player.getAccountId()) {
                 mCurrentMatchPlayer = player;
             }

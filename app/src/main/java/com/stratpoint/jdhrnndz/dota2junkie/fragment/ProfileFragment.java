@@ -19,8 +19,9 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.stratpoint.jdhrnndz.dota2junkie.model.MatchHistory;
-import com.stratpoint.jdhrnndz.dota2junkie.model.PlayerSummary;
+import com.stratpoint.jdhrnndz.dota2junkie.model.DotaPlayer;
+import com.stratpoint.jdhrnndz.dota2junkie.model.Match;
+import com.stratpoint.jdhrnndz.dota2junkie.model.MatchPlayer;
 import com.stratpoint.jdhrnndz.dota2junkie.R;
 import com.stratpoint.jdhrnndz.dota2junkie.network.VolleySingleton;
 
@@ -65,9 +66,9 @@ public class ProfileFragment extends BaseFragment {
     @BindColor(R.color.primary) int mPrimaryColor;
     @BindColor(R.color.primary_dark) int mPrimaryDarkColor;
 
-    List<MatchHistory.Match> mMatches;
+    List<Match> mMatches;
     LineData mProfileGraphData;
-    PlayerSummary.DotaPlayer mCurrentPlayer;
+    DotaPlayer mCurrentPlayer;
     private int mMatchesChartProgress = 0;
 
     public static ProfileFragment newInstance() {
@@ -167,7 +168,7 @@ public class ProfileFragment extends BaseFragment {
         mMatchesChartProgressBar.setMax(20);
     }
 
-    public void setCurrentPlayer(PlayerSummary.DotaPlayer player) {
+    public void setCurrentPlayer(DotaPlayer player) {
         this.mCurrentPlayer = player;
     }
 
@@ -175,24 +176,24 @@ public class ProfileFragment extends BaseFragment {
         mMatchesChartProgressBar.setProgress(++mMatchesChartProgress);
     }
 
-    public void populateMatchResultsGraph(List<MatchHistory.Match> matches, int matchCountForGraph) {
+    public void populateMatchResultsGraph(List<Match> matches, int matchCountForGraph) {
         mMatches = matches;
         List<Boolean> matchResults = parseMatchResultsOfPlayer(mMatches, matchCountForGraph);
         ArrayList<Entry> graphValues = generateDataSet(matchResults, matchCountForGraph);
         buildMatchResultsGraph(graphValues);
     }
 
-    private List<Boolean> parseMatchResultsOfPlayer(List<MatchHistory.Match> matches, int matchCountForGraph) {
+    private List<Boolean> parseMatchResultsOfPlayer(List<Match> matches, int matchCountForGraph) {
         List<Boolean> matchResults = new ArrayList<>();
 
         for (int i=0; i<matchCountForGraph; i++) {
-            MatchHistory.Match currentMatch = matches.get(i);
-            MatchHistory.MatchPlayer[] players = currentMatch.getPlayers();
-            MatchHistory.MatchPlayer currentPlayer = null;
+            Match currentMatch = matches.get(i);
+            MatchPlayer[] players = currentMatch.getPlayers();
+            MatchPlayer currentPlayer = null;
 
             // Gets the player in the match context, used for finding the player's slot
             int steamId32 = (int) Long.parseLong(mCurrentPlayer.getSteamId());
-            for(MatchHistory.MatchPlayer player: players) {
+            for(MatchPlayer player: players) {
                 if (steamId32 == player.getAccountId()) {
                     currentPlayer = player;
                 }

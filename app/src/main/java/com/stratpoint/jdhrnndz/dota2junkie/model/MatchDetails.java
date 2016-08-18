@@ -9,9 +9,9 @@ import com.google.gson.annotations.SerializedName;
  */
 public class MatchDetails {
     @SerializedName("result")
-    private MatchHistory.Match matchDetails;
+    private Match matchDetails;
 
-    public MatchHistory.Match getResult() {
+    public Match getResult() {
         return matchDetails;
     }
 }

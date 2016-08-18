@@ -12,8 +12,8 @@ import android.widget.ProgressBar;
 import com.stratpoint.jdhrnndz.dota2junkie.R;
 import com.stratpoint.jdhrnndz.dota2junkie.adapter.MatchesAdapter;
 import com.stratpoint.jdhrnndz.dota2junkie.adapter.SimpleDividerItemDecoration;
-import com.stratpoint.jdhrnndz.dota2junkie.model.MatchHistory;
-import com.stratpoint.jdhrnndz.dota2junkie.model.PlayerSummary;
+import com.stratpoint.jdhrnndz.dota2junkie.model.DotaPlayer;
+import com.stratpoint.jdhrnndz.dota2junkie.model.Match;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,11 +38,11 @@ public class MatchesFragment extends BaseFragment {
 
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private List<MatchHistory.Match> mMatches = new ArrayList<>();
-    private List<MatchHistory.Match> mMatchBuffer = new ArrayList<>();
+    private List<Match> mMatches = new ArrayList<>();
+    private List<Match> mMatchBuffer = new ArrayList<>();
     private boolean isConsumingBuffer = false;
 
-    private PlayerSummary.DotaPlayer mCurrentPlayer;
+    private DotaPlayer mCurrentPlayer;
 
     public static MatchesFragment newInstance() {
         Bundle args = BaseFragment.initBundle(LAYOUT);
@@ -71,11 +71,11 @@ public class MatchesFragment extends BaseFragment {
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    public List<MatchHistory.Match> getMatches() {
+    public List<Match> getMatches() {
         return this.mMatches;
     }
 
-    public void updateMatches(MatchHistory.Match match) {
+    public void updateMatches(Match match) {
         if(mProgressBar.getVisibility() == View.VISIBLE && mAdapter.getItemCount() > 0)
             mProgressBar.setVisibility(View.GONE);
 
@@ -90,7 +90,7 @@ public class MatchesFragment extends BaseFragment {
 
         // Consume the buffer as a queue
         do {
-            MatchHistory.Match currentMatch = mMatchBuffer.get(0);
+            Match currentMatch = mMatchBuffer.get(0);
             int insertIndex = findInsertIndexInList(currentMatch, mMatches);
             mMatches.add(insertIndex, currentMatch);
             mAdapter.notifyItemInserted(insertIndex);
@@ -100,7 +100,7 @@ public class MatchesFragment extends BaseFragment {
         isConsumingBuffer = false;
     }
 
-    private int findInsertIndexInList(MatchHistory.Match match, List<MatchHistory.Match> matches) {
+    private int findInsertIndexInList(Match match, List<Match> matches) {
         int size = matches.size();
 
         for (int i = 0; i < size; i++) {
@@ -112,7 +112,7 @@ public class MatchesFragment extends BaseFragment {
         return size;
     }
 
-    public void setCurrentPlayer(PlayerSummary.DotaPlayer player) {
+    public void setCurrentPlayer(DotaPlayer player) {
         mCurrentPlayer = player;
     }
 }

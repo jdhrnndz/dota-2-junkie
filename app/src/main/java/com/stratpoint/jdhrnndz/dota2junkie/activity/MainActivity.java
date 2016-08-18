@@ -15,8 +15,10 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.stratpoint.jdhrnndz.dota2junkie.adapter.AppFragmentPagerAdapter;
+import com.stratpoint.jdhrnndz.dota2junkie.model.DotaPlayer;
 import com.stratpoint.jdhrnndz.dota2junkie.model.HeroReference;
 import com.stratpoint.jdhrnndz.dota2junkie.model.ItemReference;
+import com.stratpoint.jdhrnndz.dota2junkie.model.Match;
 import com.stratpoint.jdhrnndz.dota2junkie.model.MatchHistory;
 import com.stratpoint.jdhrnndz.dota2junkie.model.PlayerSummary;
 import com.stratpoint.jdhrnndz.dota2junkie.R;
@@ -50,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
     @BindView(R.id.appbar) AppBarLayout mAppBarLayout;
     @BindView(R.id.main_layout) CoordinatorLayout mRootView;
 
-    private PlayerSummary.DotaPlayer mCurrentPlayer;
+    private DotaPlayer mCurrentPlayer;
     private boolean profileHasMatchData = false;
 
     @BindString(R.string.sharedpref_herojson_key) String heroJsonKey;
@@ -159,13 +161,13 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
         switch (type) {
             case ApiManager.MATCH_HISTORY_RESPONSE_TYPE:
                 MatchHistory mMatchHistory = (MatchHistory) response;
-                MatchHistory.Match[] matches = mMatchHistory.getResult().getMatches();
+                Match[] matches = mMatchHistory.getHistory().getMatches();
 
                 // Build the url's query section
                 HashMap<String, String> args = new HashMap<>();
 
                 // Queues all the request for match details using the fetched match IDs
-                for (MatchHistory.Match match : matches) {
+                for (Match match : matches) {
                     args.put("match_id", String.valueOf(match.getId()));
                     String url = UrlBuilder.buildGenericUrl(getApplicationContext(), R.string.get_match_details, args);
 
@@ -177,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
                 MatchesFragment matchesFragment = (MatchesFragment) TabFragment.MATCHES.getFragment();
                 ProfileFragment profileFragment = (ProfileFragment) TabFragment.PROFILE.getFragment();
 
-                matchesFragment.updateMatches(((MatchHistory.Match) response));
+                matchesFragment.updateMatches(((Match) response));
                 // Updates progress 'til the number of received matches == MATCH_COUNT_FOR_GRAPH
                 if (!profileHasMatchData) {
                     if (matchesFragment.getMatches().size() >= MATCH_COUNT_FOR_GRAPH) {
