@@ -314,28 +314,16 @@ public class MatchHistory {
         @SerializedName("ability_upgrades")
         private AbilityUpgrade[] abilityUpgrades;
 
-        public int getItem0() {
-            return item0;
+        public int getItemAtIndex(int index) throws IllegalArgumentException{
+            try {
+                return getItems()[index];
+            } catch (ArrayIndexOutOfBoundsException ie){
+                throw new IllegalArgumentException();
+            }
         }
 
-        public int getItem1() {
-            return item1;
-        }
-
-        public int getItem2() {
-            return item2;
-        }
-
-        public int getItem3() {
-            return item3;
-        }
-
-        public int getItem4() {
-            return item4;
-        }
-
-        public int getItem5() {
-            return item5;
+        public int[] getItems() {
+            return new int[]{item0, item1, item2, item3, item4, item5};
         }
 
         public int getKills() {
