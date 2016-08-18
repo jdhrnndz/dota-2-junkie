@@ -98,9 +98,9 @@ public class ProfileFragment extends BaseFragment {
     }
 
     // Sets a custom typeface via ButterKnife's apply method
-    static final ButterKnife.Setter<View, Typeface> TYPEFACE = new ButterKnife.Setter<View, Typeface>() {
-        @Override public void set(@NonNull View view, Typeface value, int index) {
-            ((AppCompatButton)view).setTypeface(value);
+    static final ButterKnife.Setter<AppCompatButton, Typeface> TYPEFACE = new ButterKnife.Setter<AppCompatButton, Typeface>() {
+        @Override public void set(@NonNull AppCompatButton view, Typeface value, int index) {
+            view.setTypeface(value);
         }
     };
 
