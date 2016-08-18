@@ -37,7 +37,6 @@ ext {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile project(":volley")
     testCompile 'junit:junit:4.12'
     compile "com.android.support:appcompat-v7:${supportLibVersion}'"
     compile "com.android.support:design:${supportLibVersion}"
@@ -51,5 +50,6 @@ dependencies {
     apt "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
     apply plugin: 'com.neenbedankt.android-apt'
     compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.android.volley:volley:1.0.0'
 }
 
