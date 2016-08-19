@@ -6,15 +6,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
+import com.bumptech.glide.Glide;
+import com.stratpoint.jdhrnndz.dota2junkie.R;
 import com.stratpoint.jdhrnndz.dota2junkie.activity.MainActivity;
 import com.stratpoint.jdhrnndz.dota2junkie.customview.KdaBar;
 import com.stratpoint.jdhrnndz.dota2junkie.model.DotaPlayer;
 import com.stratpoint.jdhrnndz.dota2junkie.model.Match;
-import com.stratpoint.jdhrnndz.dota2junkie.R;
 import com.stratpoint.jdhrnndz.dota2junkie.model.MatchPlayer;
 import com.stratpoint.jdhrnndz.dota2junkie.network.UrlBuilder;
 import com.stratpoint.jdhrnndz.dota2junkie.network.VolleySingleton;
@@ -47,9 +48,9 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
         @BindView(R.id.player_assists) TextView mAssistCount;
         @BindView(R.id.kda_bar) KdaBar mKdaBar;
 
-        @BindView(R.id.hero_image) NetworkImageView mHeroImage;
+        @BindView(R.id.hero_image) ImageView mHeroImage;
         @BindViews({ R.id.item_slot_0, R.id.item_slot_1, R.id.item_slot_2, R.id.item_slot_3, R.id.item_slot_4, R.id.item_slot_5})
-        List<NetworkImageView> mItemSlots;
+        List<ImageView> mItemSlots;
 
         @BindView(R.id.game_duration) TextView mGameDuration;
         @BindView(R.id.match_id) TextView mMatchId;
@@ -77,7 +78,6 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        ImageLoader imageLoader = VolleySingleton.getInstance(mContext).getImageLoader();
         Match item = mDataset.get(position);
         MatchPlayer[] players = item.getPlayers();
 
@@ -112,7 +112,9 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
 
         // Hero Image
         String heroImageUrl = UrlBuilder.buildHeroImageUrl(mContext, MainActivity.heroRef.getHero(mCurrentMatchPlayer.getHeroId()).getName().substring(14));
-        holder.mHeroImage.setImageUrl(heroImageUrl, imageLoader);
+        Glide.with(mContext)
+            .load(heroImageUrl)
+            .into(holder.mHeroImage);
         // Item Images
         ButterKnife.apply(holder.mItemSlots, ITEM, mCurrentMatchPlayer.getItems());
 
@@ -124,15 +126,17 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
         holder.mGameMode.setText(holder.mGameModes[item.getGameMode()]);
     }
 
-    static final ButterKnife.Setter<NetworkImageView, int[]> ITEM = new ButterKnife.Setter<NetworkImageView, int[]>() {
-        @Override public void set(@NonNull NetworkImageView view, int[] items, int index) {
+    static final ButterKnife.Setter<ImageView, int[]> ITEM = new ButterKnife.Setter<ImageView, int[]>() {
+        @Override public void set(@NonNull ImageView view, int[] items, int index) {
             int itemId = items[index];
             if (itemId > 0) {
                 Context context = view.getContext();
                 ImageLoader imageLoader = VolleySingleton.getInstance(context).getImageLoader();
                 String urlTemplate = UrlBuilder.buildItemImageUrlTemplate(context);
                 String url = String.format(urlTemplate, MainActivity.itemRef.getItem(itemId).getName().substring(5));
-                view.setImageUrl(url, imageLoader);
+                Glide.with(context)
+                    .load(url)
+                    .into(view);
             }
         }
     };

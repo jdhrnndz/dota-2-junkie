@@ -1,8 +1,9 @@
 apply plugin: 'com.android.application'
+apply plugin: 'android-apt'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.0"
+    buildToolsVersion "24.0.1"
 
     defaultConfig {
         applicationId "com.stratpoint.jdhrnndz.dota2junkie"
@@ -30,20 +31,25 @@ android {
 }
 
 ext {
-    supportLibVersion = '24.0.0'
+    supportLibVersion = '24.2.0'
+    butterKnifeVersion = '8.2.1'
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile project(":volley")
     testCompile 'junit:junit:4.12'
     compile "com.android.support:appcompat-v7:${supportLibVersion}'"
     compile "com.android.support:design:${supportLibVersion}"
     compile "com.android.support:cardview-v7:${supportLibVersion}"
     compile "com.android.support:recyclerview-v7:${supportLibVersion}"
+    compile "com.android.support:support-v4:${supportLibVersion}"
     compile "com.github.PhilJay:MPAndroidChart:v3.0.0-beta1"
-    compile 'com.google.code.gson:gson:1.7.2'
-    compile 'com.jakewharton:butterknife:8.2.1'
+    compile 'com.google.code.gson:gson:2.4'
+    compile 'com.github.nisrulz:stackedhorizontalprogressbar:1.0.2'
+    compile "com.jakewharton:butterknife:${butterKnifeVersion}"
+    apt "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
     apply plugin: 'com.neenbedankt.android-apt'
-    apt 'com.jakewharton:butterknife-compiler:8.2.1'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.android.volley:volley:1.0.0'
 }
+

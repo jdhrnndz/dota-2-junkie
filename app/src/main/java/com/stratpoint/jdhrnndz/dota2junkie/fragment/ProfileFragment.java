@@ -7,11 +7,14 @@ import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -19,11 +22,10 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.stratpoint.jdhrnndz.dota2junkie.R;
 import com.stratpoint.jdhrnndz.dota2junkie.model.DotaPlayer;
 import com.stratpoint.jdhrnndz.dota2junkie.model.Match;
 import com.stratpoint.jdhrnndz.dota2junkie.model.MatchPlayer;
-import com.stratpoint.jdhrnndz.dota2junkie.R;
-import com.stratpoint.jdhrnndz.dota2junkie.network.VolleySingleton;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -47,7 +49,7 @@ import butterknife.ButterKnife;
 public class ProfileFragment extends BaseFragment {
     private final static int LAYOUT = R.layout.fragment_profile;
 
-    @BindView(R.id.user_avatar) NetworkImageView mUserAvatar;
+    @BindView(R.id.user_avatar) ImageView mUserAvatar;
     @BindView(R.id.user_avatar_progress_bar) ProgressBar mUserAvatarProgressBar;
     @BindViews({ R.id.symbol_member_since, R.id.symbol_steam_id, R.id.symbol_last_log_off })
     List<AppCompatButton> mSymbols;
@@ -106,10 +108,24 @@ public class ProfileFragment extends BaseFragment {
     };
 
     private void populateViews() {
-        ImageLoader imageLoader = VolleySingleton.getInstance(getActivity()).getImageLoader();
+        Glide.with(getContext())
+            .load(mCurrentPlayer.getAvatarFull())
+            .listener(new RequestListener<String, GlideDrawable>() {
+                @Override
+                public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                    mUserAvatarProgressBar.setVisibility(View.GONE);
+                    return false;
+                }
 
-        mUserAvatar.setImageUrl(mCurrentPlayer.getAvatarFull(), imageLoader);
-        mUserAvatar.setProgressBar(mUserAvatarProgressBar);
+                @Override
+                public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                    mUserAvatarProgressBar.setVisibility(View.GONE);
+                    return false;
+                }
+            })
+            .placeholder(R.color.primary)
+            .into(mUserAvatar);
+
         mUserPersonaName.setText(mCurrentPlayer.getPersonaName());
         mUserRealName.setText(mCurrentPlayer.getRealName());
         mUserCountry.setText(mCurrentPlayer.getCountryCode());
