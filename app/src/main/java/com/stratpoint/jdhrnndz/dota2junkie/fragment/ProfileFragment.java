@@ -81,6 +81,29 @@ public class ProfileFragment extends BaseFragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            onRestoreInstanceState(savedInstanceState);
+        }
+    }
+
+    /**
+     * TODO [Optional] Use Icepick for less boilerplate, type-safe state save/restore
+     * @param savedInstanceState
+     */
+    private void onRestoreInstanceState(Bundle savedInstanceState) {
+        mCurrentPlayer = savedInstanceState.getParcelable("CURRENT_PLAYER");
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable("CURRENT_PLAYER", mCurrentPlayer);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(mLayout, container, false);
         ButterKnife.bind(this, view);
