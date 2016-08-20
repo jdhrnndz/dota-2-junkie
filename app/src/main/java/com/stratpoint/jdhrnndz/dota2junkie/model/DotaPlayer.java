@@ -1,5 +1,8 @@
 package com.stratpoint.jdhrnndz.dota2junkie.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -7,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
  * Date: 8/18/16
  * Description: Used in DotaResponse class
  */
-public class DotaPlayer {
+public class DotaPlayer implements Parcelable {
     @SerializedName("steamid")
     private String steamId;
 
@@ -126,4 +129,66 @@ public class DotaPlayer {
     public long getCityId() {
         return cityId;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.steamId);
+        dest.writeInt(this.communityVisibilityState);
+        dest.writeInt(this.profileState);
+        dest.writeString(this.personaName);
+        dest.writeLong(this.lastLogOff);
+        dest.writeString(this.profileUrl);
+        dest.writeString(this.avatar);
+        dest.writeString(this.avatarMedium);
+        dest.writeString(this.avatarFull);
+        dest.writeInt(this.personaState);
+        dest.writeString(this.realName);
+        dest.writeString(this.primaryClanId);
+        dest.writeLong(this.timeCreated);
+        dest.writeInt(this.personaStateFlags);
+        dest.writeString(this.countryCode);
+        dest.writeString(this.stateCode);
+        dest.writeLong(this.cityId);
+    }
+
+    public DotaPlayer() {
+    }
+
+    protected DotaPlayer(Parcel in) {
+        this.steamId = in.readString();
+        this.communityVisibilityState = (short) in.readInt();
+        this.profileState = (short) in.readInt();
+        this.personaName = in.readString();
+        this.lastLogOff = in.readLong();
+        this.profileUrl = in.readString();
+        this.avatar = in.readString();
+        this.avatarMedium = in.readString();
+        this.avatarFull = in.readString();
+        this.personaState = (short) in.readInt();
+        this.realName = in.readString();
+        this.primaryClanId = in.readString();
+        this.timeCreated = in.readLong();
+        this.personaStateFlags = (short) in.readInt();
+        this.countryCode = in.readString();
+        this.stateCode = in.readString();
+        this.cityId = in.readLong();
+    }
+
+    public static final Parcelable.Creator<DotaPlayer> CREATOR = new Parcelable.Creator<DotaPlayer>() {
+        @Override
+        public DotaPlayer createFromParcel(Parcel source) {
+            return new DotaPlayer(source);
+        }
+
+        @Override
+        public DotaPlayer[] newArray(int size) {
+            return new DotaPlayer[size];
+        }
+    };
 }
