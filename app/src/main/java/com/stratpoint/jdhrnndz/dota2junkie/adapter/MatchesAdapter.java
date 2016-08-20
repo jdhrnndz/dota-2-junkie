@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.ImageLoader;
 import com.bumptech.glide.Glide;
 import com.stratpoint.jdhrnndz.dota2junkie.R;
 import com.stratpoint.jdhrnndz.dota2junkie.activity.MainActivity;
@@ -18,7 +17,6 @@ import com.stratpoint.jdhrnndz.dota2junkie.model.DotaPlayer;
 import com.stratpoint.jdhrnndz.dota2junkie.model.Match;
 import com.stratpoint.jdhrnndz.dota2junkie.model.MatchPlayer;
 import com.stratpoint.jdhrnndz.dota2junkie.network.UrlBuilder;
-import com.stratpoint.jdhrnndz.dota2junkie.network.VolleySingleton;
 
 import java.util.List;
 import java.util.Locale;
@@ -131,7 +129,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
             int itemId = items[index];
             if (itemId > 0) {
                 Context context = view.getContext();
-                ImageLoader imageLoader = VolleySingleton.getInstance(context).getImageLoader();
+
                 String urlTemplate = UrlBuilder.buildItemImageUrlTemplate(context);
                 String url = String.format(urlTemplate, MainActivity.itemRef.getItem(itemId).getName().substring(5));
                 Glide.with(context)
