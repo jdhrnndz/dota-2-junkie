@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/match_details_string"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/winner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/radiant_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/dire_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/first_blood"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="minimap_custom_view_placeholder"/>
+
+    <GridLayout
+        android:id="@+id/the_radiant_stats"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </GridLayout>
+    <GridLayout
+        android:id="@+id/the_dire_stats"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </GridLayout>
+</LinearLayout>

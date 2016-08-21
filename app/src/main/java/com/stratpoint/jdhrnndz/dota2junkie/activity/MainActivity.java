@@ -45,6 +45,7 @@ import butterknife.ButterKnife;
  */
 public class MainActivity extends AppCompatActivity implements DotaApiResponseListener{
     private final int MATCH_COUNT_FOR_GRAPH = 20;
+    public static final String EXTRA_MATCH_DETAILS = "com.stratpoint.jdhrnndz.EXTRA_MATCH_DETAILS";
 
     @BindView(R.id.viewpager) ViewPager mViewPager;
     @BindView(R.id.tabs) TabLayout mTabLayout;

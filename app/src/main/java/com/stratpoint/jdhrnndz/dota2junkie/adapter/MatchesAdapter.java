@@ -1,7 +1,9 @@
 package com.stratpoint.jdhrnndz.dota2junkie.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +12,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 import com.stratpoint.jdhrnndz.dota2junkie.R;
 import com.stratpoint.jdhrnndz.dota2junkie.activity.MainActivity;
+import com.stratpoint.jdhrnndz.dota2junkie.activity.MatchDetailsActivity;
 import com.stratpoint.jdhrnndz.dota2junkie.customview.KdaBar;
 import com.stratpoint.jdhrnndz.dota2junkie.model.DotaPlayer;
 import com.stratpoint.jdhrnndz.dota2junkie.model.Match;
@@ -38,7 +42,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
     private DotaPlayer mCurrentPlayer;
     private MatchPlayer mCurrentMatchPlayer;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.result_indicator) View mResultIndicator;
 
         @BindView(R.id.player_kills) TextView mKillCount;
@@ -59,6 +63,18 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
         public ViewHolder(View v) {
             super(v);
             ButterKnife.bind(this, v);
+            v.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int position = getAdapterPosition();
+            Gson gson = new Gson();
+            String matchDetailsString = gson.toJson(mDataset.get(position));
+            Intent matchDetailsIntent = new Intent(mContext, MatchDetailsActivity.class);
+            matchDetailsIntent.putExtra(MainActivity.EXTRA_MATCH_DETAILS, matchDetailsString);
+            mContext.startActivity(matchDetailsIntent);
+            Snackbar.make(view, "" + position, Snackbar.LENGTH_SHORT).show();
         }
     }
 
