@@ -74,7 +74,6 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
             Intent matchDetailsIntent = new Intent(mContext, MatchDetailsActivity.class);
             matchDetailsIntent.putExtra(MainActivity.EXTRA_MATCH_DETAILS, matchDetailsString);
             mContext.startActivity(matchDetailsIntent);
-            Snackbar.make(view, "" + position, Snackbar.LENGTH_SHORT).show();
         }
     }
 
@@ -143,13 +142,16 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
     static final ButterKnife.Setter<ImageView, int[]> ITEM = new ButterKnife.Setter<ImageView, int[]>() {
         @Override public void set(@NonNull ImageView view, int[] items, int index) {
             int itemId = items[index];
+            Context context = view.getContext();
             if (itemId > 0) {
-                Context context = view.getContext();
-
                 String urlTemplate = UrlBuilder.buildItemImageUrlTemplate(context);
                 String url = String.format(urlTemplate, MainActivity.itemRef.getItem(itemId).getName().substring(5));
                 Glide.with(context)
                     .load(url)
+                    .into(view);
+            } else {
+                Glide.with(context)
+                    .load(R.color.accent)
                     .into(view);
             }
         }
