@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -132,7 +133,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
         ButterKnife.apply(holder.mItemSlots, ITEM, mCurrentMatchPlayer.getItems());
 
         // Match Duration
-        holder.mGameDuration.setText(parseMatchDuration(item.getDuration()));
+        holder.mGameDuration.setText(DateUtils.formatElapsedTime(item.getDuration()));
         // Match ID
         holder.mMatchId.setText(String.valueOf(item.getId()));
         // Match Mode
@@ -156,26 +157,6 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
             }
         }
     };
-
-    private String parseMatchDuration(long duration) {
-        StringBuilder matchDuration = new StringBuilder();
-
-        long hours = TimeUnit.SECONDS.toHours(duration);
-        if (hours > 0) {
-            matchDuration.append(String.format(Locale.ENGLISH, "%02d", hours));
-            matchDuration.append(':');
-            duration -= TimeUnit.HOURS.toSeconds(hours);
-        }
-
-        long minutes = TimeUnit.SECONDS.toMinutes(duration);
-        matchDuration.append(String.format(Locale.ENGLISH, "%02d", minutes));
-        matchDuration.append(':');
-        duration -= TimeUnit.MINUTES.toSeconds(minutes);
-
-        matchDuration.append(String.format(Locale.ENGLISH, "%02d", duration));
-
-        return matchDuration.toString();
-    }
 
     @Override
     public int getItemCount() {
