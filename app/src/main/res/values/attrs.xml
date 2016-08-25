@@ -9,4 +9,14 @@
         <attr name="deathBarColor" format="color" />
         <attr name="assistBarColor" format="color" />
     </declare-styleable>
+
+    <declare-styleable name="Minimap">
+        <attr name="direTowers" format="integer" />
+        <attr name="radiantTowers" format="integer" />
+
+        <attr name="direBarracks" format="integer" />
+        <attr name="radiantBarracks" format="integer" />
+
+        <attr name="radiantWin" format="boolean" />
+    </declare-styleable>
 </resources>
