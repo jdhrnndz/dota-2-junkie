@@ -274,7 +274,7 @@ public class ProfileFragment extends BaseFragment {
         matchResultDataSet.setColor(mPrimaryColor);
         matchResultDataSet.setCircleColor(mPrimaryDarkColor);
         matchResultDataSet.setLineWidth(1.5f);
-        matchResultDataSet.setCircleRadius(3f);
+        matchResultDataSet.setCircleRadius(1.7f);
         matchResultDataSet.setDrawCircleHole(false);
         matchResultDataSet.setDrawFilled(true);
         matchResultDataSet.setFillColor(mPrimaryColor);
