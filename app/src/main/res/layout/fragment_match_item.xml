@@ -145,14 +145,16 @@
             android:layout_below="@id/hero_image"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
-            android:textSize="14sp"/>
+            android:textSize="14sp"
+            android:textColor="@color/secondary_text"/>
         <TextView
             android:id="@+id/game_mode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/hero_image"
             android:layout_centerHorizontal="true"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:textColor="@color/primary_text"/>
         <TextView
             android:id="@+id/game_duration"
             android:layout_width="wrap_content"
@@ -160,6 +162,7 @@
             android:layout_below="@id/hero_image"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:textColor="@color/secondary_text"/>
     </RelativeLayout>
 </LinearLayout>
