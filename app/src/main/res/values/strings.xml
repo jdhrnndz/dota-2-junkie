@@ -22,9 +22,23 @@
     <string name="profile_pattern_date">MMM dd, \'\'yy</string>
     <string name="profile_description_matches_graph">Match Results Trend</string>
 
+    <!-- fragment_profile -->
+    <string name="user_avatar_cd">User's full-sized avatar</string>
+
     <!-- MatchesFragment -->
     <string name="match_history_error_message">There is a problem retrieving the match history.</string>
     <string name="kda_divider_symbol">\u00A0/\u00A0</string>
+    <string name="item_slot_0_cd">Top-left inventory item</string>
+    <string name="item_slot_1_cd">Top-center inventory item</string>
+    <string name="item_slot_2_cd">Top-right inventory item</string>
+    <string name="item_slot_3_cd">Bottom-left inventory item</string>
+    <string name="item_slot_4_cd">Bottom-center inventory item</string>
+    <string name="item_slot_5_cd">Bottom-right inventory item</string>
+    <string name="hero_image_cd">Hero image</string>
+
+    <!-- MatchDetailsActivity -->
+    <string name="hero_icon_cd">Hero icon corresponding to the hero used by a specific player</string>
+    <string name="match_detail_title">%s Victory</string>
 
     <string name="api_key" translatable="false">22247A2A498D945AA1F4A20FF96F1911</string>
 </resources>
