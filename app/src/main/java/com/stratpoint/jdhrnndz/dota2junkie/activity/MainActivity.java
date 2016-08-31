@@ -5,11 +5,11 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
     public static HeroReference heroRef;
     public static ItemReference itemRef;
 
-    private Snackbar mErrorMessage;
+    private Toast mErrorMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
         mTabLayout.setupWithViewPager(mViewPager);
         mAppBarLayout.setExpanded(false, false);
 
-        mErrorMessage = Snackbar.make(mRootView, R.string.match_history_error_message, Snackbar.LENGTH_LONG);
+        mErrorMessage = Toast.makeText(this, R.string.match_history_error_message, Toast.LENGTH_LONG);
     }
 
     private void parseUserInfoFromIntent() {
@@ -195,6 +195,6 @@ public class MainActivity extends AppCompatActivity implements DotaApiResponseLi
     }
 
     public void onReceiveErrorResponse(int statusCode, VolleyError error) {
-        if(!mErrorMessage.isShown()) mErrorMessage.show(); // Don't spam the error message
+        mErrorMessage.show();
     }
 }

@@ -6,11 +6,11 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.stratpoint.jdhrnndz.dota2junkie.R;
@@ -36,7 +36,7 @@ public class LogInActivity extends AppCompatActivity implements DotaApiResponseL
     public final static String EXTRA_USER_INFO = "com.stratpoint.jdhrnndz.EXTRA_USER_INFO";
 
     private ProgressDialog mLogInDialog;
-    private Snackbar mErrorMessage;
+    private Toast mErrorMessage;
     private Intent mLogInIntent;
     @BindView(R.id.sign_in_layout) RelativeLayout mRootView;
     @BindView(R.id.button_log_in) AppCompatButton mLogInButton;
@@ -94,9 +94,7 @@ public class LogInActivity extends AppCompatActivity implements DotaApiResponseL
 
     public void onReceiveErrorResponse(int statusCode, VolleyError error) {
         mLogInDialog.dismiss();
-        if(!mErrorMessage.isShown()) {
-            mErrorMessage.show();
-        }
+        mErrorMessage.show();
     }
 
     private void initObjects() {
@@ -105,7 +103,7 @@ public class LogInActivity extends AppCompatActivity implements DotaApiResponseL
         // Stores hero and item references
         mLogInIntent = new Intent(this, MainActivity.class);
         // Shown when fetching player info fails
-        mErrorMessage = Snackbar.make(mRootView, R.string.log_in_error_message, Snackbar.LENGTH_LONG);
+        mErrorMessage = Toast.makeText(this, R.string.log_in_error_message, Toast.LENGTH_LONG);
     }
 
     private void populateViews() {
