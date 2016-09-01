@@ -23,7 +23,7 @@
     <string name="profile_description_matches_graph">Match Results Trend</string>
 
     <!-- fragment_profile -->
-    <string name="user_avatar_cd">User's full-sized avatar</string>
+    <string name="user_avatar_cd">User\'s full-sized avatar</string>
 
     <!-- MatchesFragment -->
     <string name="match_history_error_message">There is a problem retrieving the match history.</string>
