@@ -1,8 +1,10 @@
 package com.stratpoint.jdhrnndz.dota2junkie.fragment;
 
 import android.graphics.Typeface;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,7 +52,6 @@ public class ProfileFragment extends BaseFragment {
     private final static int LAYOUT = R.layout.fragment_profile;
 
     @BindView(R.id.user_avatar) ImageView mUserAvatar;
-    @BindView(R.id.user_avatar_progress_bar) ProgressBar mUserAvatarProgressBar;
     @BindViews({ R.id.symbol_member_since, R.id.symbol_steam_id, R.id.symbol_last_log_off })
     List<AppCompatButton> mSymbols;
     @BindView(R.id.user_persona_name) TextView mUserPersonaName;
@@ -67,6 +68,7 @@ public class ProfileFragment extends BaseFragment {
 
     @BindColor(R.color.primary) int mPrimaryColor;
     @BindColor(R.color.primary_dark) int mPrimaryDarkColor;
+    @BindColor(R.color.accent_dark) int mAccentDarkColor;
 
     List<Match> mMatches;
     LineData mProfileGraphData;
@@ -131,22 +133,27 @@ public class ProfileFragment extends BaseFragment {
     };
 
     private void populateViews() {
+        mUserAvatar.setBackgroundResource(R.drawable.loading_gradient_red);
+        final AnimationDrawable frameAnimation = (AnimationDrawable) mUserAvatar.getBackground();
+        frameAnimation.start();
+
         Glide.with(getContext())
             .load(mCurrentPlayer.getAvatarFull())
             .listener(new RequestListener<String, GlideDrawable>() {
                 @Override
                 public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                    mUserAvatarProgressBar.setVisibility(View.GONE);
+                    mUserAvatar.setBackgroundColor(mAccentDarkColor);
+                    frameAnimation.stop();
                     return false;
                 }
 
                 @Override
                 public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                    mUserAvatarProgressBar.setVisibility(View.GONE);
+                    mUserAvatar.setBackgroundColor(mPrimaryColor);
+                    frameAnimation.stop();
                     return false;
                 }
             })
-            .placeholder(R.color.primary)
             .into(mUserAvatar);
 
         mUserPersonaName.setText(mCurrentPlayer.getPersonaName());
