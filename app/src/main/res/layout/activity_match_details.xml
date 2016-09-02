@@ -211,15 +211,31 @@
                     <include
                         android:id="@+id/radiant_player_1"
                         layout="@layout/stub_hero_details" />
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/dividerHorizontal"/>
                     <include
                         android:id="@+id/radiant_player_2"
                         layout="@layout/stub_hero_details" />
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/dividerHorizontal"/>
                     <include
                         android:id="@+id/radiant_player_3"
                         layout="@layout/stub_hero_details" />
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/dividerHorizontal"/>
                     <include
                         android:id="@+id/radiant_player_4"
                         layout="@layout/stub_hero_details" />
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/dividerHorizontal"/>
                     <include
                         android:id="@+id/radiant_player_5"
                         layout="@layout/stub_hero_details" />
@@ -248,15 +264,31 @@
                     <include
                         android:id="@+id/dire_player_1"
                         layout="@layout/stub_hero_details" />
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/dividerHorizontal"/>
                     <include
                         android:id="@+id/dire_player_2"
                         layout="@layout/stub_hero_details" />
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/dividerHorizontal"/>
                     <include
                         android:id="@+id/dire_player_3"
                         layout="@layout/stub_hero_details" />
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/dividerHorizontal"/>
                     <include
                         android:id="@+id/dire_player_4"
                         layout="@layout/stub_hero_details" />
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/dividerHorizontal"/>
                     <include
                         android:id="@+id/dire_player_5"
                         layout="@layout/stub_hero_details" />

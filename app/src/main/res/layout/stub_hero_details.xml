@@ -86,10 +86,8 @@
         android:id="@+id/button_expand"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:textColor="@color/hint_text"
+        android:textColor="@color/primary_text"
         android:text="@string/chevron_down"
         android:background="@color/transparent"
         android:textAlignment="center" />
-
-    
 </LinearLayout>
