@@ -19,4 +19,9 @@
 
         <attr name="radiantWin" format="boolean" />
     </declare-styleable>
+
+    <declare-styleable name="ExpandableView">
+        <attr name="topLayout" format="reference" />
+        <attr name="bottomLayout" format="reference" />
+    </declare-styleable>
 </resources>
