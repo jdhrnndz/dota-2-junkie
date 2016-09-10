@@ -14,13 +14,6 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
         android:contentDescription="@string/user_avatar_cd" />
-    <!--<ProgressBar-->
-        <!--android:id="@+id/user_avatar_progress_bar"-->
-        <!--android:layout_width="100dip"-->
-        <!--android:layout_height="100dip"-->
-        <!--android:layout_marginTop="32dip"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_alignParentTop="true"/>-->
     <TextView
         android:id="@+id/user_persona_name"
         android:layout_width="wrap_content"

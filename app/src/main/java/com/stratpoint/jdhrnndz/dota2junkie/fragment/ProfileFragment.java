@@ -154,6 +154,7 @@ public class ProfileFragment extends BaseFragment {
                     return false;
                 }
             })
+            .placeholder(R.drawable.user_avatar_placeholder)
             .into(mUserAvatar);
 
         mUserPersonaName.setText(mCurrentPlayer.getPersonaName());
