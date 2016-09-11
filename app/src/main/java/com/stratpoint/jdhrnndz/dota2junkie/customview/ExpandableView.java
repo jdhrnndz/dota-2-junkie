@@ -90,12 +90,11 @@ public class ExpandableView extends LinearLayout implements View.OnClickListener
 
         bottomViewHeight = mBottomView.getMeasuredHeight();
 
-        return bottomViewHeight;
+        return ((bottomViewHeight < 0)? 1 : bottomViewHeight);
     }
 
     private void animate(boolean isExpanded) {
         if (isExpanded) {
-            mBottomView.getLayoutParams().height = 1;
             mBottomView.setVisibility(VISIBLE);
             mBottomView.startAnimation(mExpandAnimation);
         } else {
@@ -110,12 +109,8 @@ public class ExpandableView extends LinearLayout implements View.OnClickListener
 
         @Override
         protected void applyTransformation(float interpolatedTime, Transformation t) {
-            if (Float.compare(interpolatedTime, 1.0f) == 0) {
-                mView.getLayoutParams().height = LayoutParams.WRAP_CONTENT;
-            } else {
-                mView.getLayoutParams().height = (int) (mBottomViewHeight * interpolatedTime);
-                mView.requestLayout();
-            }
+            mView.getLayoutParams().height = (int) (mBottomViewHeight * interpolatedTime);
+            mView.requestLayout();
         }
     }
 
@@ -126,10 +121,10 @@ public class ExpandableView extends LinearLayout implements View.OnClickListener
 
         @Override
         protected void applyTransformation(float interpolatedTime, Transformation t) {
-            if (Float.compare(interpolatedTime, 1.0f) == 0) {
-                mView.setVisibility(GONE);
-            } else {
-                mView.getLayoutParams().height = (int) (mBottomViewHeight - (mBottomViewHeight * interpolatedTime));
+            if (hasEnded()) mView.setVisibility(GONE);
+            else {
+                int mBottomViewCurrentHeight = mBottomView.getHeight();
+                mView.getLayoutParams().height = (int) (mBottomViewCurrentHeight - (mBottomViewCurrentHeight * interpolatedTime));
                 mView.requestLayout();
             }
         }
