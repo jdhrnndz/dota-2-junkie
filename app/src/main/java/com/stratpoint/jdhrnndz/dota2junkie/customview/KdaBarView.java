@@ -15,29 +15,29 @@ import com.stratpoint.jdhrnndz.dota2junkie.R;
  * Date: 8/11/16
  * Description: Custom view for representing the player's kills, deaths, and assists scores.
  */
-public class KdaBar extends View {
+public class KdaBarView extends View {
     private int mKillCount, mDeathCount, mAssistCount;
     private int mKillColor, mDeathColor, mAssistColor;
     private int mViewWidth, mViewHeight;
     private Paint mKillBarPaint, mDeathBarPaint, mAssistBarPaint;
     private float mKillPart, mDeathPart, mAssistPart;
 
-    public KdaBar(Context context, AttributeSet attrs) {
+    public KdaBarView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         TypedArray a = context.getTheme().obtainStyledAttributes(
                 attrs,
-                R.styleable.KdaBar,
+                R.styleable.KdaBarView,
                 0, 0);
 
         try {
-            mKillCount = a.getInt(R.styleable.KdaBar_killCount, 0);
-            mDeathCount = a.getInt(R.styleable.KdaBar_deathCount, 0);
-            mAssistCount = a.getInt(R.styleable.KdaBar_assistCount, 0);
+            mKillCount = a.getInt(R.styleable.KdaBarView_killCount, 0);
+            mDeathCount = a.getInt(R.styleable.KdaBarView_deathCount, 0);
+            mAssistCount = a.getInt(R.styleable.KdaBarView_assistCount, 0);
 
-            mKillColor = a.getColor(R.styleable.KdaBar_killBarColor, ContextCompat.getColor(getContext(), R.color.kill_score_color));
-            mDeathColor = a.getColor(R.styleable.KdaBar_deathBarColor, ContextCompat.getColor(getContext(), R.color.death_score_color));
-            mAssistColor = a.getColor(R.styleable.KdaBar_assistBarColor, ContextCompat.getColor(getContext(), R.color.assist_score_color));
+            mKillColor = a.getColor(R.styleable.KdaBarView_killBarColor, ContextCompat.getColor(getContext(), R.color.kill_score_color));
+            mDeathColor = a.getColor(R.styleable.KdaBarView_deathBarColor, ContextCompat.getColor(getContext(), R.color.death_score_color));
+            mAssistColor = a.getColor(R.styleable.KdaBarView_assistBarColor, ContextCompat.getColor(getContext(), R.color.assist_score_color));
         } finally {
             a.recycle();
         }

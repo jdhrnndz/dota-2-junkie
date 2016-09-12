@@ -19,7 +19,7 @@ import com.stratpoint.jdhrnndz.dota2junkie.R;
  * Date: 8/23/16
  * Description: Custom view for presenting the barracks and tower states in a match.
  */
-public class Minimap extends View{
+public class MinimapView extends View{
     private static final int STRUCTURE_COUNT = 18;
 
     public static final PointF[] DIRE_STRUCTURE_COORDINATES = new PointF[]{
@@ -74,22 +74,22 @@ public class Minimap extends View{
     Bitmap mMinimap;
     Rect mSrcRect, mDestRect;
 
-    public Minimap(Context context, AttributeSet attrs) {
+    public MinimapView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         TypedArray a = context.getTheme().obtainStyledAttributes(
                 attrs,
-                R.styleable.Minimap,
+                R.styleable.MinimapView,
                 0, 0);
 
         try {
-            mDireTowers = a.getInt(R.styleable.Minimap_direTowers, 0);
-            mRadiantTowers = a.getInt(R.styleable.Minimap_radiantTowers, 0);
+            mDireTowers = a.getInt(R.styleable.MinimapView_direTowers, 0);
+            mRadiantTowers = a.getInt(R.styleable.MinimapView_radiantTowers, 0);
 
-            mDireBarracks = a.getInt(R.styleable.Minimap_direBarracks, 0);
-            mRadiantBarracks = a.getInt(R.styleable.Minimap_radiantBarracks, 0);
+            mDireBarracks = a.getInt(R.styleable.MinimapView_direBarracks, 0);
+            mRadiantBarracks = a.getInt(R.styleable.MinimapView_radiantBarracks, 0);
 
-            mRadiantWin = a.getBoolean(R.styleable.Minimap_radiantWin, false);
+            mRadiantWin = a.getBoolean(R.styleable.MinimapView_radiantWin, false);
 
             buildStructuresStatus();
         } finally {

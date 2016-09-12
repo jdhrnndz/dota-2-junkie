@@ -16,7 +16,7 @@ import com.google.gson.Gson;
 import com.stratpoint.jdhrnndz.dota2junkie.R;
 import com.stratpoint.jdhrnndz.dota2junkie.activity.MainActivity;
 import com.stratpoint.jdhrnndz.dota2junkie.activity.MatchDetailsActivity;
-import com.stratpoint.jdhrnndz.dota2junkie.customview.KdaBar;
+import com.stratpoint.jdhrnndz.dota2junkie.customview.KdaBarView;
 import com.stratpoint.jdhrnndz.dota2junkie.model.DotaPlayer;
 import com.stratpoint.jdhrnndz.dota2junkie.model.Match;
 import com.stratpoint.jdhrnndz.dota2junkie.model.MatchPlayer;
@@ -46,7 +46,8 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
         @BindView(R.id.player_kills) TextView mKillCount;
         @BindView(R.id.player_deaths) TextView mDeathCount;
         @BindView(R.id.player_assists) TextView mAssistCount;
-        @BindView(R.id.kda_bar) KdaBar mKdaBar;
+        @BindView(R.id.kda_bar)
+        KdaBarView mKdaBar;
 
         @BindView(R.id.hero_image) ImageView mHeroImage;
         @BindViews({ R.id.item_slot_0, R.id.item_slot_1, R.id.item_slot_2, R.id.item_slot_3, R.id.item_slot_4, R.id.item_slot_5})

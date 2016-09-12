@@ -79,7 +79,7 @@
             android:layout_toEndOf="@+id/item_slot_4"
             android:contentDescription="@string/item_slot_5_cd"/>
 
-        <com.stratpoint.jdhrnndz.dota2junkie.customview.KdaBar
+        <com.stratpoint.jdhrnndz.dota2junkie.customview.KdaBarView
             android:id="@+id/kda_bar"
             android:layout_width="40dp"
             android:layout_height="5dp"

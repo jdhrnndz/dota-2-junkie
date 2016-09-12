@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.stratpoint.jdhrnndz.dota2junkie.R;
-import com.stratpoint.jdhrnndz.dota2junkie.customview.Minimap;
+import com.stratpoint.jdhrnndz.dota2junkie.customview.MinimapView;
 import com.stratpoint.jdhrnndz.dota2junkie.model.Match;
 import com.stratpoint.jdhrnndz.dota2junkie.model.MatchPlayer;
 import com.stratpoint.jdhrnndz.dota2junkie.util.LobbyType;
@@ -39,7 +39,8 @@ public class MatchDetailsActivity extends AppCompatActivity {
     @BindView(R.id.dire_score) TextView mDireScore;
     @BindView(R.id.radiant_score) TextView mRadiantScore;
     @BindArray(R.array.game_modes) String[] mGameModes;
-    @BindView(R.id.minimap) Minimap minimap;
+    @BindView(R.id.minimap)
+    MinimapView minimap;
     @BindViews({
             R.id.radiant_player_1, R.id.radiant_player_2, R.id.radiant_player_3, R.id.radiant_player_4, R.id.radiant_player_5,
             R.id.dire_player_1, R.id.dire_player_2, R.id.dire_player_3, R.id.dire_player_4, R.id.dire_player_5

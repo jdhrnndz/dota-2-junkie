@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="KdaBar">
+    <declare-styleable name="KdaBarView">
         <attr name="killCount" format="integer" />
         <attr name="deathCount" format="integer" />
         <attr name="assistCount" format="integer" />
@@ -10,7 +10,7 @@
         <attr name="assistBarColor" format="color" />
     </declare-styleable>
 
-    <declare-styleable name="Minimap">
+    <declare-styleable name="MinimapView">
         <attr name="direTowers" format="integer" />
         <attr name="radiantTowers" format="integer" />
 
