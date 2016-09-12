@@ -54,7 +54,7 @@ public class ExpandableView extends LinearLayout implements View.OnClickListener
         addView(mTopView);
         addView(mBottomView);
 
-        mBottomView.setVisibility(GONE);
+        mBottomView.setVisibility(GONE); // default state is collapsed
         setOnClickListener(this /** OnClickListener **/);
         mExpandAnimation = new ExpandAnimation(mBottomView);
         mCollapseAnimation = new CollapseAnimation(mBottomView);
@@ -62,8 +62,9 @@ public class ExpandableView extends LinearLayout implements View.OnClickListener
 
     @Override
     public void onClick(View view) {
-        if (!mIsHeightSet) {
+        if (!mIsHeightSet) { // measure bottom view only once
             mBottomViewHeight = measureBottomView();
+            mBottomView.getLayoutParams().height = 1;
             int animDuration = ((int)(mBottomViewHeight / mBottomView.getContext().getResources().getDisplayMetrics().density)) * 4;
             mExpandAnimation.setDuration(animDuration);
             mCollapseAnimation.setDuration(animDuration);
@@ -80,7 +81,7 @@ public class ExpandableView extends LinearLayout implements View.OnClickListener
     private int measureBottomView() {
         int bottomViewHeight;
 
-        mBottomView.setVisibility(VISIBLE);
+        mBottomView.setVisibility(VISIBLE); // view must be visible in order to get the measured height
 
         LayoutParams params = (LayoutParams) mBottomView.getLayoutParams();
         final int width = this.getWidth() - params.leftMargin - params.rightMargin;
